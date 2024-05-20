@@ -38,5 +38,5 @@ public class DemoController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-    }   
+    }
 }
