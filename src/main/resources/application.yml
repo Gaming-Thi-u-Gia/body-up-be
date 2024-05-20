@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/body-up
-    username: postgres
-    password: boben152
+    url: jdbc:postgresql://ep-wild-queen-a1eivj9e.ap-southeast-1.aws.neon.tech/body-up-db?user=body-up-db_owner&password=YWFgl4Pcd1hS&sslmode=require
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
