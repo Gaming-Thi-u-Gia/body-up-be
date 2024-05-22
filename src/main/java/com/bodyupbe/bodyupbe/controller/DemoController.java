@@ -41,7 +41,6 @@ public class DemoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
-
     @PutMapping("/api/v1/profile")
     public ResponseEntity<User> updateProfile(@RequestBody User request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,9 +56,8 @@ public class DemoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
     @DeleteMapping("/api/v1/avatar")
-    public ResponseEntity<String> deleteAvatar() {
+    public ResponseEntity<Optional<User>> deleteAvatar() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
@@ -67,10 +65,9 @@ public class DemoController {
             User user = optionalUser.get();
             user.setAvatar(null);
             userRepository.save(user);
-            return ResponseEntity.ok("Avatar deleted successfully");
+            return ResponseEntity.ok(optionalUser);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
         }
     }
-
 }
