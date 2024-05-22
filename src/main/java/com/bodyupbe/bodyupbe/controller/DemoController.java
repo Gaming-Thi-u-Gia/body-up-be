@@ -41,7 +41,21 @@ public class DemoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
-
+    @PutMapping("/api/v1/profile")
+    public ResponseEntity<User> updateProfile(@RequestBody User request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            userRepository.save(user);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
     @DeleteMapping("/api/v1/avatar")
     public ResponseEntity<Optional<User>> deleteAvatar() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
