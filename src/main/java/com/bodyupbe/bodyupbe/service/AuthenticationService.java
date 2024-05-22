@@ -1,16 +1,12 @@
-package com.bodyupbe.bodyupbe.model;
+package com.bodyupbe.bodyupbe.service;
 
 import com.bodyupbe.bodyupbe.model.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
-import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
-import com.bodyupbe.bodyupbe.service.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
