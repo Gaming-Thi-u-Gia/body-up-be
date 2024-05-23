@@ -1,6 +1,5 @@
 package com.bodyupbe.bodyupbe.model;
 
-import com.bodyupbe.bodyupbe.model.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import com.bodyupbe.bodyupbe.service.JwtService;
@@ -10,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -31,7 +29,10 @@ public class AuthenticationService {
         return String.format("%06d", code);
     }
     public AuthenticationResponse register(User request, HttpSession session) {
-
+        Optional<User> existingUser = repository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new Error("Email already exists");
+        }
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -39,6 +40,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
+
         String verificationCode = generateVerificationCode();
         session.setAttribute("code", verificationCode);
         session.setAttribute("user", user);
@@ -52,7 +54,6 @@ public class AuthenticationService {
 //        Optional<User> userOptional = repository.findByEmail(email);
         User user = (User) session.getAttribute("user");
         String verifyCode = (String) session.getAttribute("code");
-        System.out.println(verifyCode);
         if(verifyCode.equals(code)) {
             repository.save(user);
             String token = jwtService.generateToken(user);
