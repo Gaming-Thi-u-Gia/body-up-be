@@ -1,4 +1,18 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: haquanghung309@gmail.com
+    password: vvokccqlgviqrgnt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  session:
+    store-type: redis
   datasource:
     url: jdbc:postgresql://ep-wild-queen-a1eivj9e.ap-southeast-1.aws.neon.tech/body-up-db?user=body-up-db_owner&password=YWFgl4Pcd1hS&sslmode=require
     driver-class-name: org.postgresql.Driver

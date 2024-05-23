@@ -4,12 +4,16 @@ import com.bodyupbe.bodyupbe.model.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import com.bodyupbe.bodyupbe.service.JwtService;
+import com.bodyupbe.bodyupbe.service.MailService;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.Optional;
 
 @Service
@@ -20,8 +24,14 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final MailService mailService;
+    private static final SecureRandom random = new SecureRandom();
+    public static String generateVerificationCode() {
+        int code = random.nextInt(999999);
+        return String.format("%06d", code);
+    }
+    public AuthenticationResponse register(User request, HttpSession session) {
 
-    public AuthenticationResponse register(User request) {
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -29,10 +39,28 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
-        repository.save(user);
-
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        String verificationCode = generateVerificationCode();
+        session.setAttribute("code", verificationCode);
+        session.setAttribute("user", user);
+        MailStructure mailStructure = new MailStructure();
+        mailStructure.setSubject("Verification Code");
+        mailStructure.setMessage("Your verification code is: " + verificationCode);
+        mailService.sendMail(user.getEmail(), mailStructure);
+        return new AuthenticationResponse("Verification email sent");
+    }
+    public AuthenticationResponse verifyCode(HttpSession session, String code) {
+//        Optional<User> userOptional = repository.findByEmail(email);
+        User user = (User) session.getAttribute("user");
+        String verifyCode = (String) session.getAttribute("code");
+        System.out.println(verifyCode);
+        if(verifyCode.equals(code)) {
+            repository.save(user);
+            String token = jwtService.generateToken(user);
+            return new AuthenticationResponse(token);
+        }
+        else {
+            throw new Error("Invalid code");
+        }
     }
 
     public AuthenticationResponse login(User request) {
