@@ -50,6 +50,23 @@ public class AuthenticationService {
         mailService.sendMail(user.getEmail(), mailStructure);
         return new AuthenticationResponse("Verification email sent");
     }
+    public AuthenticationResponse loginGoogle(UserGoogle request) {
+        Optional<User> existingUser = repository.findByEmail(request.getEmail());
+        User user = User.builder()
+                .firstName(request.getGiven_name())
+                .lastName(request.getFamily_name())
+                .email(request.getEmail())
+                .avatar(request.getPicture())
+                .role(Role.USER)
+                .build();
+        if (existingUser.isPresent()) {
+            String token = jwtService.generateToken(user);
+            return new AuthenticationResponse(token);
+        }
+        repository.save(user);
+        String token = jwtService.generateToken(user);
+        return new AuthenticationResponse(token);
+    }
     public AuthenticationResponse verifyCode(HttpSession session, String code) {
 //        Optional<User> userOptional = repository.findByEmail(email);
         User user = (User) session.getAttribute("user");

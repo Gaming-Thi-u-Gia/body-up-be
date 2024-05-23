@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.controller;
 
 import com.bodyupbe.bodyupbe.model.AuthenticationService;
 import com.bodyupbe.bodyupbe.model.User;
+import com.bodyupbe.bodyupbe.model.UserGoogle;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,11 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authService.register(request, session));
     }
+    @PostMapping("/logingoogle")
+    public ResponseEntity<AuthenticationResponse> loginGoogle(@RequestBody UserGoogle user){
+        return ResponseEntity.ok(authService.loginGoogle(user));
 
+    }
     @PostMapping("/verify")
     public ResponseEntity<AuthenticationResponse> verifyCode(
              HttpSession session, @RequestParam String code
