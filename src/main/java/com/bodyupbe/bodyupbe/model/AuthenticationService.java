@@ -80,6 +80,48 @@ public class AuthenticationService {
             throw new Error("Invalid code");
         }
     }
+    public AuthenticationResponse sendPasswordResetCode( HttpSession session, String email) {
+        Optional<User> userOptional = repository.findByEmail(email);
+        System.out.println(email);
+        if (userOptional.isEmpty()) {
+            throw new Error("Email not found Hello");
+        }
+        User user = userOptional.get();
+        String verificationCode = generateVerificationCode();
+        session.setAttribute("resetCode", verificationCode);
+        session.setAttribute("resetUser", user);
+        MailStructure mailStructure = new MailStructure();
+        mailStructure.setSubject("Password Reset Code");
+        mailStructure.setMessage("Your password reset code is: " + verificationCode);
+        mailService.sendMail(user.getEmail(), mailStructure);
+        return new AuthenticationResponse("Password reset email sent");
+    }
+
+    public AuthenticationResponse verifyPasswordResetCode(HttpSession session, String code ) {
+        User user = (User) session.getAttribute("resetUser");
+        String resetCode = (String) session.getAttribute("resetCode");
+        System.out.println(resetCode);
+        if (resetCode.equals(code)) {
+            session.setAttribute("passwordResetVerified", true);
+            return new AuthenticationResponse("Code verified, you can now reset your password");
+        } else {
+            throw new Error("Invalid code");
+        }
+    }
+    public AuthenticationResponse resetPassword(HttpSession session, User request ) {
+        Boolean passwordResetVerified = (Boolean) session.getAttribute("passwordResetVerified");
+        if (passwordResetVerified == null || !passwordResetVerified) {
+            throw new Error("Password reset not verified");
+        }
+        User user = (User) session.getAttribute("resetUser");
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        repository.save(user);
+        session.removeAttribute("passwordResetVerified");
+        session.removeAttribute("resetUser");
+        session.removeAttribute("resetCode");
+        return new AuthenticationResponse("Password has been reset successfully");
+    }
+
 
     public AuthenticationResponse login(User request) {
         authenticationManager

@@ -32,6 +32,27 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authService.verifyCode(session,code));
     }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<AuthenticationResponse> forgotPassword(
+            HttpSession session, @RequestParam String email
+    ) {
+        return ResponseEntity.ok(authService.sendPasswordResetCode(session, email));
+    }
+
+    @PostMapping("/resetPasscode")
+    public ResponseEntity<AuthenticationResponse> verifyResetCode(
+            HttpSession session, @RequestParam String code
+    ) {
+        return ResponseEntity.ok(authService.verifyPasswordResetCode(session, code));
+    }
+    @PutMapping("/reset-password")
+    public ResponseEntity<AuthenticationResponse> resetPassword(
+            @RequestBody User request, HttpSession session
+    ) {
+        return ResponseEntity.ok(authService.resetPassword(session, request));
+    }
+
+
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
