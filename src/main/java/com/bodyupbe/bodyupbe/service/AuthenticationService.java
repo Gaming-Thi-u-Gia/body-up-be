@@ -1,5 +1,6 @@
-package com.bodyupbe.bodyupbe.model;
+package com.bodyupbe.bodyupbe.service;
 
+import com.bodyupbe.bodyupbe.model.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import com.bodyupbe.bodyupbe.service.JwtService;
@@ -64,6 +65,7 @@ public class AuthenticationService {
             return new AuthenticationResponse(token);
         }
         repository.save(user);
+
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }

@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.controller;
 
-import com.bodyupbe.bodyupbe.model.AuthenticationService;
+import com.bodyupbe.bodyupbe.service.AuthenticationService;
 import com.bodyupbe.bodyupbe.model.User;
 import com.bodyupbe.bodyupbe.model.UserGoogle;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
