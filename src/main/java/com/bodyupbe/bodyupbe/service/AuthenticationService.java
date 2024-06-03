@@ -1,10 +1,10 @@
 package com.bodyupbe.bodyupbe.service;
 
+import com.bodyupbe.bodyupbe.model.MailStructure;
+import com.bodyupbe.bodyupbe.model.Role;
 import com.bodyupbe.bodyupbe.model.User;
+import com.bodyupbe.bodyupbe.model.UserGoogle;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
-import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
-import com.bodyupbe.bodyupbe.service.JwtService;
-import com.bodyupbe.bodyupbe.service.MailService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
