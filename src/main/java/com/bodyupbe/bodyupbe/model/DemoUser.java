@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.model;
 
+
 public class DemoUser {
     public void demo() {
         User user = User.builder()

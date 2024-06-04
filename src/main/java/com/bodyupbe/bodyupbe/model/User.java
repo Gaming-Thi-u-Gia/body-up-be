@@ -1,16 +1,16 @@
 package com.bodyupbe.bodyupbe.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -18,18 +18,23 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "users")
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String firstName;
-    private String lastName;
+    Integer id;
+    String userName;
+    String firstName;
+    String lastName;
     @Column(unique = true)
-    private String email;
-    private String password;
-    private String avatar;
+    String email;
+    String password;
+    String avatar;
+    String bio;
     @Enumerated(EnumType.STRING)
     Role role;
+    @Column(name = "create_at")
+    Date createAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,4 +70,24 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    //Noi bang
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<UserChallenge> userChallenges;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<UserProgressPhoto> userProgressPhotos;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<BookmarkPost> bookmarkPosts;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Post> posts;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<UserDailyChallenge> userDailyChallenges;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<BookmarkRecipe> bookmarkRecipes;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<RatingRecipe> ratingRecipes;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<BookmarkVideo> bookmarkVideos;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Comment> comments;
 }
