@@ -1,5 +1,8 @@
 package com.bodyupbe.bodyupbe.dto.request;
 
+import com.bodyupbe.bodyupbe.dto.request.recipe.RecipesCollectionDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramCollectionDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_video.WorkoutVideoCollectionDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

@@ -1,9 +1,9 @@
 package com.bodyupbe.bodyupbe.service;
 
-import com.bodyupbe.bodyupbe.model.MailStructure;
-import com.bodyupbe.bodyupbe.model.Role;
-import com.bodyupbe.bodyupbe.model.User;
-import com.bodyupbe.bodyupbe.model.UserGoogle;
+import com.bodyupbe.bodyupbe.model.user.MailStructure;
+import com.bodyupbe.bodyupbe.model.user.Role;
+import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;

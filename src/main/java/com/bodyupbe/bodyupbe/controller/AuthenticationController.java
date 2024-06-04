@@ -1,8 +1,8 @@
 package com.bodyupbe.bodyupbe.controller;
 
 import com.bodyupbe.bodyupbe.service.AuthenticationService;
-import com.bodyupbe.bodyupbe.model.User;
-import com.bodyupbe.bodyupbe.model.UserGoogle;
+import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

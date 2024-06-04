@@ -1,5 +1,8 @@
 package com.bodyupbe.bodyupbe.model;
 
+import com.bodyupbe.bodyupbe.model.recipe.RecipesCollection;
+import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCollection;
+import com.bodyupbe.bodyupbe.model.workout_video.WorkoutVideoCollection;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

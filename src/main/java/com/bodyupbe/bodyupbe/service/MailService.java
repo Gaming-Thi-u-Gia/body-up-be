@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.service;
 
-import com.bodyupbe.bodyupbe.model.MailStructure;
+import com.bodyupbe.bodyupbe.model.user.MailStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;

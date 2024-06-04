@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.controller;
 
-import com.bodyupbe.bodyupbe.model.User;
+import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
