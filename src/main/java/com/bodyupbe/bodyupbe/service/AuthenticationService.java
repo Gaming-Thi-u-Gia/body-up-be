@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.service;
 
+import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
 import com.bodyupbe.bodyupbe.model.user.MailStructure;
 import com.bodyupbe.bodyupbe.model.user.Role;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -29,7 +30,7 @@ public class AuthenticationService {
         int code = random.nextInt(999999);
         return String.format("%06d", code);
     }
-    public AuthenticationResponse register(User request, HttpSession session) {
+    public AuthenticationResponse register(UserDto request, HttpSession session) {
         Optional<User> existingUser = repository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
             throw new Error("Email already exists");
@@ -110,7 +111,7 @@ public class AuthenticationService {
             throw new Error("Invalid code");
         }
     }
-    public AuthenticationResponse resetPassword(HttpSession session, User request ) {
+    public AuthenticationResponse resetPassword(HttpSession session, UserDto request ) {
         Boolean passwordResetVerified = (Boolean) session.getAttribute("passwordResetVerified");
         if (passwordResetVerified == null || !passwordResetVerified) {
             throw new Error("Password reset not verified");
@@ -125,7 +126,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse login(User request) {
+    public AuthenticationResponse login(UserDto request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 

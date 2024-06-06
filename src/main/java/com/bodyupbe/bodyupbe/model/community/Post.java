@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.Set;
@@ -27,6 +28,9 @@ public class Post {
     String imgAfter;
     Date dayBefore;
     Date dayAfter;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = true)
     Date createdAt;
 
     @ManyToOne
