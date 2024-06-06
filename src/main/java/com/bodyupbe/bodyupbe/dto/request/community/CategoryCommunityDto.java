@@ -10,5 +10,6 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryCommunityDto {
     Integer id;
+    String name;
     Set<PostDto> postDtos;
 }

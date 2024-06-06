@@ -17,6 +17,7 @@ public class CategoryCommunity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    String name;
     @OneToMany(mappedBy = "categoryCommunity",cascade = CascadeType.ALL)
     Set<Post> posts;
 }

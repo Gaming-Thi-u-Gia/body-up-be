@@ -1,7 +1,9 @@
 package com.bodyupbe.bodyupbe.service;
 
 import com.bodyupbe.bodyupbe.model.community.Badge;
+import com.bodyupbe.bodyupbe.model.community.CategoryCommunity;
 import com.bodyupbe.bodyupbe.repository.BadgeRepository;
+import com.bodyupbe.bodyupbe.repository.CategoryCommunityRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InitializeDataImpl {
     BadgeRepository badgeRepository;
+    CategoryCommunityRepository categoryCommunityRepository;
     @PostConstruct
     public void data() {
         //badge
@@ -33,6 +36,21 @@ public class InitializeDataImpl {
                     .name(badgeName)
                     .build();
             badgeRepository.save(badge);
+        }
+        String [] categoryCommunities = {
+                "fitness",
+                "before-after-results",
+                "off-topic",
+                "feedback",
+                "help",
+                "looking-for-team",
+                "announcements"
+        };
+        for (String category : categoryCommunities) {
+            CategoryCommunity categoryCommunity = CategoryCommunity.builder()
+                    .name(category)
+                    .build();
+            categoryCommunityRepository.save(categoryCommunity);
         }
 
     }

@@ -22,7 +22,7 @@ public class PostDto {
     Date createdAt;
     UserDto userDto;
     CategoryCommunityDto categoryCommunityDto;
-    BadgeDto badge;
+    BadgeDto badgeDto;
     Set<CommentDto> commentDtos;
     Set<BookmarkPostDto> bookmarkPostDtos;
     Set<OtherImagePostDto> otherImagePostDtos;
