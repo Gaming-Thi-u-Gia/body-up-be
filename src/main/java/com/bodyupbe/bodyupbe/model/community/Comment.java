@@ -25,10 +25,10 @@ public class Comment {
     int upVote;
     @Column(name = "create_at")
     Date createAt;
-    @ManyToOne
-    @JoinColumn(name="user_id",referencedColumnName = "id")
-    @JsonBackReference
-    User user;
+//    @ManyToOne
+//    @JoinColumn(name="user_id",referencedColumnName = "id")
+//    @JsonBackReference
+//    User user;
     @ManyToOne
     @JoinColumn(name="post_id",referencedColumnName = "id")
     @JsonBackReference

@@ -16,7 +16,7 @@ public class RecipeDto {
     String cookTime;
     String img;
     String cookDetail;
-    Set<RecipesCollectionDto> recipesCollectionDtos;
+    Set<RecipeCollectionDto> recipeCollectionDtos;
     Set<RatingRecipeDto> ratingRecipeDtos;
     Set<IngredientRecipeDto> ingredientRecipeDtos;
     Set<OtherImageRecipeDto> otherImageRecipeDtos;

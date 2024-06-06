@@ -1,12 +1,20 @@
 package com.bodyupbe.bodyupbe.service;
 
+import com.bodyupbe.bodyupbe.dto.mapper.recipe.AuthenticationResponseMapper;
+import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
+import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapperImpl;
+import com.bodyupbe.bodyupbe.dto.request.AuthenticationResponseDto;
+import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
 import com.bodyupbe.bodyupbe.model.user.MailStructure;
 import com.bodyupbe.bodyupbe.model.user.Role;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,19 +25,24 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AuthenticationService {
 
+    UserRepository userRepository;
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final AuthenticationResponseMapper authenticationResponseMapper;
     private final MailService mailService;
     private static final SecureRandom random = new SecureRandom();
+    private final UserMapperImpl userMapperImpl;
+
     public static String generateVerificationCode() {
         int code = random.nextInt(999999);
         return String.format("%06d", code);
     }
-    public AuthenticationResponse register(User request, HttpSession session) {
+    public UserDto register(UserDto request, HttpSession session) {
         Optional<User> existingUser = repository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
             throw new Error("Email already exists");
@@ -49,7 +62,7 @@ public class AuthenticationService {
         mailStructure.setSubject("Verification Code");
         mailStructure.setMessage("Your verification code is: " + verificationCode);
         mailService.sendMail(user.getEmail(), mailStructure);
-        return new AuthenticationResponse("Verification email sent");
+        return userMapperImpl.toUserDto(user);
     }
     public AuthenticationResponse loginGoogle(UserGoogle request) {
         Optional<User> existingUser = repository.findByEmail(request.getEmail());

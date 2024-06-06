@@ -29,10 +29,10 @@ public class Post {
     Date dayAfter;
     Date createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference
-    User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    @JsonBackReference
+//    User user;
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @JsonBackReference

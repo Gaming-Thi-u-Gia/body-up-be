@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "recipe_collections")
-public class RecipesCollection {
+public class RecipeCollection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

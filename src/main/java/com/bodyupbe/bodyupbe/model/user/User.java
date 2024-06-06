@@ -6,6 +6,7 @@ import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.BookmarkRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.workout_video.BookmarkVideo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,10 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -77,23 +75,24 @@ public class User implements UserDetails {
         return true;
     }
 
-    //Noi bang
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<UserChallenge> userChallenges;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<UserProgressPhoto> userProgressPhotos;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<BookmarkPost> bookmarkPosts;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<Post> posts;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<UserDailyChallenge> userDailyChallenges;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<BookmarkRecipe> bookmarkRecipes;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<RatingRecipe> ratingRecipes;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<BookmarkVideo> bookmarkVideos;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    Set<Comment> comments;
+   //Noi bang
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+           @JsonManagedReference(value = "user-challenges")
+    Set<UserChallenge> userChallenges =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<UserProgressPhoto> userProgressPhotos  =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<BookmarkPost> bookmarkPosts  =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<Post> posts  =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<UserDailyChallenge> userDailyChallenges =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<BookmarkRecipe> bookmarkRecipes =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<RatingRecipe> ratingRecipes  =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<BookmarkVideo> bookmarkVideos  =new HashSet<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+//    Set<Comment> comments =new HashSet<>();
 }

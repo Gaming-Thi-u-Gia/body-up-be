@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.dto.request;
 
-import com.bodyupbe.bodyupbe.dto.request.recipe.RecipesCollectionDto;
+import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeCollectionDto;
 import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramCollectionDto;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.WorkoutVideoCollectionDto;
 import lombok.*;
@@ -17,5 +17,5 @@ public class TopicDto {
     String name;
     Set<WorkoutProgramCollectionDto> workoutProgramCollectionDtos;
     Set<WorkoutVideoCollectionDto> workoutVideoCollectionDtos;
-    Set<RecipesCollectionDto> recipesCollectionDtos;
+    Set<RecipeCollectionDto> recipeCollectionDtos;
 }

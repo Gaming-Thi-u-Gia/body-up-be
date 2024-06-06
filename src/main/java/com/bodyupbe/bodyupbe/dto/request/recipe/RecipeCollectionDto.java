@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecipesCollectionDto {
+public class RecipeCollectionDto {
     Integer id;
     RecipeDto recipeDto;
     TopicDto topicDto;

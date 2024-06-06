@@ -21,8 +21,8 @@ public class BookmarkPost {
     @JoinColumn(name="post_id",referencedColumnName = "id")
     @JsonBackReference
     Post post;
-    @ManyToOne
-    @JoinColumn(name="user_id",referencedColumnName = "id")
-    @JsonBackReference
-    User user;
+//    @ManyToOne
+//    @JoinColumn(name="user_id",referencedColumnName = "id")
+//    @JsonBackReference
+//    User user;
 }

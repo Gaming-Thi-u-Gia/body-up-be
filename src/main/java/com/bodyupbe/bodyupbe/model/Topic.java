@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.model;
 
-import com.bodyupbe.bodyupbe.model.recipe.RecipesCollection;
+import com.bodyupbe.bodyupbe.model.recipe.RecipeCollection;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCollection;
 import com.bodyupbe.bodyupbe.model.workout_video.WorkoutVideoCollection;
 import jakarta.persistence.*;
@@ -27,5 +27,5 @@ public class Topic {
     @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
     Set<WorkoutVideoCollection> workoutVideoCollections;
     @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-    Set<RecipesCollection> recipesCollections;
+    Set<RecipeCollection> recipeCollections;
 }

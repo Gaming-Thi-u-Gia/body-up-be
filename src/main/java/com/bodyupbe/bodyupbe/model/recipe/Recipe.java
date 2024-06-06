@@ -18,7 +18,8 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String name;
-    double avgStar;
+    @Column(name = "average_rating")
+    double averageRating;
     @Column(name="prep_time")
     String prepTime;
     @Column(name = "cook_time")
@@ -27,7 +28,7 @@ public class Recipe {
     @Column(name = "cook_detail")
     String cookDetail;
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
-    Set<RecipesCollection> recipesCollections;
+    Set<RecipeCollection> recipeCollections;
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     Set<RatingRecipe> ratingRecipes;
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
