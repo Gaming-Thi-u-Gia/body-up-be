@@ -11,5 +11,4 @@ import java.util.Set;
 public class BadgeDto {
     Integer id;
     String name;
-    Set<PostDto> postDtos;
 }

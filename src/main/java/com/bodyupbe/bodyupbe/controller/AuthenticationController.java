@@ -1,33 +1,23 @@
 package com.bodyupbe.bodyupbe.controller;
 
-import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
-import com.bodyupbe.bodyupbe.dto.request.AuthenticationResponseDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
-import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.AuthenticationService;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@Slf4j
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authService;
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
-    @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
-        log.info(userDto.toString());
-        return ResponseEntity.ok(userMapper.toUserDto(userRepository.save(userMapper.toUser(userDto))));
-    }
-    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UserDto> register(
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(
             @RequestBody UserDto request, HttpSession session
     ) {
         return ResponseEntity.ok(authService.register(request, session));
@@ -58,7 +48,7 @@ public class AuthenticationController {
     }
     @PutMapping("/reset-password")
     public ResponseEntity<AuthenticationResponse> resetPassword(
-            @RequestBody User request, HttpSession session
+            @RequestBody UserDto request, HttpSession session
     ) {
         return ResponseEntity.ok(authService.resetPassword(session, request));
     }
@@ -67,7 +57,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody User request
+            @RequestBody UserDto request
     ) {
         return ResponseEntity.ok(authService.login(request));
     }

@@ -5,8 +5,8 @@ import com.bodyupbe.bodyupbe.model.user.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-
 public interface UserMapper {
-    User toUser(UserDto userDto);
     UserDto toUserDto(User user);
+
+    User toUser(UserDto userDto);
 }

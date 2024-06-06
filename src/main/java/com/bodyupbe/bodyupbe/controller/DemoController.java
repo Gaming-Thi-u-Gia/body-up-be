@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.controller;
 
+import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class DemoController {
     }
 
     @PutMapping("/api/v1/avatar")
-    public ResponseEntity<String> updateAvatar(@RequestBody User request) {
+    public ResponseEntity<String> updateAvatar(@RequestBody UserDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
@@ -42,7 +43,7 @@ public class DemoController {
         }
     }
     @PutMapping("/api/v1/profile")
-    public ResponseEntity<User> updateProfile(@RequestBody User request) {
+    public ResponseEntity<User> updateProfile(@RequestBody UserDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
