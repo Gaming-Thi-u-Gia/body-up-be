@@ -11,7 +11,7 @@ import java.util.Set;
 public class RecipeDto {
     Integer id;
     String name;
-    double avgStar;
+    double averageRating;
     String prepTime;
     String cookTime;
     String img;

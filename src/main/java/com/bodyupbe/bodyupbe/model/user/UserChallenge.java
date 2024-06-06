@@ -27,7 +27,7 @@ public class UserChallenge {
     User user;
     @ManyToOne
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
-    @JsonBackReference(value = "user-challenges")
+    @JsonBackReference
     WorkoutProgram workoutProgram;
     @OneToMany(mappedBy = "userChallenge",cascade = CascadeType.ALL)
     Set<FinishProgramTag> finishProgramTags;

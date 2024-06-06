@@ -17,10 +17,10 @@ public class BookmarkVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-//    @ManyToOne
-//    @JoinColumn(name="user_id",referencedColumnName = "id")
-//    @JsonBackReference
-//    User user;
+    @ManyToOne
+    @JoinColumn(name="user_id",referencedColumnName = "id")
+    @JsonBackReference
+    User user;
     @ManyToOne
     @JoinColumn(name="video_id",referencedColumnName = "id")
     @JsonBackReference

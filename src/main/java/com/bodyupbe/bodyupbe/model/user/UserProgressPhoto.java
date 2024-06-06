@@ -25,8 +25,8 @@ public class UserProgressPhoto {
     @Column(name = "create_at")
     Date createAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    User user;
 
 }

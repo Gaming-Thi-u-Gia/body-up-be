@@ -33,10 +33,10 @@ public class Post {
     @Column(name = "created_at", updatable = true)
     Date createdAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    @JsonBackReference
-//    User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
+    User user;
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @JsonBackReference

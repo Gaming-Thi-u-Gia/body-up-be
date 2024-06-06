@@ -28,6 +28,7 @@ public class DemoController {
         return ResponseEntity.ok(userRepository.findByEmail(currentPrincipalName));
     }
 
+
     @PutMapping("/api/v1/avatar")
     public ResponseEntity<String> updateAvatar(@RequestBody UserDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

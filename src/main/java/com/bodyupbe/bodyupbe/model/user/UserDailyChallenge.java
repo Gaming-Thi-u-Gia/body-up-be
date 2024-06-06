@@ -18,10 +18,10 @@ public class UserDailyChallenge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String status;
-//    @ManyToOne
-//    @JoinColumn(name="user_id",referencedColumnName = "id")
-//    @JsonBackReference
-//    User user;
+    @ManyToOne
+    @JoinColumn(name="user_id",referencedColumnName = "id")
+    @JsonBackReference
+    User user;
     @ManyToOne
     @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
     @JsonBackReference

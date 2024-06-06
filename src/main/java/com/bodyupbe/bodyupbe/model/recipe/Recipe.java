@@ -12,6 +12,7 @@ import java.util.Set;
 @Builder
 @Data
 @FieldDefaults(level= AccessLevel.PRIVATE)
+@ToString
 @Table(name = "recipes")
 public class Recipe {
     @Id

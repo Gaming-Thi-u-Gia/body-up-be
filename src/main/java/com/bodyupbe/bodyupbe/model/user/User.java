@@ -22,6 +22,7 @@ import java.util.*;
 @Builder
 @Data
 @Table(name = "users")
+@ToString
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class User implements UserDetails {
     @Id
@@ -76,23 +77,22 @@ public class User implements UserDetails {
     }
 
    //Noi bang
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-           @JsonManagedReference(value = "user-challenges")
-    Set<UserChallenge> userChallenges =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<UserProgressPhoto> userProgressPhotos  =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<BookmarkPost> bookmarkPosts  =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<Post> posts  =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<UserDailyChallenge> userDailyChallenges =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<BookmarkRecipe> bookmarkRecipes =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<RatingRecipe> ratingRecipes  =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<BookmarkVideo> bookmarkVideos  =new HashSet<>();
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<Comment> comments =new HashSet<>();
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<UserChallenge> userChallenges;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<UserProgressPhoto> userProgressPhotos;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<BookmarkPost> bookmarkPosts;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Post> posts;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<UserDailyChallenge> userDailyChallenges ;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<BookmarkRecipe> bookmarkRecipes;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<RatingRecipe> ratingRecipes;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<BookmarkVideo> bookmarkVideos;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Comment> comments;
 }

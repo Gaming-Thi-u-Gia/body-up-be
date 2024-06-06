@@ -22,8 +22,8 @@ public class RatingRecipe {
     @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     @JsonBackReference
     Recipe recipe;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    @JsonBackReference
-//    User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
+    User user;
 }
