@@ -20,11 +20,11 @@ public class PostDto {
     Date dayBefore;
     Date dayAfter;
     Date createdAt;
-    UserDto userDto;
-    CategoryCommunityDto categoryCommunityDto;
-    BadgeDto badgeDto;
-    Set<CommentDto> commentDtos;
-    Set<BookmarkPostDto> bookmarkPostDtos;
-    Set<OtherImagePostDto> otherImagePostDtos;
-    Set<FinishProgramTagDto> finishProgramTagDtos;
+    UserDto user;
+    CategoryCommunityDto categoryCommunity;
+    BadgeDto badge;
+    Set<CommentDto> comments;
+    Set<BookmarkPostDto> bookmarkPosts;
+    Set<OtherImagePostDto> otherImagePosts;
+    Set<FinishProgramTagDto> finishProgramTags;
 }

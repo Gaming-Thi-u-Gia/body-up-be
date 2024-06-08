@@ -25,4 +25,7 @@ public class BookmarkPost {
     @JoinColumn(name="user_id",referencedColumnName = "id")
     @JsonBackReference
     User user;
+
+
+
 }

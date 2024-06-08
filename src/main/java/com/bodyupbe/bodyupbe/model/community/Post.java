@@ -53,4 +53,6 @@ public class Post {
     Set<OtherImagePost> otherImagePosts;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     Set<FinishProgramTag> finishProgramTags;
+
+
 }

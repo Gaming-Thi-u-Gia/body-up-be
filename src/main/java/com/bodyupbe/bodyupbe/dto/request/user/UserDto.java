@@ -27,13 +27,14 @@ public class UserDto  {
     String bio;
     Role role;
     Date createAt;
-    Set<UserChallengeDto> userChallengeDtos;
-    Set<UserProgressPhotoDto> userProgressPhotoDtos;
-    Set<BookmarkPostDto> bookmarkPostDtos;
-    Set<PostDto> postDtos;
-    Set<UserDailyChallengeDto> userDailyChallengeDtos;
-    Set<BookmarkRecipeDto> bookmarkRecipeDto;
-    Set<RatingRecipeDto> ratingRecipeDtos;
-    Set<BookmarkVideoDto> bookmarkVideoDtos;
-    Set<CommentDto> commentDtos;
+
+    Set<UserChallengeDto> userChallenges;
+    Set<UserProgressPhotoDto> userProgressPhotos;
+    Set<BookmarkPostDto> bookmarkPosts;
+    Set<PostDto> posts;
+    Set<UserDailyChallengeDto> userDailyChallenges;
+    Set<BookmarkRecipeDto> bookmarkRecipes;
+    Set<RatingRecipeDto> ratingRecipes;
+    Set<BookmarkVideoDto> bookmarkVideos;
+    Set<CommentDto> comments;
 }

@@ -9,6 +9,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookmarkPostDto {
     Integer id;
-    PostDto postDto;
-    UserDto userDto;
+    PostDto post;
+    UserDto user;
 }

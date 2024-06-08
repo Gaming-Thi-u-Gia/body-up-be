@@ -9,5 +9,5 @@ import lombok.experimental.FieldDefaults;
 public class OtherImagePostDto {
     Integer id;
     String img;
-    PostDto postDto;
+    PostDto post;
 }

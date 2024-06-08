@@ -11,5 +11,5 @@ import java.util.Set;
 public class CategoryCommunityDto {
     Integer id;
     String name;
-    Set<PostDto> postDtos;
+    Set<PostDto> posts;
 }

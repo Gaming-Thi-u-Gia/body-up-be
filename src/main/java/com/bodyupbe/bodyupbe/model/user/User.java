@@ -96,4 +96,18 @@ public class User implements UserDetails {
     Set<BookmarkVideo> bookmarkVideos;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     Set<Comment> comments;
+
+
+
+    public User(String userName, String firstName, String lastName, String email, String password, String avatar, String bio, Role role, Date createAt) {
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.bio = bio;
+        this.role = role;
+        this.createAt = createAt;
+    }
 }

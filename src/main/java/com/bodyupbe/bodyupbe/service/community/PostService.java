@@ -42,14 +42,20 @@ public class PostService {
         Badge badge = badgeRepository.findById(badgeId).orElseThrow(() -> new RuntimeException("Badge not found"));
         CategoryCommunity categoryCommunity = categoryCommunityRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
         Post post = Post.builder()
+                .title(postDto.getTitle())
+                .description(postDto.getDescription())
+                .imgBefore(postDto.getImgBefore())
+                .imgAfter(postDto.getImgAfter())
+                .dayBefore(postDto.getDayBefore())
+                .dayAfter(postDto.getDayAfter())
                 .user(user)
                 .badge(badge)
                 .categoryCommunity(categoryCommunity)
                 .build();
         PostDto postDtoResults = postMapper.toPostDto(postRepository.save(post));
-        postDtoResults.setBadgeDto(badgeMapper.toBadgeDto(badge));
-        postDtoResults.setUserDto(userMapper.toUserDto(user));
-        postDtoResults.setCategoryCommunityDto(categoryMapper.toCategoryCommunityDto(categoryCommunity));
+        postDtoResults.setBadge(badgeMapper.toBadgeDto(badge));
+        postDtoResults.setUser(userMapper.toUserDto(user));
+        postDtoResults.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(categoryCommunity));
         return postDtoResults;
     }
 
@@ -58,9 +64,9 @@ public class PostService {
         return posts.stream()
                 .map(post -> {
                     PostDto postDto = postMapper.toPostDto(post);
-                    postDto.setBadgeDto(badgeMapper.toBadgeDto(post.getBadge()));
-                    postDto.setUserDto(userMapper.toUserDto(post.getUser()));
-                    postDto.setCategoryCommunityDto(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
+                    postDto.setBadge(badgeMapper.toBadgeDto(post.getBadge()));
+                    postDto.setUser(userMapper.toUserDto(post.getUser()));
+                    postDto.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
                     return postDto;
                 })
                 .collect(Collectors.toList());
@@ -70,9 +76,9 @@ public class PostService {
         return posts.stream()
                 .map(post -> {
                     PostDto postDto = postMapper.toPostDto(post);
-                    postDto.setBadgeDto(badgeMapper.toBadgeDto(post.getBadge()));
-                    postDto.setUserDto(userMapper.toUserDto(post.getUser()));
-                    postDto.setCategoryCommunityDto(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
+                    postDto.setBadge(badgeMapper.toBadgeDto(post.getBadge()));
+                    postDto.setUser(userMapper.toUserDto(post.getUser()));
+                    postDto.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
                     return postDto;
                 })
                 .collect(Collectors.toList());
@@ -82,11 +88,11 @@ public class PostService {
     }
     public PostDto getPostById(int postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        PostDto postDtos = postMapper.toPostDto(post);
-        postDtos.setBadgeDto(badgeMapper.toBadgeDto(post.getBadge()));
-        postDtos.setUserDto(userMapper.toUserDto(post.getUser()));
-        postDtos.setCategoryCommunityDto(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
-        return postDtos;
+        PostDto postDto = postMapper.toPostDto(post);
+        postDto.setBadge(badgeMapper.toBadgeDto(post.getBadge()));
+        postDto.setUser(userMapper.toUserDto(post.getUser()));
+        postDto.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
+        return postDto;
     }
 
 

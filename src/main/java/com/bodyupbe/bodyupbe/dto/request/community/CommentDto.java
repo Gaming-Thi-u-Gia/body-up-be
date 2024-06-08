@@ -15,8 +15,8 @@ public class CommentDto {
     String detail;
     int upVote;
     Date createAt;
-    UserDto userDto;
-    PostDto postDto;
-    CommentDto commentDto;
-    Set<CommentDto> commentDtos;
+    UserDto user;
+    PostDto post;
+    CommentDto comment;
+    Set<CommentDto> comments;
 }
