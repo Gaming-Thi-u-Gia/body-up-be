@@ -10,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "user_daily_challenges")
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class UserDailyChallenge {
@@ -21,11 +22,11 @@ public class UserDailyChallenge {
 
     @ManyToOne
     @JoinColumn(name="user_id",referencedColumnName = "id")
-    @JsonBackReference(value = "user-daily-challenges")
+    @JsonBackReference
     User user;
 
     @ManyToOne
     @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
-    @JsonBackReference(value = "daily-exercise-use")
+    @JsonBackReference
     DailyExercise dailyExercise;
 }

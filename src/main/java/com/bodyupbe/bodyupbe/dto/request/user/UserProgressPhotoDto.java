@@ -5,8 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
 
-@Data
-@Builder
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserProgressPhotoDto {
     int id;
@@ -15,6 +15,4 @@ public class UserProgressPhotoDto {
     Date date;
     String photoAngle;
     Date createAt;
-    UserDto userDto;
-
 }

@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Setter
+@Getter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "other_image_posts")
 public class OtherImagePost {
@@ -17,6 +18,7 @@ public class OtherImagePost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String img;
+
     @ManyToOne
     @JoinColumn(name="post_id",referencedColumnName = "id")
     @JsonBackReference

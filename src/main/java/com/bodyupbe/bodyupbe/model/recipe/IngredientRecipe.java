@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "ingredient_recipes")
 public class IngredientRecipe {
@@ -18,6 +19,7 @@ public class IngredientRecipe {
     Integer id;
     String amount;
     String name;
+
     @ManyToOne
     @JoinColumn(name="recipe_id",referencedColumnName = "id")
     @JsonBackReference

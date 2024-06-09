@@ -9,8 +9,8 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutProgramDto {
     int id;
@@ -23,8 +23,6 @@ public class WorkoutProgramDto {
     String year;
     Date releaseDate;
     Set<DailyExerciseDto> dailyExerciseDtos;
-
-
     Set<UserChallengeDto> userChallengeDtos;
     Set<TopicDto> programTopics;
     Set<WorkoutProgramCategoryDto> workoutProgramCategories;

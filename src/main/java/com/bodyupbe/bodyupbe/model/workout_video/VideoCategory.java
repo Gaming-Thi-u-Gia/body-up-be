@@ -1,10 +1,8 @@
 package com.bodyupbe.bodyupbe.model.workout_video;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -12,7 +10,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "video_categorys")
 public class VideoCategory {
     @Id
@@ -22,5 +21,6 @@ public class VideoCategory {
     String type;
 
     @ManyToMany(mappedBy = "videoCategories")
+    @JsonBackReference
     Set<Video> videos;
 }

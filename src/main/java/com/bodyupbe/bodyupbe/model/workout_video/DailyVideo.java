@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "daily_videos")
 public class DailyVideo {
@@ -17,10 +18,12 @@ public class DailyVideo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String status;
+
     @ManyToOne
     @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
     @JsonBackReference
     DailyExercise dailyExercise;
+
     @ManyToOne
     @JoinColumn(name="video_id",referencedColumnName = "id")
     @JsonBackReference

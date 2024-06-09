@@ -14,7 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "recipes")
 public class Recipe {
@@ -32,23 +33,23 @@ public class Recipe {
     String cookDetail;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "rating-recipes")
+    @JsonManagedReference
     Set<RatingRecipe> ratingRecipes;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "ingredient-recipes")
+    @JsonManagedReference
     Set<IngredientRecipe> ingredientRecipes;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "step-recipes")
+    @JsonManagedReference
     Set<OtherImageRecipe> otherImageRecipes;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "note-recipes")
+    @JsonManagedReference
     Set<NoteRecipe> noteRecipes;
 
     @ManyToMany(mappedBy = "bookmarkRecipes")
-    @JsonBackReference(value = "bookmark-recipes")
+    @JsonBackReference
     Set<User> bookmarkUsers;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -57,7 +58,7 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "topic_id",referencedColumnName = "id")
     )
-    @JsonManagedReference(value = "recipe-topics")
+    @JsonManagedReference
     Set<Topic> recipeTopics;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -66,6 +67,6 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_category_id",referencedColumnName = "id")
     )
-    @JsonManagedReference(value = "recipe-categories")
+    @JsonManagedReference
     Set<RecipeCategory> recipeCategories;
 }

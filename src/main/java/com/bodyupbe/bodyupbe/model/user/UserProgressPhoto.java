@@ -11,7 +11,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "user_progress_photos")
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class UserProgressPhoto {
@@ -28,7 +29,7 @@ public class UserProgressPhoto {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference(value = "user-progress-photos")
+    @JsonBackReference
     User user;
 
 }

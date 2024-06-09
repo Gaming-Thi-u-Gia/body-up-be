@@ -1,7 +1,6 @@
 package com.bodyupbe.bodyupbe.model.user;
 
 
-import com.bodyupbe.bodyupbe.model.community.Badge;
 import com.bodyupbe.bodyupbe.repository.BadgeRepository;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 

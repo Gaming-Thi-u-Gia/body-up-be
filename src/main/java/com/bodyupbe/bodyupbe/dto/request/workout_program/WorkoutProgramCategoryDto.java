@@ -3,14 +3,12 @@ package com.bodyupbe.bodyupbe.dto.request.workout_program;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutProgramCategoryDto {
     int id;
     String name;
     String type;
-    Set<WorkoutProgramDto> workoutPrograms;
 }

@@ -3,7 +3,6 @@ package com.bodyupbe.bodyupbe.model.community;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +16,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "posts")
 public class Post {
@@ -37,29 +37,29 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference(value = "post-user")
+    @JsonBackReference
     User user;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    @JsonBackReference(value = "post-category")
+    @JsonBackReference
     CategoryCommunity categoryCommunity;
 
     @ManyToOne
     @JoinColumn(name = "badge_id", referencedColumnName = "id")
-    @JsonBackReference(value = "post-badge")
+    @JsonBackReference
     Badge badge;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "post-comments")
+    @JsonManagedReference
     Set<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "post-otherImagePosts")
+    @JsonManagedReference
     Set<OtherImagePost> otherImagePosts;
 
     @ManyToMany(mappedBy = "bookmarkPosts")
-    @JsonBackReference(value = "post-bookmarkUsers")
+    @JsonBackReference
     Set<User> bookmarkUsers;
 
 
@@ -69,6 +69,6 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_challenge_id",referencedColumnName = "id")
     )
-    @JsonBackReference(value = "post-userChallenges")
+    @JsonManagedReference
     Set<UserChallenge> userChallenges;
 }

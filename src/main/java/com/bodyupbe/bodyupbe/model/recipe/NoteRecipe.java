@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "note_recipes")
 public class NoteRecipe {
@@ -17,6 +18,7 @@ public class NoteRecipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String detail;
+
     @ManyToOne
     @JoinColumn(name="recipe_id",referencedColumnName = "id")
     @JsonBackReference

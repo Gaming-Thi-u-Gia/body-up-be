@@ -2,11 +2,9 @@ package com.bodyupbe.bodyupbe.model.user;
 
 import com.bodyupbe.bodyupbe.model.community.Comment;
 import com.bodyupbe.bodyupbe.model.community.Post;
-import com.bodyupbe.bodyupbe.model.recipe.BookmarkRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -82,27 +80,27 @@ public class User implements UserDetails {
 
     //Noi bang
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "user-challenges")
+    @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "user-photo")
+    @JsonManagedReference
     Set<UserProgressPhoto> userProgressPhotos;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "user-posts")
+    @JsonManagedReference
     Set<Post> posts;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "user-daily-challenges")
+    @JsonManagedReference
     Set<UserDailyChallenge> userDailyChallenges;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "user-rating")
+    @JsonManagedReference
     Set<RatingRecipe> ratingRecipes;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "user-comments")
+    @JsonManagedReference
     Set<Comment> comments;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -111,7 +109,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id")
     )
-    @JsonManagedReference(value = "user-bookmark-posts")
+    @JsonManagedReference
     Set<Post> bookmarkPosts;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -120,7 +118,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "video_id",referencedColumnName = "id")
     )
-    @JsonManagedReference(value = "user-bookmark-videos")
+    @JsonManagedReference
     Set<Video> bookmarkVideos;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -129,7 +127,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id")
     )
-    @JsonManagedReference(value = "user-bookmark-recipes")
+    @JsonManagedReference
     Set<Recipe> bookmarkRecipes;
 
     public User(String userName, String firstName, String lastName, String email, String password, String avatar, String bio, Role role, Date createAt) {

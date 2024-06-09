@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.model.community;
 
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "comments")
 public class Comment {
@@ -25,18 +27,23 @@ public class Comment {
     int upVote;
     @Column(name = "create_at")
     Date createAt;
+
     @ManyToOne
     @JoinColumn(name="user_id",referencedColumnName = "id")
     @JsonBackReference
     User user;
+
     @ManyToOne
     @JoinColumn(name="post_id",referencedColumnName = "id")
     @JsonBackReference
     Post post;
+
     @ManyToOne
     @JoinColumn(name="reply_id",referencedColumnName = "id")
     @JsonBackReference
     Comment comment;
+
     @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL)
+    @JsonManagedReference
     Set<Comment> comments;
 }

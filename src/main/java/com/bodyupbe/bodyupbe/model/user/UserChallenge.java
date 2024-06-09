@@ -14,7 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "user_challenges")
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class UserChallenge {
@@ -25,15 +26,15 @@ public class UserChallenge {
 
     @ManyToOne
     @JoinColumn(name="user_id",referencedColumnName = "id")
-    @JsonBackReference(value = "user-challenges")
+    @JsonBackReference
     User user;
 
     @ManyToOne
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
-    @JsonBackReference(value = "workout-program-use")
+    @JsonBackReference
     WorkoutProgram workoutProgram;
 
     @ManyToMany(mappedBy = "userChallenges")
-    @JsonBackReference(value = "post-user-challenges")
+    @JsonIgnore
     Set<Post> posts;
 }

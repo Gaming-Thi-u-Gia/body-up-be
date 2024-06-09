@@ -1,15 +1,14 @@
 package com.bodyupbe.bodyupbe.dto.request.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
-import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
-import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
+import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RecipeDto {
     Integer id;
@@ -24,7 +23,7 @@ public class RecipeDto {
     Set<OtherImageRecipeDto> otherImageRecipeDtos;
 
     Set<NoteRecipeDto> noteRecipeDtos;
-    Set<UserDto> bookmarkUsers;
+    Set<UserRequestDto> bookmarkUsers;
     Set<TopicDto> recipeTopics;
     Set<RecipeCategoryDto> recipeCategories;
 }
