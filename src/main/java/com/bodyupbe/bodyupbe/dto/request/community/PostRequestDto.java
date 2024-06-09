@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.dto.request.community;
 
 import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.community.CommentResponseDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,7 +24,7 @@ public class PostRequestDto {
     UserRequestDto user;
     CategoryCommunityDto categoryCommunity;
     BadgeDto badge;
-    Set<CommentDto> comments;
+    Set<CommentRequestDto> comments;
     Set<OtherImagePostDto> otherImagePosts;
     Set<UserChallengeDto> userChallenges;
 }

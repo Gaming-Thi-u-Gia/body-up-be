@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,23 +26,23 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ResponseEntity.ok(postService.createPost(postDto, userId, badgeId, categoryId));
     }
-//    @GetMapping("/getpostByCategory")
-//    public ResponseEntity <List<PostRequestDto>> getAllPostByCategoryId(@RequestParam int categoryId) {
-//        return ResponseEntity.ok(postService.getPostAllByCategoryId(categoryId));
-//    }
-//    @GetMapping("/getpostByUser")
-//    public ResponseEntity <List<PostRequestDto>> getAllPostByUserId(@RequestParam int userId) {
-//        return ResponseEntity.ok(postService.getPostByUserId(userId));
-//    }
-//    @DeleteMapping("/deletePost")
-//    public ResponseEntity<String> deletePost(@RequestParam int postId) {
-//        postService.deletePost(postId);
-//         return ResponseEntity.ok("Post deleted successfully");
-//    }
-//    @GetMapping("/getPostById")
-//    public ResponseEntity <PostRequestDto> getPostById(@RequestParam int postId) {
-//        return ResponseEntity.ok(postService.getPostById(postId));
-//    }
+    @GetMapping("/getpostByCategory")
+    public ResponseEntity <List<PostResponseDto>> getAllPostByCategoryId(@RequestParam int categoryId) {
+        return ResponseEntity.ok(postService.getPostAllByCategoryId(categoryId));
+    }
+    @GetMapping("/getpostByUser")
+    public ResponseEntity <List<PostResponseDto>> getAllPostByUserId(@RequestParam int userId) {
+        return ResponseEntity.ok(postService.getPostByUserId(userId));
+    }
+    @DeleteMapping("/deletePost")
+    public ResponseEntity<String> deletePost(@RequestParam int postId) {
+        postService.deletePost(postId);
+         return ResponseEntity.ok("Post deleted successfully");
+    }
+    @GetMapping("/getPostById")
+    public ResponseEntity <PostResponseDto> getPostById(@RequestParam int postId) {
+        return ResponseEntity.ok(postService.getPostById(postId));
+    }
 
 
 

@@ -17,6 +17,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -46,41 +48,22 @@ public class PostService {
         return postMapper.toPostResponseDto(postRepository.save(post));
     }
 
-//    public List<PostRequestDto> getPostAllByCategoryId(int categoryId) {
-//        List<Post> posts = postRepository.findPostByCategoryCommunity_Id(categoryId);
-//        return posts.stream()
-//                .map(post -> {
-//                    PostRequestDto postDto = postMapper.toPostDto(post);
-//                    postDto.setBadge(badgeMapper.toBadgeDto(post.getBadge()));
-//                    postDto.setUser(userMapper.toUserDto(post.getUser()));
-//                    postDto.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
-//                    return postDto;
-//                })
-//                .collect(Collectors.toList());
-//    }
-//    public List<PostRequestDto> getPostByUserId(int userId){
-//        List<Post> posts = postRepository.findPostByUser_Id(userId);
-//        return posts.stream()
-//                .map(post -> {
-//                    PostRequestDto postDto = postMapper.toPostDto(post);
-//                    postDto.setBadge(badgeMapper.toBadgeDto(post.getBadge()));
-//                    postDto.setUser(userMapper.toUserDto(post.getUser()));
-//                    postDto.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
-//                    return postDto;
-//                })
-//                .collect(Collectors.toList());
-//    }
-//    public void deletePost(int postId) {
-//        postRepository.deleteById(postId);
-//    }
-//    public PostRequestDto getPostById(int postId) {
-//        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-//        PostRequestDto postDto = postMapper.toPostDto(post);
-//        postDto.setBadge(badgeMapper.toBadgeDto(post.getBadge()));
-//        postDto.setUser(userMapper.toUserDto(post.getUser()));
-//        postDto.setCategoryCommunity(categoryMapper.toCategoryCommunityDto(post.getCategoryCommunity()));
-//        return postDto;
-//    }
+    public List<PostResponseDto> getPostAllByCategoryId(int categoryId) {
+         List<Post> post = postRepository.findPostByCategoryCommunity_Id(categoryId);
+         return postMapper.toListPostResponseDto(post);
+    }
+    public List<PostResponseDto> getPostByUserId(int userId){
+        List<Post> posts = postRepository.findPostByUser_Id(userId);
+        return postMapper.toListPostResponseDto(posts);
+    }
+    public void deletePost(int postId) {
+        postRepository.deleteById(postId);
+    }
+    public PostResponseDto getPostById(int postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        return postMapper.toPostResponseDto(post);
+
+    }
 
 
 

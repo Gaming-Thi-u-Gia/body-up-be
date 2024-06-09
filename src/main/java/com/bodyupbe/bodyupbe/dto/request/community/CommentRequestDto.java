@@ -8,10 +8,12 @@ import java.util.Date;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommentDto {
+public class CommentRequestDto {
     Integer id;
     String detail;
     int upVote;
     Date createAt;
-    CommentDto comment;
+//    User user
+
+    CommentRequestDto comment;
 }
