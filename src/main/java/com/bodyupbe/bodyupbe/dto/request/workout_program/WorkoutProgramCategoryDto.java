@@ -10,5 +10,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutProgramCategoryDto {
     int id;
-    Set<WorkoutProgramFilterDto> workoutProgramFilterDtos;
+    String name;
+    String type;
+    Set<WorkoutProgramDto> workoutPrograms;
 }

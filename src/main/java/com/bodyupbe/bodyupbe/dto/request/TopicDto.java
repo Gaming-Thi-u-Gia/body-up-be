@@ -1,8 +1,9 @@
 package com.bodyupbe.bodyupbe.dto.request;
 
-import com.bodyupbe.bodyupbe.dto.request.recipe.RecipesCollectionDto;
-import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramCollectionDto;
-import com.bodyupbe.bodyupbe.dto.request.workout_video.WorkoutVideoCollectionDto;
+import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoDto;
+import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,7 +16,9 @@ public class TopicDto {
     Integer id;
     String topic;
     String name;
-    Set<WorkoutProgramCollectionDto> workoutProgramCollectionDtos;
-    Set<WorkoutVideoCollectionDto> workoutVideoCollectionDtos;
-    Set<RecipesCollectionDto> recipesCollectionDtos;
+
+
+    Set<VideoDto> videos;
+    Set<WorkoutProgramDto> workoutPrograms;
+    Set<RecipeDto> recipes;
 }

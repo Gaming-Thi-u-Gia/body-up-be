@@ -20,6 +20,7 @@ public class VideoCategory {
     int id;
     String name;
     String type;
-    @OneToMany(mappedBy = "videoCategory",cascade = CascadeType.ALL)
-    Set<VideoFilter> videoFilters;
+
+    @ManyToMany(mappedBy = "videoCategories")
+    Set<Video> videos;
 }

@@ -12,5 +12,5 @@ public class VideoCategoryDto {
     int id;
     String name;
     String type;
-    Set<VideoFilterDto> videoFilterDtos;
+    Set<VideoDto> videos;
 }

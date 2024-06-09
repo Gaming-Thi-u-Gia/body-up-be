@@ -1,7 +1,8 @@
 package com.bodyupbe.bodyupbe.dto.request.community;
 
-import com.bodyupbe.bodyupbe.dto.request.workout_program.FinishProgramTagDto;
+import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
+import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,7 +25,7 @@ public class PostDto {
     CategoryCommunityDto categoryCommunity;
     BadgeDto badge;
     Set<CommentDto> comments;
-    Set<BookmarkPostDto> bookmarkPosts;
+    Set<UserDto> bookmarkUsers;
     Set<OtherImagePostDto> otherImagePosts;
-    Set<FinishProgramTagDto> finishProgramTags;
+    Set<UserChallengeDto> userChallenges;
 }

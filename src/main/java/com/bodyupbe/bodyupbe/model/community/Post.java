@@ -1,8 +1,9 @@
 package com.bodyupbe.bodyupbe.model.community;
 
 import com.bodyupbe.bodyupbe.model.user.User;
-import com.bodyupbe.bodyupbe.model.workout_program.FinishProgramTag;
+import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -47,12 +48,20 @@ public class Post {
     Badge badge;
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     Set<Comment> comments;
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    Set<BookmarkPost> bookmarkPosts;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     Set<OtherImagePost> otherImagePosts;
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    Set<FinishProgramTag> finishProgramTags;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "bookmarkPosts")
+    Set<User> bookmarkUsers;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "finish_program_tag",
+            joinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_challenge_id",referencedColumnName = "id")
+    )
+    Set<UserChallenge> userChallenges;
 }

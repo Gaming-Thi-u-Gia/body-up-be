@@ -17,6 +17,8 @@ public class WorkoutProgramCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @OneToMany(mappedBy = "workoutProgramCategory",cascade = CascadeType.ALL)
-    Set<WorkoutProgramFilter> workoutProgramFilters;
+    String name;
+    String type;
+    @ManyToMany(mappedBy = "workoutProgramCategories")
+    Set<WorkoutProgram> workoutPrograms;
 }

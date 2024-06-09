@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.request.workout_video;
 
+import com.bodyupbe.bodyupbe.dto.request.TopicDto;
+import com.bodyupbe.bodyupbe.dto.request.user.UserDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,7 +16,8 @@ public class VideoDto {
     String url;
     boolean isFeatured;
     Set<DailyVideoDto> dailyVideoDtos;
-    Set<VideoFilterDto> videoFilterDtos;
-    Set<BookmarkVideoDto> bookmarkVideoDtos;
-    Set<WorkoutVideoCollectionDto> workoutVideoCollectionDtos;
+
+    Set<UserDto> bookmarkUsers;
+    Set<TopicDto> videoTopics;
+    Set<VideoCategoryDto> videoCategories;
 }

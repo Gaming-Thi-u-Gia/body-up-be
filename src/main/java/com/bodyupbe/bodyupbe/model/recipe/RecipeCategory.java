@@ -19,6 +19,7 @@ public class RecipeCategory {
     Integer id;
     String name;
     String type;
-    @OneToMany(mappedBy = "recipeCategory",cascade = CascadeType.ALL)
-    Set<RecipeFilter> recipeFilters;
+
+    @ManyToMany(mappedBy = "recipeCategories")
+    Set<Recipe> recipes;
 }

@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.dto.request.workout_program;
 
+import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.DailyExerciseDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeDto;
 import lombok.*;
@@ -22,7 +23,9 @@ public class WorkoutProgramDto {
     String year;
     Date releaseDate;
     Set<DailyExerciseDto> dailyExerciseDtos;
-    Set<WorkoutProgramFilterDto> workoutProgramFilterDtos;
-    Set<WorkoutProgramCollectionDto> workoutProgramCollectionDtos;
+
+
     Set<UserChallengeDto> userChallengeDtos;
+    Set<TopicDto> programTopics;
+    Set<WorkoutProgramCategoryDto> workoutProgramCategories;
 }

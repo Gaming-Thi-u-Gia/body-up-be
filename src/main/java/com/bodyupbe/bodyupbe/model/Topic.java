@@ -1,8 +1,8 @@
 package com.bodyupbe.bodyupbe.model;
 
-import com.bodyupbe.bodyupbe.model.recipe.RecipesCollection;
-import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCollection;
-import com.bodyupbe.bodyupbe.model.workout_video.WorkoutVideoCollection;
+import com.bodyupbe.bodyupbe.model.recipe.Recipe;
+import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
+import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,10 +22,13 @@ public class Topic {
     Integer id;
     String topic;
     String name;
-    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-    Set<WorkoutProgramCollection> workoutProgramCollections;
-    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-    Set<WorkoutVideoCollection> workoutVideoCollections;
-    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-    Set<RecipesCollection> recipesCollections;
+
+    @ManyToMany(mappedBy = "videoTopics")
+    Set<Video> videos;
+
+    @ManyToMany(mappedBy = "programTopics")
+    Set<WorkoutProgram> workoutPrograms;
+
+    @ManyToMany(mappedBy = "recipeTopics")
+    Set<Recipe> recipes;
 }

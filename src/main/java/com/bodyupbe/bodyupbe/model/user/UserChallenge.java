@@ -1,8 +1,9 @@
 package com.bodyupbe.bodyupbe.model.user;
 
-import com.bodyupbe.bodyupbe.model.workout_program.FinishProgramTag;
+import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +30,8 @@ public class UserChallenge {
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
     @JsonBackReference
     WorkoutProgram workoutProgram;
-    @OneToMany(mappedBy = "userChallenge",cascade = CascadeType.ALL)
-    Set<FinishProgramTag> finishProgramTags;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "userChallenges")
+    Set<Post> posts;
 }

@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.controller.community;
 
-import com.bodyupbe.bodyupbe.dto.request.community.BookmarkPostDto;
+import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.service.community.BookmarkPostService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class BookmarkPostController {
 
 
     @PostMapping
-    public ResponseEntity<Optional<BookmarkPostDto>> bookmarkPost(int userId, int postId) {
+    public ResponseEntity<Optional<User>> bookmarkPost(int userId, int postId) {
         return ResponseEntity.ok(bookmarkPostService.bookmarkPost(userId, postId));
     }
 }

@@ -10,8 +10,4 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     UserDto toUserDto(User user);
-
-    User toUser(UserDto userDto);
-
-
 }

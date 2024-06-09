@@ -1,11 +1,10 @@
 package com.bodyupbe.bodyupbe.dto.request.user;
 
-import com.bodyupbe.bodyupbe.dto.request.workout_video.BookmarkVideoDto;
-import com.bodyupbe.bodyupbe.dto.request.community.BookmarkPostDto;
 import com.bodyupbe.bodyupbe.dto.request.community.CommentDto;
 import com.bodyupbe.bodyupbe.dto.request.community.PostDto;
-import com.bodyupbe.bodyupbe.dto.request.recipe.BookmarkRecipeDto;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RatingRecipeDto;
+import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoDto;
 import com.bodyupbe.bodyupbe.model.user.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +12,8 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto  {
@@ -30,11 +30,11 @@ public class UserDto  {
 
     Set<UserChallengeDto> userChallenges;
     Set<UserProgressPhotoDto> userProgressPhotos;
-    Set<BookmarkPostDto> bookmarkPosts;
     Set<PostDto> posts;
     Set<UserDailyChallengeDto> userDailyChallenges;
-    Set<BookmarkRecipeDto> bookmarkRecipes;
     Set<RatingRecipeDto> ratingRecipes;
-    Set<BookmarkVideoDto> bookmarkVideos;
     Set<CommentDto> comments;
+    Set<PostDto> bookmarkPosts;
+    Set<VideoDto> bookmarkVideos;
+    Set<RecipeDto> bookmarkRecipes;
 }

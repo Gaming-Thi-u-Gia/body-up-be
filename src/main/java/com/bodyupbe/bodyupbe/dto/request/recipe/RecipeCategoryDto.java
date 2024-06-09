@@ -12,5 +12,5 @@ public class RecipeCategoryDto {
     Integer id;
     String name;
     String type;
-    Set<RecipeFilterDto> recipeFilterDtos;
+    Set<RecipeDto> recipes;
 }

@@ -1,7 +1,9 @@
 package com.bodyupbe.bodyupbe.model.workout_program;
 
+import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,10 +33,25 @@ public class WorkoutProgram {
     Date releaseDate;
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
     Set<DailyExercise> dailyExercises;
-    @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
-    Set<WorkoutProgramFilter> workoutProgramFilters;
-    @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
-    Set<WorkoutProgramCollection> workoutProgramCollections;
+
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
     Set<UserChallenge> userChallenges;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "workout_program_collection",
+            joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id",referencedColumnName = "id")
+    )
+    Set<Topic> programTopics;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "workout_program_filter",
+            joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_program_category_id",referencedColumnName = "id")
+    )
+    Set<WorkoutProgramCategory> workoutProgramCategories;
 }
