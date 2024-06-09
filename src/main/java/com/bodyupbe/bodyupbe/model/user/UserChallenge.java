@@ -22,16 +22,18 @@ public class UserChallenge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String status;
+
     @ManyToOne
     @JoinColumn(name="user_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "user-challenges")
     User user;
+
     @ManyToOne
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "workout-program-use")
     WorkoutProgram workoutProgram;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "userChallenges")
+    @JsonBackReference(value = "post-user-challenges")
     Set<Post> posts;
 }

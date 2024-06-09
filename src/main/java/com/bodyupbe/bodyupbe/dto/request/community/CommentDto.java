@@ -18,5 +18,4 @@ public class CommentDto {
     UserDto user;
     PostDto post;
     CommentDto comment;
-    Set<CommentDto> comments;
 }

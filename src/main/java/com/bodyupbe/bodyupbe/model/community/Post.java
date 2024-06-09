@@ -4,6 +4,7 @@ import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -36,32 +37,38 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "post-user")
     User user;
+
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "post-category")
     CategoryCommunity categoryCommunity;
+
     @ManyToOne
     @JoinColumn(name = "badge_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "post-badge")
     Badge badge;
+
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "post-comments")
     Set<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "post-otherImagePosts")
     Set<OtherImagePost> otherImagePosts;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "bookmarkPosts")
+    @JsonBackReference(value = "post-bookmarkUsers")
     Set<User> bookmarkUsers;
 
-    @JsonIgnore
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "finish_program_tag",
             joinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_challenge_id",referencedColumnName = "id")
     )
+    @JsonBackReference(value = "post-userChallenges")
     Set<UserChallenge> userChallenges;
 }

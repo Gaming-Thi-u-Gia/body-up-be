@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.model.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +28,7 @@ public class UserProgressPhoto {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference(value = "user-progress-photos")
     User user;
 
 }

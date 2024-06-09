@@ -18,12 +18,14 @@ public class RatingRecipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     int star;
+
     @ManyToOne
     @JoinColumn(name = "recipe_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "rating-recipes")
     Recipe recipe;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "user-rating-recipes")
     User user;
 }

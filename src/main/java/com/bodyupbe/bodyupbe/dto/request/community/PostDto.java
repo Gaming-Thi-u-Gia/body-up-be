@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostDto {
