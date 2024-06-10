@@ -103,7 +103,7 @@ public class AuthenticationService {
         mailService.sendMail(user.getEmail(), mailStructure);
         return new AuthenticationResponse("Password reset email sent");
     }
-
+//
     public AuthenticationResponse verifyPasswordResetCode(HttpSession session, String code ) {
         User user = (User) session.getAttribute("resetUser");
         String resetCode = (String) session.getAttribute("resetCode");
