@@ -64,7 +64,4 @@ public class PostService {
         return postMapper.toPostResponseDto(post);
 
     }
-
-
-
 }
