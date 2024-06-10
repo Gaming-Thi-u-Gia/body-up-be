@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.controller;
 
-import com.bodyupbe.bodyupbe.model.MailStructure;
+import com.bodyupbe.bodyupbe.model.user.MailStructure;
 import com.bodyupbe.bodyupbe.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,19 +1,17 @@
-package com.bodyupbe.bodyupbe.model;
+package com.bodyupbe.bodyupbe.model.user;
 
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class UserGoogle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

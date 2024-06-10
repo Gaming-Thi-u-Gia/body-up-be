@@ -1,8 +1,8 @@
 package com.bodyupbe.bodyupbe.controller;
 
+import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
 import com.bodyupbe.bodyupbe.service.AuthenticationService;
-import com.bodyupbe.bodyupbe.model.User;
-import com.bodyupbe.bodyupbe.model.UserGoogle;
+import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody User request, HttpSession session
+            @RequestBody UserRequestDto request, HttpSession session
     ) {
         return ResponseEntity.ok(authService.register(request, session));
     }
@@ -47,7 +47,7 @@ public class AuthenticationController {
     }
     @PutMapping("/reset-password")
     public ResponseEntity<AuthenticationResponse> resetPassword(
-            @RequestBody User request, HttpSession session
+            @RequestBody UserRequestDto request, HttpSession session
     ) {
         return ResponseEntity.ok(authService.resetPassword(session, request));
     }
@@ -56,7 +56,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody User request
+            @RequestBody UserRequestDto request
     ) {
         return ResponseEntity.ok(authService.login(request));
     }

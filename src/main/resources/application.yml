@@ -1,5 +1,7 @@
 spring:
   mail:
+    allow-circular-references: true
+    protocol: smtp
     host: smtp.gmail.com
     port: 587
     username: haquanghung309@gmail.com
@@ -18,7 +20,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

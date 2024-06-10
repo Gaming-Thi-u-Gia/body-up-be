@@ -1,4 +1,4 @@
-package com.bodyupbe.bodyupbe.model;
+package com.bodyupbe.bodyupbe.model.user;
 
 import lombok.Getter;
 import lombok.Setter;

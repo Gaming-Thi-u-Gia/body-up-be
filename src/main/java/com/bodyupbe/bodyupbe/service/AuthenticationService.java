@@ -1,16 +1,20 @@
 package com.bodyupbe.bodyupbe.service;
 
-import com.bodyupbe.bodyupbe.model.MailStructure;
-import com.bodyupbe.bodyupbe.model.Role;
-import com.bodyupbe.bodyupbe.model.User;
-import com.bodyupbe.bodyupbe.model.UserGoogle;
+import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
+import com.bodyupbe.bodyupbe.model.user.MailStructure;
+import com.bodyupbe.bodyupbe.model.user.Role;
+import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.SecureRandom;
 import java.util.Optional;
@@ -19,6 +23,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthenticationService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -29,7 +34,7 @@ public class AuthenticationService {
         int code = random.nextInt(999999);
         return String.format("%06d", code);
     }
-    public AuthenticationResponse register(User request, HttpSession session) {
+    public AuthenticationResponse register(@RequestBody UserRequestDto request, HttpSession session) {
         Optional<User> existingUser = repository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
             throw new Error("Email already exists");
@@ -40,8 +45,9 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
+                .userName("user")
+                .userName2(request.getEmail().split("@")[0])
                 .build();
-
         String verificationCode = generateVerificationCode();
         session.setAttribute("code", verificationCode);
         session.setAttribute("user", user);
@@ -59,6 +65,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .avatar(request.getPicture())
                 .role(Role.USER)
+                .userName2(request.getEmail().split("@")[0])
                 .build();
         if (existingUser.isPresent()) {
             String token = jwtService.generateToken(user);
@@ -110,7 +117,7 @@ public class AuthenticationService {
             throw new Error("Invalid code");
         }
     }
-    public AuthenticationResponse resetPassword(HttpSession session, User request ) {
+    public AuthenticationResponse resetPassword(HttpSession session, UserRequestDto request) {
         Boolean passwordResetVerified = (Boolean) session.getAttribute("passwordResetVerified");
         if (passwordResetVerified == null || !passwordResetVerified) {
             throw new Error("Password reset not verified");
@@ -124,8 +131,7 @@ public class AuthenticationService {
         return new AuthenticationResponse("Password has been reset successfully");
     }
 
-
-    public AuthenticationResponse login(User request) {
+    public AuthenticationResponse login(UserRequestDto request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
