@@ -45,6 +45,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .userName("user")
+                .userName2(request.getEmail().split("@")[0])
                 .build();
         String verificationCode = generateVerificationCode();
         session.setAttribute("code", verificationCode);

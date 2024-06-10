@@ -31,6 +31,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String userName;
+    String userName2;
     String firstName;
     String lastName;
     @Column(unique = true)

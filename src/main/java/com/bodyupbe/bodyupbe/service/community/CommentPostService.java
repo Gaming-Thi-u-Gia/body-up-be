@@ -3,7 +3,6 @@ package com.bodyupbe.bodyupbe.service.community;
 import com.bodyupbe.bodyupbe.dto.mapper.community.CommentMapper;
 import com.bodyupbe.bodyupbe.dto.request.community.CommentRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.community.CommentResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.model.community.Comment;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -38,7 +37,4 @@ public class CommentPostService {
         post.getComments().add(comment);
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
     }
-
-
-
 }
