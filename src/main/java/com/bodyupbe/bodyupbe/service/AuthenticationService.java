@@ -8,6 +8,8 @@ import com.bodyupbe.bodyupbe.model.user.UserGoogle;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthenticationService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -41,8 +44,8 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
+                .userName("user")
                 .build();
-
         String verificationCode = generateVerificationCode();
         session.setAttribute("code", verificationCode);
         session.setAttribute("user", user);

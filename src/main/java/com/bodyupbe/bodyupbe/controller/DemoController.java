@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.controller;
 
+import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
 import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
@@ -20,12 +21,13 @@ import java.util.Optional;
 @RestController
 public class DemoController {
     private final UserRepository userRepository;
-
+    UserMapper userMapper;
     @GetMapping("/api/v1/demo")
-    public ResponseEntity<Optional<User>> demo() {
+    public ResponseEntity<User> demo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        return ResponseEntity.ok(userRepository.findByEmail(currentPrincipalName));
+        User user = userRepository.findByEmail(currentPrincipalName).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/api/v1/avatar")
