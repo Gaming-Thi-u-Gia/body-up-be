@@ -16,6 +16,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,8 +28,7 @@ public class CommentPostService {
     PostRepository postRepository;
     CommentMapper commentMapper;
     CommentRepository commentRepository;
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, int userId, int postId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user, int postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         Comment comment = Comment.builder()
                 .detail(commentRequestDto.getDetail())
@@ -38,6 +40,21 @@ public class CommentPostService {
         post.getComments().add(comment);
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
     }
+
+    public String deleteComment(int commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        commentRepository.delete(comment);
+        return "success";
+    }
+
+
+    public List<CommentResponseDto> getAllCommentByPostId(int postId) {
+        List<Comment> comment = commentRepository.findAllByPostId(postId);
+        return commentMapper.toListCommentResponseDto(comment);
+    }
+
+
+//    public List<CommentResponseDto>
 
 
 

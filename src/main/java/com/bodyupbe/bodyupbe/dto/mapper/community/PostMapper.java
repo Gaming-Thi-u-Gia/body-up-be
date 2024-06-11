@@ -19,4 +19,6 @@ public interface PostMapper {
     List<PostResponseDto> toListPostResponseDto(List<Post> posts);
 
     Set<PostResponseDto> toSetPostResponseDto(Set<Post> posts);
+
+    List<PostSlimResponse> toListPostSlimResponse(List<Post> posts);
 }

@@ -3,6 +3,9 @@ package com.bodyupbe.bodyupbe.controller.community;
 
 import com.bodyupbe.bodyupbe.dto.request.community.PostRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.community.PostSlimResponse;
+import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.community.PostService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -21,16 +25,22 @@ import java.util.List;
 @CrossOrigin
 public class PostController {
     PostService postService;
+    UserRepository userRepository;
     @PostMapping("/create")
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postDto, @RequestParam int userId, @RequestParam int badgeId, @RequestParam int categoryId) {
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postDto, @RequestParam int badgeId, @RequestParam int categoryId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(postService.createPost(postDto, userId, badgeId, categoryId));
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+           throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.createPost(postDto,optionalUser.get() ,badgeId, categoryId));
     }
-    @GetMapping("/getpostByCategory")
+    @GetMapping("/getAllPostByCategory")
     public ResponseEntity <List<PostResponseDto>> getAllPostByCategoryId(@RequestParam int categoryId) {
         return ResponseEntity.ok(postService.getPostAllByCategoryId(categoryId));
     }
-    @GetMapping("/getpostByUser")
+    @GetMapping("/getAllPostByUser")
     public ResponseEntity <List<PostResponseDto>> getAllPostByUserId(@RequestParam int userId) {
         return ResponseEntity.ok(postService.getPostByUserId(userId));
     }
@@ -42,6 +52,11 @@ public class PostController {
     @GetMapping("/getPostById")
     public ResponseEntity <PostResponseDto> getPostById(@RequestParam int postId) {
         return ResponseEntity.ok(postService.getPostById(postId));
+    }
+
+    @GetMapping("/getAllPostByBadgeId")
+    public ResponseEntity <List<PostResponseDto>> getAllPostByBadgeId(@RequestParam int badgeId) {
+        return ResponseEntity.ok(postService.getAllPostByBadgeId(badgeId));
     }
 
 

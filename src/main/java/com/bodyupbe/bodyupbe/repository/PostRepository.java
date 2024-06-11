@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    List<Post> findPostByCategoryCommunity_Id(int categoryId);
+    List<Post> findPostByCategoryCommunity_IdOrderByCreatedAtDesc(int categoryId);
     List<Post> findPostByUser_Id(int userId);
+    List<Post> findPostByBadge_Id(int badgeId);
 }

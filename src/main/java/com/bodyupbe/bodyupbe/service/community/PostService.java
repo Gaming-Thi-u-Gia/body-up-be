@@ -3,6 +3,7 @@ package com.bodyupbe.bodyupbe.service.community;
 import com.bodyupbe.bodyupbe.dto.mapper.community.PostMapper;
 import com.bodyupbe.bodyupbe.dto.request.community.PostRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.community.PostSlimResponse;
 import com.bodyupbe.bodyupbe.model.community.Badge;
 import com.bodyupbe.bodyupbe.model.community.CategoryCommunity;
 import com.bodyupbe.bodyupbe.model.community.Post;
@@ -15,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +32,7 @@ public class PostService {
     UserRepository userRepository;
     BadgeRepository badgeRepository;
     CategoryCommunityRepository categoryCommunityRepository;
-    public PostResponseDto createPost(PostRequestDto postDto, int userId, int badgeId, int categoryId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public PostResponseDto createPost(PostRequestDto postDto, User user, int badgeId, int categoryId) {
         Badge badge = badgeRepository.findById(badgeId).orElseThrow(() -> new RuntimeException("Badge not found"));
         CategoryCommunity categoryCommunity = categoryCommunityRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
         Post post = Post.builder()
@@ -44,12 +46,11 @@ public class PostService {
                 .badge(badge)
                 .categoryCommunity(categoryCommunity)
                 .build();
-
         return postMapper.toPostResponseDto(postRepository.save(post));
     }
 
     public List<PostResponseDto> getPostAllByCategoryId(int categoryId) {
-         List<Post> post = postRepository.findPostByCategoryCommunity_Id(categoryId);
+         List<Post> post = postRepository.findPostByCategoryCommunity_IdOrderByCreatedAtDesc(categoryId);
          return postMapper.toListPostResponseDto(post);
     }
     public List<PostResponseDto> getPostByUserId(int userId){
@@ -63,6 +64,11 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         return postMapper.toPostResponseDto(post);
 
+    }
+
+    public List<PostResponseDto> getAllPostByBadgeId(int badgeId) {
+        List<Post> posts = postRepository.findPostByBadge_Id(badgeId);
+        return postMapper.toListPostResponseDto(posts);
     }
 
 
