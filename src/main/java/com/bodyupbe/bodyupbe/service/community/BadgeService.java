@@ -22,7 +22,7 @@ public class BadgeService {
     }
 
 
-
+//getAllBagdeById
     public Badge getBadgeById(int badgeId) {
         return badgeRepository.findById(badgeId).orElseThrow(() -> new RuntimeException("Badge not found"));
     }
