@@ -22,6 +22,8 @@ public class UserProgressPhoto {
     boolean visibility;
     String caption;
     Date date;
+    @Column(name = "img_url")
+    String imgUrl;
     @Column(name = "photo_angle")
     String photoAngle;
     @Column(name = "create_at")

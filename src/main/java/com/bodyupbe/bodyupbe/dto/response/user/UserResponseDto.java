@@ -25,4 +25,6 @@ public class UserResponseDto {
     Date createAt;
 
     Set<PostSlimResponse> bookmarkPosts;
+    Set<UserChallengeSlimResponseDto> userChallenges;
+    Set<UserDailyChallengeSlimResponseDto> userDailyChallenges;
 }
