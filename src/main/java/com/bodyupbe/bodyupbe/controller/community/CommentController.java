@@ -47,7 +47,7 @@ public class CommentController {
     public ResponseEntity <List<CommentResponseDto>> getAllComments(@RequestParam int postId) {
         return ResponseEntity.ok(commentPostService.getAllCommentByPostId(postId));
     }
-
+    // Fix get
     @GetMapping("getAllByUserId")
     public ResponseEntity <List<CommentResponseDto>> getAllCommentsByUserId(@RequestParam int userId) {
         return ResponseEntity.ok(commentPostService.getAllCommentByUserId(userId));
