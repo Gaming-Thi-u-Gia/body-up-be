@@ -25,7 +25,8 @@ public class CommentController {
     UserRepository userRepository;
     CommentPostService commentPostService;
 
-    @PostMapping
+
+    @PostMapping("/create")
     public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request,  @RequestParam int postId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
@@ -36,13 +37,13 @@ public class CommentController {
         return ResponseEntity.ok(commentPostService.createComment(request, optionalUser.get(),postId ));
     }
 
-    @DeleteMapping
+    @DeleteMapping("deleteComment")
     public ResponseEntity<String> deleteComment(@RequestParam int commentId) {
         commentPostService.deleteComment(commentId);
         return ResponseEntity.ok("Comment deleted successfully");
     }
 
-    @GetMapping
+    @GetMapping("/getAllComments")
     public ResponseEntity <List<CommentResponseDto>> getAllComments(@RequestParam int postId) {
         return ResponseEntity.ok(commentPostService.getAllCommentByPostId(postId));
     }
