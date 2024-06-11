@@ -24,6 +24,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String name;
+    String title;
     double avgStar;
     @Column(name="prep_time")
     int prepTime;

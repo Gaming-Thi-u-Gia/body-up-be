@@ -13,6 +13,7 @@ import java.util.Set;
 public class RecipeDto {
     Integer id;
     String name;
+    String title;
     double avgStar;
     int prepTime;
     int cookTime;
