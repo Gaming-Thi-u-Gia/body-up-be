@@ -54,6 +54,12 @@ public class CommentPostService {
     }
 
 
+    public List<CommentResponseDto> getAllCommentByUserId(int userId) {
+        List<Comment> comment = commentRepository.findAllByUser_Id(userId);
+        return commentMapper.toListCommentResponseDto(comment);
+    }
+
+
 //    public List<CommentResponseDto>
 
 
