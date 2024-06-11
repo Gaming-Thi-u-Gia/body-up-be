@@ -36,6 +36,8 @@ public class PostController {
         }
         return ResponseEntity.ok(postService.createPost(postDto,optionalUser.get() ,badgeId, categoryId));
     }
+
+    //
     @GetMapping("/getAllPostByCategory")
     public ResponseEntity <List<PostResponseDto>> getAllPostByCategoryId(@RequestParam int categoryId) {
         return ResponseEntity.ok(postService.getPostAllByCategoryId(categoryId));
