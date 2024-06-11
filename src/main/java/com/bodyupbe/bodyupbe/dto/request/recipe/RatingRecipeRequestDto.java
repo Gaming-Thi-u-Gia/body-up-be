@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RatingRecipeDto {
-    Integer id;
+public class RatingRecipeRequestDto {
+    int id;
     int star;
 }

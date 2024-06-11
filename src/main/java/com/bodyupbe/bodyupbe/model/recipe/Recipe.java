@@ -24,10 +24,13 @@ public class Recipe {
     Integer id;
     String name;
     double avgStar;
+//    String title;
     @Column(name="prep_time")
+//        int prepTime;
     String prepTime;
     @Column(name = "cook_time")
     String cookTime;
+//    int cookTime;
     String img;
     @Column(name = "cook_detail")
     String cookDetail;
@@ -52,7 +55,7 @@ public class Recipe {
     @JsonBackReference
     Set<User> bookmarkUsers;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "recipe_collection",
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
@@ -61,7 +64,7 @@ public class Recipe {
     @JsonManagedReference
     Set<Topic> recipeTopics;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "recipe_filter",
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),

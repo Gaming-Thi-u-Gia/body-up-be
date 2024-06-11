@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecipeDto {
+public class RecipeRequestDto {
     Integer id;
     String name;
     double avgStar;
@@ -18,12 +18,11 @@ public class RecipeDto {
     String cookTime;
     String img;
     String cookDetail;
-    Set<RatingRecipeDto> ratingRecipeDtos;
-    Set<IngredientRecipeDto> ingredientRecipeDtos;
-    Set<OtherImageRecipeDto> otherImageRecipeDtos;
-
-    Set<NoteRecipeDto> noteRecipeDtos;
+    Set<RatingRecipeRequestDto> ratingRecipes;
+    Set<IngredientRecipeRequestDto> ingredientRecipes;
+    Set<OtherImageRecipeRequestDto> otherImageRecipes;
+    Set<NoteRecipeRequestDto> noteRecipes;
     Set<UserRequestDto> bookmarkUsers;
     Set<TopicDto> recipeTopics;
-    Set<RecipeCategoryDto> recipeCategories;
+    Set<RecipeCategoryRequestDto> recipeCategories;
 }
