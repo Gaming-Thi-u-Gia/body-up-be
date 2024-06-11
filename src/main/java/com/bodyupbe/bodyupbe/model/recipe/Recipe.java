@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -25,12 +26,14 @@ public class Recipe {
     String name;
     double avgStar;
     @Column(name="prep_time")
-    String prepTime;
+    int prepTime;
     @Column(name = "cook_time")
-    String cookTime;
+    int cookTime;
     String img;
     @Column(name = "cook_detail")
     String cookDetail;
+    @Column(name = "create_at")
+    Date createAt;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     @JsonManagedReference

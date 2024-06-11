@@ -14,8 +14,8 @@ public class RecipeDto {
     Integer id;
     String name;
     double avgStar;
-    String prepTime;
-    String cookTime;
+    int prepTime;
+    int cookTime;
     String img;
     String cookDetail;
     Set<RatingRecipeDto> ratingRecipeDtos;
