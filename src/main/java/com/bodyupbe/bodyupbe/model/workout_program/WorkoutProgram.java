@@ -24,8 +24,6 @@ public class WorkoutProgram {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
-    String type;
-    String equipment;
     String detail;
     String day;
     String time;

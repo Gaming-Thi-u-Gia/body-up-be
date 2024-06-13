@@ -24,15 +24,15 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String name;
-    String title;
+    String detail;
     double avgStar;
     @Column(name="prep_time")
     int prepTime;
     @Column(name = "cook_time")
     int cookTime;
     String img;
-    @Column(name = "cook_detail")
-    String cookDetail;
+    @Column(name = "cook_instruction")
+    String cookingInstruction;
     @Column(name = "create_at")
     Date createAt;
 
