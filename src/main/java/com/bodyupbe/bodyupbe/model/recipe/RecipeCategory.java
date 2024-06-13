@@ -21,6 +21,7 @@ public class RecipeCategory {
     Integer id;
     String name;
     String type;
+    String img;
 
     @ManyToMany(mappedBy = "recipeCategories")
     @JsonBackReference

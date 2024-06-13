@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class Recipe {
     String img;
     @Column(name = "cook_instruction")
     String cookingInstruction;
-    @Column(name = "create_at")
+    @CreationTimestamp
     Date createAt;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
