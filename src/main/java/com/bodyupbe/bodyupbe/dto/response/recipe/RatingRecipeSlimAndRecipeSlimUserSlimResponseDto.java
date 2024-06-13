@@ -1,18 +1,17 @@
 package com.bodyupbe.bodyupbe.dto.response.recipe;
 
+import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecipeCategoryResponseDto {
-    Integer id;
-    String name;
-    String type;
-    Set<RecipeSlimResponseDto> recipes;
+public class RatingRecipeSlimAndRecipeSlimUserSlimResponseDto {
+    int id;
+    int star;
+    RecipeSlimResponseDto recipe;
+    UserSlimResponseDto user;
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookmarkRecipeResponseBookmarkSlimDto {
+public class BookmarkRecipeSlimAndSetUserSlimResponseDto {
     Integer id;
     String name;
     double avgStar;

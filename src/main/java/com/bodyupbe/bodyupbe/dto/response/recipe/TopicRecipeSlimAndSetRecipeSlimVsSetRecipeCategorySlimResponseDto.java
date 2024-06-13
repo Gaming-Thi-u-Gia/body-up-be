@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NoteRecipeResponseDto {
+public class TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto {
     Integer id;
-    String detail;
-    RecipeSlimResponseDto recipe;
+    String topic;
+    String name;
+    Set<RecipeSlimAndSetRecipeCategorySlimResponseDto> recipes;
 }

@@ -10,9 +10,9 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TopicRecipeResponseRecipeServiceDto {
+public class RecipeCategorySlimAndSetRecipeSlimResponseDto {
     Integer id;
-    String topic;
     String name;
-    Set<RecipeResponseTopicRecipeDto> recipes;
+    String type;
+    Set<RecipeSlimResponseDto> recipes;
 }

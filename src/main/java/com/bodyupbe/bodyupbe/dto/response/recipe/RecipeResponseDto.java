@@ -19,10 +19,10 @@ public class RecipeResponseDto {
     String cookTime;
     String img;
     String cookDetail;
-    Set<RatingRecipeResponseDto> ratingRecipes;
-    Set<IngredientRecipeResponseDto> ingredientRecipes;
-    Set<OtherImageRecipeResponseDto> otherImageRecipes;
-    Set<NoteRecipeResponseDto> noteRecipes;
+    Set<RatingRecipeSlimAndRecipeSlimUserSlimResponseDto> ratingRecipes;
+    Set<IngredientRecipeAndSetRecipeSlimResponseDto> ingredientRecipes;
+    Set<OtherImageRecipeAndRecipeSlimResponseDto> otherImageRecipes;
+    Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;
     Set<UserSlimResponseDto> bookmarkUsers;
     Set<TopicRecipeResponseSlimDto> topics;
     Set<RecipeCategoryResponseSlimDto> recipeCategories;

@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OtherImageRecipeResponseDto {
+public class OtherImageRecipeAndRecipeSlimResponseDto {
     Integer id;
     String img;
     RecipeSlimResponseDto recipe;

@@ -1,6 +1,5 @@
 package com.bodyupbe.bodyupbe.dto.response.recipe;
 
-import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecipeResponseTopicRecipeDto {
+public class RecipeSlimAndSetRecipeCategorySlimResponseDto {
     Integer id;
     String name;
     double avgStar;

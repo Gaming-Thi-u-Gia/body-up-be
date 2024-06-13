@@ -2,7 +2,7 @@ package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RatingRecipeMapper;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RatingRecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RatingRecipeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RatingRecipeSlimAndRecipeSlimUserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -26,7 +26,7 @@ public class RatingRecipeService {
     UserRepository userRepository;
     RatingRecipeRepository ratingRecipeRepository;
     RatingRecipeMapper ratingRecipeMapper;
-    public RatingRecipeResponseDto rating(int recipeId, int userId, RatingRecipeRequestDto request) {
+    public RatingRecipeSlimAndRecipeSlimUserSlimResponseDto rating(int recipeId, int userId, RatingRecipeRequestDto request) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         RatingRecipe ratingRecipe = ratingRecipeRepository.findRatingByRecipeAndUser(recipe, user);
@@ -45,7 +45,7 @@ public class RatingRecipeService {
         }
 
         updateAverageRating(recipe);
-        return ratingRecipeMapper.toResponseDto(ratingRecipe);
+        return ratingRecipeMapper.toRatingRecipeSlimAndRecipeSlimUserSlimResponseDto(ratingRecipe);
     }
 
     public void updateAverageRating(Recipe recipe) {

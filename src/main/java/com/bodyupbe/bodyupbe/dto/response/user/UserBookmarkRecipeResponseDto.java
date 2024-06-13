@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class UserBookmarkRecipeDto {
+public class UserBookmarkRecipeResponseDto {
     Integer id;
     String userName;
     String firstName;

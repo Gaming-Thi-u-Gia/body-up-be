@@ -1,10 +1,7 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseTopicRecipeDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseRecipeServiceDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseSlimDto;
-import com.bodyupbe.bodyupbe.model.Topic;
+import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeTopicService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +26,11 @@ public class TopicRecipeController {
         return ResponseEntity.ok(topicRecipeService.getAllTopicRecipe());
     }
     @GetMapping("/topicId")
-    public ResponseEntity<TopicRecipeResponseDto> getRecipeByTopicId(int topicId){
+    public ResponseEntity<TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto> getRecipeByTopicId(int topicId){
         return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId));
     }
     @GetMapping("/topic")
-    public ResponseEntity<Set<TopicRecipeResponseRecipeServiceDto>> getRecipeByTopic(){
-        return ResponseEntity.ok(topicRecipeService.getRecipeByTopic());
+    public ResponseEntity<Set<TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto>> getRecipeByTopic(){
+        return ResponseEntity.ok(topicRecipeService.getTopicRecipe());
     }
 }

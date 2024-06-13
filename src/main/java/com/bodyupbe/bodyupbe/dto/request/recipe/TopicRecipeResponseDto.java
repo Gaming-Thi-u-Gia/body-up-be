@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.dto.request.recipe;
 
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategorySlimAndSetRecipeSlimResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +14,5 @@ public class TopicRecipeResponseDto {
     Integer id;
     String topic;
     String name;
-    Set<RecipeCategoryResponseDto> recipes;
+    Set<RecipeCategorySlimAndSetRecipeSlimResponseDto> recipes;
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -31,7 +32,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.getRecipeByName(recipeName));
     }
     @GetMapping("/all")
-    public ResponseEntity<List<RecipeResponseDto>> getAllRecipe(){
+    public ResponseEntity<Set<RecipeResponseDto>> getAllRecipe(){
         return ResponseEntity.ok(recipeService.getAllRecipe());
     }
     @PutMapping("/update")
@@ -42,4 +43,5 @@ public class RecipeController {
     public ResponseEntity<String> deleteRecipe(@RequestParam int recipeId) {
         return ResponseEntity.ok(recipeService.deleteRecipe(recipeId));
     }
+
 }

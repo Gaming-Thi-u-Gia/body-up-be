@@ -1,18 +1,16 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeCategoryRequestDto;
-import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategorySlimAndSetRecipeSlimResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeCategoryService;
-import com.bodyupbe.bodyupbe.service.recipe.RecipeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,24 +20,28 @@ import java.util.List;
 public class RecipeCategoryController {
     RecipeCategoryService recipeCategoryService;
     @PostMapping("/add")
-    public ResponseEntity<RecipeCategoryResponseDto> addRecipe(@RequestBody RecipeCategoryRequestDto request){
+    public ResponseEntity<RecipeCategorySlimAndSetRecipeSlimResponseDto> addRecipe(@RequestBody RecipeCategoryRequestDto request){
         return ResponseEntity.ok(recipeCategoryService.addRecipeCategory(request));
     }
     @GetMapping("/id")
-    public ResponseEntity<RecipeCategoryResponseDto> getRecipeById(@RequestParam int recipeCategoryId){
+    public ResponseEntity<RecipeCategorySlimAndSetRecipeSlimResponseDto> getRecipeById(@RequestParam int recipeCategoryId){
         return ResponseEntity.ok(recipeCategoryService.getRecipeCategoryById(recipeCategoryId));
     }
     @GetMapping("/all")
-    public ResponseEntity<List<RecipeCategoryResponseDto>> getAllRecipe(){
+    public ResponseEntity<Set<RecipeCategorySlimAndSetRecipeSlimResponseDto>> getAllRecipe(){
         return ResponseEntity.ok(recipeCategoryService.getAllRecipeCategories());
     }
     @PutMapping("/update")
-    public ResponseEntity<RecipeCategoryResponseDto> updateRecipe(@RequestParam int recipeCategoryId,@RequestBody  RecipeCategoryRequestDto request){
+    public ResponseEntity<RecipeCategorySlimAndSetRecipeSlimResponseDto> updateRecipe(@RequestParam int recipeCategoryId, @RequestBody  RecipeCategoryRequestDto request){
         return ResponseEntity.ok(recipeCategoryService.updateRecipeCategory(recipeCategoryId,request));
     }
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteRecipe(@RequestParam int recipeCategoryId) {
         return ResponseEntity.ok(recipeCategoryService.deleteRecipeCategory(recipeCategoryId));
+    }
+    @GetMapping("/popular")
+        public ResponseEntity<Set<RecipeCategoryResponseSlimDto>> getPopularCategory(){
+        return ResponseEntity.ok(recipeCategoryService.getPopularCategory());
     }
 }
 

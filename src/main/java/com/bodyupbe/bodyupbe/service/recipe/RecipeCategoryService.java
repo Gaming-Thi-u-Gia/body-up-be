@@ -1,19 +1,22 @@
 package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeCategoryMapper;
-import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeCategoryRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseDto;
-import com.bodyupbe.bodyupbe.model.recipe.Recipe;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategorySlimAndSetRecipeSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
 import com.bodyupbe.bodyupbe.repository.RecipeCategoryRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,23 +25,34 @@ import java.util.List;
 public class RecipeCategoryService {
     RecipeCategoryMapper recipeCategoryMapper;
     RecipeCategoryRepository recipeCategoryRepository;
-    public RecipeCategoryResponseDto addRecipeCategory(RecipeCategoryRequestDto request){
-        return recipeCategoryMapper.toResponseDto(recipeCategoryRepository.save(recipeCategoryMapper.toEntity(request)));
+    public RecipeCategorySlimAndSetRecipeSlimResponseDto addRecipeCategory(RecipeCategoryRequestDto request){
+        return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategoryMapper.toRecipeCategory(request)));
     }
-    public RecipeCategoryResponseDto getRecipeCategoryById(int id){
-        return recipeCategoryMapper.toResponseDto(recipeCategoryRepository.findById(id).orElse(null));
+    public RecipeCategorySlimAndSetRecipeSlimResponseDto getRecipeCategoryById(int id){
+        return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.findById(id).orElse(null));
     }
-    public List<RecipeCategoryResponseDto> getAllRecipeCategories(){
-        return recipeCategoryMapper.toResponseDtoList(recipeCategoryRepository.findAll());
+    public Set<RecipeCategorySlimAndSetRecipeSlimResponseDto> getAllRecipeCategories(){
+        return recipeCategoryMapper.toSetRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.findAll());
     }
-    public RecipeCategoryResponseDto updateRecipeCategory(int recipeCategoryId,RecipeCategoryRequestDto request) {
+    public RecipeCategorySlimAndSetRecipeSlimResponseDto updateRecipeCategory(int recipeCategoryId, RecipeCategoryRequestDto request) {
         RecipeCategory recipeCategory = recipeCategoryRepository.findById(recipeCategoryId).orElseThrow(() -> new RuntimeException("Recipe category not found"));
         recipeCategory.setName(request.getName());
-        return recipeCategoryMapper.toResponseDto(recipeCategoryRepository.save(recipeCategory));
+        return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategory));
     }
     public String deleteRecipeCategory(int recipeCategoryId){
         recipeCategoryRepository.deleteById(recipeCategoryId);
         return "Recipe category with id"+ recipeCategoryId +" deleted";
     }
-
+    public Set<RecipeCategoryResponseSlimDto> getPopularCategory() {
+        Pageable topFour = PageRequest.of(0, 4);
+        List<RecipeCategory> topCategories = recipeCategoryRepository.findTop4CategoriesWithMostRecipes(topFour);
+        return topCategories.stream().map(recipeCategoryResponseDto ->{
+            RecipeCategoryResponseSlimDto recipeCategoryResponseSlimDto = new RecipeCategoryResponseSlimDto();
+            recipeCategoryResponseSlimDto.setId(recipeCategoryResponseDto   .getId());
+            recipeCategoryResponseSlimDto.setName(recipeCategoryResponseDto.getName());
+            recipeCategoryResponseSlimDto.setType(recipeCategoryResponseDto.getType());
+            recipeCategoryResponseSlimDto.setTotalRecipe(recipeCategoryResponseDto.getRecipes().size());
+            return recipeCategoryResponseSlimDto;
+        }).collect(Collectors.toSet());
+    };
 }

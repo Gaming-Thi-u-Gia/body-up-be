@@ -33,7 +33,7 @@ public class RecipeFilterService {
         for(RecipeCategory recipeCategory : recipeCategories){
             recipeCategory.getRecipes().add(recipe);
         }
-        return recipeMapper.toResponseDto(recipeRepository.save(recipe));
+        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
     }
 
 
@@ -50,17 +50,17 @@ public class RecipeFilterService {
         for (RecipeCategory newCategory : newCategories) {
             newCategory.getRecipes().add(recipe);
         }
-        return recipeMapper.toResponseDto(recipeRepository.save(recipe));
+        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
     }
     public Set<RecipeResponseDto> getAllRecipesByCategoryId(int categoryId){
         RecipeCategory recipeCategory = recipeCategoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Recipe category not found"));
         Set<Recipe> recipes = recipeCategory.getRecipes();
-        return recipeMapper.toResponseDtoSet(recipes);
+        return recipeMapper.toSetRecipeResponseDto(recipes);
     }
     public Set<RecipeResponseDto> getAllBySetCategory(Set<Integer> recipeCategoryIds){
         Set<RecipeCategory> recipeCategories = recipeCategoryRepository.findAllByIdIn(recipeCategoryIds);
         Set<Recipe> recipes = recipeRepository.findByRecipeCategories_IdIn(recipeCategoryIds);
-        return recipeMapper.toResponseDtoSet(recipes);
+        return recipeMapper.toSetRecipeResponseDto(recipes);
     }
 
 

@@ -1,14 +1,14 @@
 package com.bodyupbe.bodyupbe.dto.mapper.user;
 import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserResponseAndSetPostSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserRequestDto userRequestDto);
-    UserResponseDto toUserResponseDto(User user);
-    UserBookmarkRecipeDto toUserBookmarkRecipeDto(User user);
+    UserResponseAndSetPostSlimResponseDto toUserResponseDto(User user);
+    UserBookmarkRecipeResponseDto toUserBookmarkRecipeDto(User user);
 
 }

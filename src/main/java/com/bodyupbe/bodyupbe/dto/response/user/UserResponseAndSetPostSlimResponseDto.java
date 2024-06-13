@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class UserResponseDto {
+public class UserResponseAndSetPostSlimResponseDto {
     Integer id;
     String userName;
     String firstName;
@@ -23,7 +23,6 @@ public class UserResponseDto {
     String bio;
     Role role;
     Date createAt;
-
     Set<PostSlimResponse> bookmarkPosts;
 
 }
