@@ -48,8 +48,14 @@ public class CommentController {
         return ResponseEntity.ok(commentPostService.getAllCommentByPostId(postId));
     }
     // Fix get
-    @GetMapping("getAllByUserId")
+    @GetMapping("/getAllByUserId")
     public ResponseEntity <List<CommentResponseDto>> getAllCommentsByUserId(@RequestParam int userId) {
         return ResponseEntity.ok(commentPostService.getAllCommentByUserId(userId));
     }
+
+    @PutMapping("/upvoteComment")
+    public ResponseEntity<CommentResponseDto> upvoteComment(@RequestParam int commentId, @RequestParam int upVote) {
+        return ResponseEntity.ok(commentPostService.upvoteComment(commentId,upVote));
+    }
+
 }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.Set;
@@ -26,9 +25,8 @@ public class Comment {
     String detail;
     @Column(name = "up_vote")
     int upVote;
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = true)
-    Date createdAt;
+    @Column(name = "create_at")
+    Date createAt;
 
     @ManyToOne
     @JoinColumn(name="user_id",referencedColumnName = "id")

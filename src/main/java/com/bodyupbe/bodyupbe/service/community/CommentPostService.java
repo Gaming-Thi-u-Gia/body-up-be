@@ -60,8 +60,10 @@ public class CommentPostService {
     }
 
 
-//    public List<CommentResponseDto>
-
-
+    public CommentResponseDto upvoteComment(int commentId, int upVote) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.setUpVote(upVote);
+        return commentMapper.toCommentResponseDto(commentRepository.save(comment));
+    }
 
 }
