@@ -22,18 +22,21 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String name;
+    @Column(length = 2000)
+    String detail;
     double avgStar;
-//    String title;
     @Column(name="prep_time")
-//        int prepTime;
-    String prepTime;
+    int prepTime;
     @Column(name = "cook_time")
-    String cookTime;
-//    int cookTime;
+    int cookTime;
+    @Column(length = 2000)
     String img;
-    @Column(name = "cook_detail")
-    String cookDetail;
+    @Column(name = "cook_instruction")
+    String cookingInstruction;
+    @CreationTimestamp
+    Date createAt;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -55,7 +58,7 @@ public class Recipe {
     @JsonBackReference
     Set<User> bookmarkUsers;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "recipe_collection",
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
@@ -64,7 +67,7 @@ public class Recipe {
     @JsonManagedReference
     Set<Topic> recipeTopics;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "recipe_filter",
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),

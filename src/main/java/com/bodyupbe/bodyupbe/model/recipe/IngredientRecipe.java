@@ -17,7 +17,9 @@ public class IngredientRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String amount;
+    @Column(length = 2000)
     String name;
 
     @ManyToOne

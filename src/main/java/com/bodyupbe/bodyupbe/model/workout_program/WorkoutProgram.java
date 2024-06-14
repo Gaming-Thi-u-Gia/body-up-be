@@ -23,13 +23,17 @@ public class WorkoutProgram {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(length = 2000)
     String name;
-    String type;
-    String equipment;
+    @Column(length = 2000)
     String detail;
     String day;
     String time;
     String year;
+    @Column(length = 2000)
+    String img;
+    @Column(length = 2000)
+    String banner;
     @Column(name = "release_date")
     Date releaseDate;
 
