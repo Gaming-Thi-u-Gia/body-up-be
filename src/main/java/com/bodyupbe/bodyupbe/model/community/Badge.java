@@ -20,6 +20,7 @@ public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String name;
 
     @OneToMany(mappedBy = "badge",cascade = CascadeType.ALL)

@@ -18,6 +18,7 @@ public class UserDailyChallenge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(length = 2000)
     String status;
 
     @ManyToOne

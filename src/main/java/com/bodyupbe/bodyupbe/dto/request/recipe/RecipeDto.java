@@ -13,9 +13,10 @@ import java.util.Set;
 public class RecipeDto {
     Integer id;
     String name;
+    String title;
     double avgStar;
-    String prepTime;
-    String cookTime;
+    int prepTime;
+    int cookTime;
     String img;
     String cookDetail;
     Set<RatingRecipeDto> ratingRecipeDtos;

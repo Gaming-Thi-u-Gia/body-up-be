@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RestController
 public class DemoController {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     UserMapper userMapper;
     @GetMapping("/api/v1/demo")
     public ResponseEntity<User> demo() {
@@ -55,6 +57,19 @@ public class DemoController {
             user.setLastName(request.getLastName());
             userRepository.save(user);
             return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    @PutMapping("/api/v1/change-password")
+    public ResponseEntity<User> updatePassword(@RequestBody UserRequestDto request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            return ResponseEntity.ok(userRepository.save(user));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
