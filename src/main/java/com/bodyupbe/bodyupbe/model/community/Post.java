@@ -24,9 +24,13 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String title;
+    @Column(length = 2000)
     String description;
+    @Column(length = 2000)
     String imgBefore;
+    @Column(length = 2000)
     String imgAfter;
     Date dayBefore;
     Date dayAfter;

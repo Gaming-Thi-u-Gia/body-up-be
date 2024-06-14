@@ -19,8 +19,12 @@ public class RecipeCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String name;
+    @Column(length = 2000)
     String type;
+    @Column(length = 2000)
+    String img;
 
     @ManyToMany(mappedBy = "recipeCategories")
     @JsonBackReference

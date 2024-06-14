@@ -22,7 +22,9 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(length = 2000)
     String name;
+    @Column(length = 2000)
     String url;
     @Column(name = "is_featured")
     boolean isFeatured;
