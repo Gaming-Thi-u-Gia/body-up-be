@@ -14,5 +14,6 @@ public class RecipeCategorySlimAndSetRecipeSlimResponseDto {
     Integer id;
     String name;
     String type;
+    String img;
     Set<RecipeSlimResponseDto> recipes;
 }

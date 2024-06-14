@@ -12,4 +12,5 @@ public class TopicRecipeResponseSlimDto {
     Integer id;
     String topic;
     String name;
+    String description;
 }

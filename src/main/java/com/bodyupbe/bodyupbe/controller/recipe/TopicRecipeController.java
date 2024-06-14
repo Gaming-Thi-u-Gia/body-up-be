@@ -7,11 +7,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -30,7 +28,7 @@ public class TopicRecipeController {
         return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId));
     }
     @GetMapping("/topic")
-    public ResponseEntity<Set<TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto>> getRecipeByTopic(){
-        return ResponseEntity.ok(topicRecipeService.getTopicRecipe());
+    public ResponseEntity<Set<TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto>> getRecipeByTopic(@RequestParam Optional<Integer> userId){
+        return ResponseEntity.ok(topicRecipeService.getTopic4Recipe(userId));
     }
 }

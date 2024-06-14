@@ -12,4 +12,5 @@ public class TopicDto {
     Integer id;
     String topic;
     String name;
+    String description;
 }

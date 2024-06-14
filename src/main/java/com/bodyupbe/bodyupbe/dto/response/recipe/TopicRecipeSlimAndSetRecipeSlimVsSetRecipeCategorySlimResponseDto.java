@@ -14,5 +14,6 @@ public class TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto {
     Integer id;
     String topic;
     String name;
+    String description;
     Set<RecipeSlimAndSetRecipeCategorySlimResponseDto> recipes;
 }

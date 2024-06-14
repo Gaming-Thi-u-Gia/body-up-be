@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -13,10 +14,13 @@ import java.util.Set;
 public class RecipeSlimAndSetRecipeCategorySlimResponseDto {
     Integer id;
     String name;
+    String detail;
     double avgStar;
-    String prepTime;
-    String cookTime;
+    int prepTime;
+    int cookTime;
     String img;
-    String cookDetail;
+    String cookingInstruction;
+    Date createAt;
+    boolean bookmarked;
     Set<RecipeCategoryResponseSlimDto> recipeCategories;
 }

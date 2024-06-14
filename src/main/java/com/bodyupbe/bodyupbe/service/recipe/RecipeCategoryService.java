@@ -51,6 +51,7 @@ public class RecipeCategoryService {
             recipeCategoryResponseSlimDto.setId(recipeCategoryResponseDto   .getId());
             recipeCategoryResponseSlimDto.setName(recipeCategoryResponseDto.getName());
             recipeCategoryResponseSlimDto.setType(recipeCategoryResponseDto.getType());
+            recipeCategoryResponseSlimDto.setImg(recipeCategoryResponseDto.getImg());
             recipeCategoryResponseSlimDto.setTotalRecipe(recipeCategoryResponseDto.getRecipes().size());
             return recipeCategoryResponseSlimDto;
         }).collect(Collectors.toSet());

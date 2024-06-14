@@ -1,7 +1,9 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeDetailResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeSlimAndSetRecipeCategorySlimResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -24,8 +27,8 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.addRecipe(request));
     }
     @GetMapping("/id")
-    public ResponseEntity<RecipeResponseDto> getRecipeById(@RequestParam int recipeId){
-        return ResponseEntity.ok(recipeService.getRecipeById(recipeId));
+    public ResponseEntity<RecipeDetailResponseDto> getRecipeById(@RequestParam int recipeId,@RequestParam Optional<Integer> userId){
+        return ResponseEntity.ok(recipeService.getRecipeById(recipeId,userId));
     }
     @GetMapping("/name")
     public ResponseEntity<List<RecipeResponseDto>> getRecipeByName(@RequestParam String recipeName){
@@ -43,5 +46,8 @@ public class RecipeController {
     public ResponseEntity<String> deleteRecipe(@RequestParam int recipeId) {
         return ResponseEntity.ok(recipeService.deleteRecipe(recipeId));
     }
-
+    @GetMapping("/latest")
+    public ResponseEntity<Set<RecipeSlimAndSetRecipeCategorySlimResponseDto>> getLatestRecipe(@RequestParam Optional<Integer> userId){
+        return ResponseEntity.ok(recipeService.getLatestRecipe(userId));
+    }
 }

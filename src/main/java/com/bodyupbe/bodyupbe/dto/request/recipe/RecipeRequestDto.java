@@ -13,12 +13,12 @@ import java.util.Set;
 public class RecipeRequestDto {
     Integer id;
     String name;
-    String title;
+    String detail;
     double avgStar;
     int prepTime;
     int cookTime;
     String img;
-    String cookDetail;
+    String cookingInstruction;
     Set<RatingRecipeRequestDto> ratingRecipes;
     Set<IngredientRecipeRequestDto> ingredientRecipes;
     Set<OtherImageRecipeRequestDto> otherImageRecipes;

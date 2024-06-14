@@ -11,5 +11,4 @@ import lombok.experimental.FieldDefaults;
 public class NoteRecipeAndSetRecipeResponseDto {
     Integer id;
     String detail;
-    RecipeSlimResponseDto recipe;
 }

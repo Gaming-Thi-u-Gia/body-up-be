@@ -8,11 +8,10 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
 import java.util.Set;
-
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecipeResponseDto {
+public class RecipeDetailResponseDto {
     Integer id;
     String name;
     String detail;
@@ -21,12 +20,11 @@ public class RecipeResponseDto {
     int cookTime;
     String img;
     String cookingInstruction;
-    Date createAt;
-    Set<RatingRecipeSlimAndRecipeSlimUserSlimResponseDto> ratingRecipes;
+    int currentRating;
+    int totalRating;
+    boolean bookmarked;
+    Set<RecipeCategoryResponseSlimDto> recipeCategories;
+    Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;
     Set<IngredientRecipeAndSetRecipeSlimResponseDto> ingredientRecipes;
     Set<OtherImageRecipeAndRecipeSlimResponseDto> otherImageRecipes;
-    Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;
-    Set<UserSlimResponseDto> bookmarkUsers;
-    Set<TopicRecipeResponseSlimDto> topics;
-    Set<RecipeCategoryResponseSlimDto> recipeCategories;
 }

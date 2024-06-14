@@ -14,5 +14,6 @@ public class TopicRecipeResponseDto {
     Integer id;
     String topic;
     String name;
+    String description;
     Set<RecipeCategorySlimAndSetRecipeSlimResponseDto> recipes;
 }

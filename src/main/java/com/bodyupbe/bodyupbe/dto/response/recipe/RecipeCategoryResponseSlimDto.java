@@ -12,5 +12,6 @@ public class RecipeCategoryResponseSlimDto {
     Integer id;
     String name;
     String type;
+    String img;
     int totalRecipe;
 }

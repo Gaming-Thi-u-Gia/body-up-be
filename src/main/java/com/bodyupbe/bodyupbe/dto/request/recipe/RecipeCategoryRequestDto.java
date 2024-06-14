@@ -11,4 +11,5 @@ public class RecipeCategoryRequestDto {
     Integer id;
     String name;
     String type;
+    String img;
 }

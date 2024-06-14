@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,5 +39,16 @@ public class RecipeTopicService {
         List<Topic> topics = topicRepository.findByTopic("recipe");
         return topicMapper.toSetTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topics);
     }
-
+    public Set<TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto> getTopic4Recipe(Optional<Integer> userId) {
+        List<Topic> topics = topicRepository.findByTopic("recipe");
+        Set<TopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto> setTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto = topicMapper.toSetTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topics);
+        if (userId.isPresent()) {
+            setTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto.forEach(topic -> {
+                topic.getRecipes().forEach(recipe -> {
+                    recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipe.getId()));
+                });
+            });
+        }
+        return setTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto;
+    }
 }

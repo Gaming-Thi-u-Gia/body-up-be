@@ -12,5 +12,4 @@ public class IngredientRecipeAndSetRecipeSlimResponseDto {
     Integer id;
     String amount;
     String name;
-    RecipeSlimResponseDto recipe;
 }
