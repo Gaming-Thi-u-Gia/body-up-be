@@ -23,13 +23,16 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String name;
+    @Column(length = 2000)
     String detail;
     double avgStar;
     @Column(name="prep_time")
     int prepTime;
     @Column(name = "cook_time")
     int cookTime;
+    @Column(length = 2000)
     String img;
     @Column(name = "cook_instruction")
     String cookingInstruction;

@@ -17,6 +17,7 @@ public class DailyVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String status;
 
     @ManyToOne

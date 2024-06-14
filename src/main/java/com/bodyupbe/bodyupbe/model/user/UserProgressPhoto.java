@@ -20,6 +20,7 @@ public class UserProgressPhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     boolean visibility;
+    @Column(length = 2000)
     String caption;
     Date date;
     @Column(name = "photo_angle")

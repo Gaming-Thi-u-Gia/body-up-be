@@ -22,7 +22,9 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String topic;
+    @Column(length = 2000)
     String name;
 
     @ManyToMany(mappedBy = "videoTopics")
