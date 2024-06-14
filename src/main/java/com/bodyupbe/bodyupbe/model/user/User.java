@@ -30,13 +30,21 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String userName;
+    @Column(length = 2000)
+    String userName2;
+    @Column(length = 2000)
     String firstName;
+    @Column(length = 2000)
     String lastName;
     @Column(unique = true)
     String email;
+    @Column(length = 2000)
     String password;
+    @Column(length = 2000)
     String avatar;
+    @Column(length = 2000)
     String bio;
     @Enumerated(EnumType.STRING)
     Role role;
