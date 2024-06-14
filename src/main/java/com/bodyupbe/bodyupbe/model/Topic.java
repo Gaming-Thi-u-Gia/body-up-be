@@ -26,6 +26,7 @@ public class Topic {
     String topic;
     @Column(length = 2000)
     String name;
+    String description;
 
     @ManyToMany(mappedBy = "videoTopics")
     @JsonBackReference

@@ -27,6 +27,8 @@ public class UserProgressPhoto {
     String photoAngle;
     @Column(name = "create_at")
     Date createAt;
+    @Column(name = "img_url")
+    String imgUrl;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
