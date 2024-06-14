@@ -35,10 +35,11 @@ public class Recipe {
     int cookTime;
     @Column(length = 2000)
     String img;
-    @Column(name = "cook_instruction")
+    @Column(name = "cook_instruction",length=2000)
     String cookingInstruction;
     @CreationTimestamp
-    Date createAt;
+            @Column(name = "created_at")
+    Date createdAt;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     @JsonManagedReference
