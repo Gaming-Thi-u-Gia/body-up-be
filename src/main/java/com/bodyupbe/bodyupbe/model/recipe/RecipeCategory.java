@@ -23,6 +23,7 @@ public class RecipeCategory {
     String name;
     @Column(length = 2000)
     String type;
+    @Column(length = 2000)
     String img;
 
     @ManyToMany(mappedBy = "recipeCategories")

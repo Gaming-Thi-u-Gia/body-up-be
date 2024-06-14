@@ -30,7 +30,9 @@ public class WorkoutProgram {
     String day;
     String time;
     String year;
+    @Column(length = 2000)
     String img;
+    @Column(length = 2000)
     String banner;
     @Column(name = "release_date")
     Date releaseDate;
