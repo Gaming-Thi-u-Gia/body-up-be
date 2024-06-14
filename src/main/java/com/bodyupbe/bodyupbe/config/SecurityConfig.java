@@ -34,6 +34,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/posts/getpostByCategory/**")
                                 .permitAll()
+                                .requestMatchers("/api/v1/workout-video/**")
+                                .permitAll()
                                 .requestMatchers("/api/v1/admin/**")
                                 .hasAnyAuthority("ADMIN")
                                 .anyRequest()

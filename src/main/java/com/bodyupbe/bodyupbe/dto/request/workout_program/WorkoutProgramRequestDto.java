@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WorkoutProgramDto {
+public class WorkoutProgramRequestDto {
     int id;
     String name;
     String type;
@@ -25,5 +25,5 @@ public class WorkoutProgramDto {
     Set<DailyExerciseDto> dailyExerciseDtos;
     Set<UserChallengeDto> userChallengeDtos;
     Set<TopicDto> programTopics;
-    Set<WorkoutProgramCategoryDto> workoutProgramCategories;
+    Set<WorkoutProgramCategoryRequestDto> workoutProgramCategories;
 }

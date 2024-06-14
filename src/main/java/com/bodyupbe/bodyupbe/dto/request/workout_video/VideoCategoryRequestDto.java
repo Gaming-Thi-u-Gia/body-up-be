@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VideoCategoryDto {
+public class VideoCategoryRequestDto {
     int id;
     String name;
     String type;

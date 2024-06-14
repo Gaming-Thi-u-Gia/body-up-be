@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WorkoutProgramCategoryDto {
+public class WorkoutProgramCategoryRequestDto {
     int id;
     String name;
     String type;
