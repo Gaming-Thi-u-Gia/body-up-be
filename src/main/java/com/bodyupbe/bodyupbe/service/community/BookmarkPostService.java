@@ -29,11 +29,9 @@ public class BookmarkPostService {
     UserMapper userMapper;
     PostMapper postMapper;
 
-    public Optional<UserResponseDto> bookmarkPost(int userId, int postId) {
+    public Optional<UserResponseDto> bookmarkPost(User user, int postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if(user.getBookmarkPosts().contains(post)) {
             user.getBookmarkPosts().remove(post);

@@ -49,7 +49,7 @@ public class CommentPostService {
 
 
     public List<CommentResponseDto> getAllCommentByPostId(int postId) {
-        List<Comment> comment = commentRepository.findCommentByPost_IdOrderByCreatedAtDesc(postId);
+        List<Comment> comment = commentRepository.findCommentByPost_IdOrderByCreateAtDesc(postId);
         return commentMapper.toListCommentResponseDto(comment);
     }
 
