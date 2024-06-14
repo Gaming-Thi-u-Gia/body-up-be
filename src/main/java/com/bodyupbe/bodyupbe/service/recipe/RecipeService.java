@@ -50,9 +50,12 @@ public class RecipeService {
         if(userId.isPresent()){
             boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeId);
             recipeDetailResponseDto.setBookmarked(isBookmarked);
-            RatingRecipe userRating = ratingRecipeRepository.findRatingRecipeByRecipe_IdAndUser_Id(recipeId, recipeId)
-                    .orElse(new RatingRecipe());
-            recipeDetailResponseDto.setCurrentRating(userRating.getStar());
+            Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeId);
+            if (ratingRecipe.isPresent()) {
+                recipeDetailResponseDto.setCurrentRating(ratingRecipe.get().getStar());
+            } else {
+                recipeDetailResponseDto.setCurrentRating(0);
+            }
         }
         int totalRating = recipeRepository.countRatingRecipesByRecipeId(recipeId);
         recipeDetailResponseDto.setTotalRating(totalRating);

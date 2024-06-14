@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
+@ToString
 @Table(name = "rating_recipes")
 public class RatingRecipe {
     @Id

@@ -1,11 +1,13 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
@@ -17,5 +19,7 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
     boolean findBookmarkedByUserIdAndRecipeId(int userId, int recipeId);
     @Query("SELECT COUNT(r) FROM RatingRecipe r WHERE r.recipe.id = :recipeId")
     int countRatingRecipesByRecipeId(@Param("recipeId") int recipeId);
+    @Query("SELECT rr FROM Recipe r JOIN r.ratingRecipes rr WHERE rr.user.id = :userId AND r.id = :recipeId")
+    Optional<RatingRecipe> findRatingStarRecipeByUserId(@Param("userId") int userId , @Param("recipeId") int recipeId);
 }
 

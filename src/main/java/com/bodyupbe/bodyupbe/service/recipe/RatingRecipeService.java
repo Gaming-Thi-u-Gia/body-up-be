@@ -42,6 +42,7 @@ public class RatingRecipeService {
             ratingRecipe.setUser(user);
             ratingRecipe.setStar(request.getStar());
             ratingRecipeRepository.save(ratingRecipe);
+
         }
 
         updateAverageRating(recipe);
