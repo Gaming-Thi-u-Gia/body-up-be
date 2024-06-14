@@ -7,10 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BodyUpBeApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(BodyUpBeApplication.class, args);
-
-
 	}
 
 }
