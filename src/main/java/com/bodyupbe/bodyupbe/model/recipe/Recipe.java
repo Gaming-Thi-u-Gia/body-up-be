@@ -20,6 +20,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "recipes")
+@ToString
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -45,6 +45,7 @@ public class RatingRecipeService {
         double avgStar = updateAverageRating(recipe);
         RatingRecipeResponseSlimDto ratingRecipeResponseSlimDto = ratingRecipeMapper.toRatingRecipeResponseSlimDto(ratingRecipe);
         ratingRecipeResponseSlimDto.setAvgStar(avgStar);
+        ratingRecipeResponseSlimDto.setTotalRating(recipe.getRatingRecipes().size());
         return ratingRecipeResponseSlimDto;
     }
 

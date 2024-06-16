@@ -12,4 +12,5 @@ public class RatingRecipeResponseSlimDto {
     int id;
     int star;
     double avgStar;
+    int totalRating;
 }

@@ -35,8 +35,15 @@ public class RecipeController {
     }
 
     @GetMapping("/id")
-    public ResponseEntity<RecipeDetailResponseDto> getRecipeById(@RequestParam int recipeId, @RequestParam Optional<Integer> userId) {
-        return ResponseEntity.ok(recipeService.getRecipeById(recipeId, userId));
+    public ResponseEntity<RecipeDetailResponseDto> getRecipeById(@RequestParam int recipeId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(currentPrincipalName);
+        if(user.isPresent()) {
+            return ResponseEntity.ok(recipeService.getRecipeById(recipeId,Optional.of(user.get().getId())));
+        }else{
+            return ResponseEntity.ok(recipeService.getRecipeById(recipeId, Optional.empty()));
+        }
     }
 
 
@@ -80,7 +87,14 @@ public class RecipeController {
     }
     @GetMapping("/name")
     public ResponseEntity<Set<RecipeCardResponseDto>> getRecipeByName(@RequestParam String recipeName) {
-        return ResponseEntity.ok(recipeService.getRecipeByName(recipeName));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(currentPrincipalName);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(recipeService.getRecipeByName(recipeName, Optional.of(user.get().getId())));
+        } else {
+            return ResponseEntity.ok(recipeService.getRecipeByName(recipeName, Optional.empty()));
+        }
     }
     @GetMapping("/category")
     public ResponseEntity<Set<RecipeCardResponseDto>> getRecipeByCategory(@RequestParam Set<Integer> categoryIds) {

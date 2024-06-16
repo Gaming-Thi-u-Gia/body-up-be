@@ -18,5 +18,6 @@ public class RecipeCardResponseDto {
     String img;
     boolean bookmarked;
     int currentRating;
+    Date createAt;
     Set<RecipeCategoryResponseSlimDto> recipeCategories;
 }

@@ -43,11 +43,12 @@ public class RecipeService {
     public RecipeDetailResponseDto getRecipeById(int recipeId, Optional<Integer> userId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
                 new RuntimeException("Recipe not found"));
+        log.info("userId:", userId);
         RecipeDetailResponseDto recipeDetailResponseDto = recipeMapper.toRecipeDetailResponseDto(recipe);
         if (userId.isPresent()) {
-            boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeId);
+            boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeDetailResponseDto.getId());
             recipeDetailResponseDto.setBookmarked(isBookmarked);
-            Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeId);
+            Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeDetailResponseDto.getId());
             if (ratingRecipe.isPresent()) {
                 recipeDetailResponseDto.setCurrentRating(ratingRecipe.get().getStar());
             } else {
@@ -112,8 +113,22 @@ public class RecipeService {
         });
         return setRecipeCardResponseDtos;
     }
-    public Set<RecipeCardResponseDto> getRecipeByName(String nameRecipe) {
-        return recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipeByNameContainingIgnoreCase(nameRecipe));
+    public Set<RecipeCardResponseDto> getRecipeByName(String nameRecipe, Optional<Integer> userId) {
+        Set<RecipeCardResponseDto> setRecipeCardResponseDtos = recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipeByNameContainingIgnoreCase(nameRecipe));
+        setRecipeCardResponseDtos.forEach(setRecipeCardResponseDto -> {
+                    if (userId.isPresent()) {
+                        boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), setRecipeCardResponseDto.getId());
+                        setRecipeCardResponseDto.setBookmarked(isBookmarked);
+                        Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), setRecipeCardResponseDto.getId());
+                        if (ratingRecipe.isPresent()) {
+                            setRecipeCardResponseDto.setCurrentRating(ratingRecipe.get().getStar());
+                        } else {
+                            setRecipeCardResponseDto.setCurrentRating(0);
+                        }
+                    }
+                }
+        );
+    return setRecipeCardResponseDtos.stream().limit(8).collect(Collectors.toSet());
     }
     public Set<RecipeCardResponseDto> getRecipeByCategory(Set<Integer> categoryIds, long CategorySize){
         return recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipesByCategoryIds(categoryIds, categoryIds.size()));
