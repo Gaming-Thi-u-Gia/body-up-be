@@ -8,4 +8,6 @@ import java.util.Set;
 
 public interface TopicRepository extends JpaRepository<Topic,Integer> {
     Set<Topic> findTopicsByTopic(String topic);
+
+
 }

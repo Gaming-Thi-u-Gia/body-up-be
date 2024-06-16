@@ -24,6 +24,8 @@ public class WorkoutProgramResponseDto {
     String day;
     String time;
     String year;
+    String img;
+    String banner;
     Date releaseDate;
     Set<DailyExerciseDto> dailyExerciseDtos;
     Set<UserChallengeDto> userChallengeDtos;

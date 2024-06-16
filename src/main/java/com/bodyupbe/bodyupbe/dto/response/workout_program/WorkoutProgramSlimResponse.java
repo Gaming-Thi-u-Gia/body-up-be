@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.dto.response.workout_program;
 
+import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramCategoryRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,9 @@ public class WorkoutProgramSlimResponse {
     String day;
     String time;
     String year;
+    String img;
+    String banner;
     Date releaseDate;
+
+    Set<WorkoutProgramCategoryRequestDto> workoutProgramCategories;
 }

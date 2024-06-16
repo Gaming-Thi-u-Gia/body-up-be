@@ -26,6 +26,7 @@ public class Topic {
     String topic;
     @Column(length = 2000)
     String name;
+    @Column(length = 2000)
     String description;
 
     @ManyToMany(mappedBy = "videoTopics")
