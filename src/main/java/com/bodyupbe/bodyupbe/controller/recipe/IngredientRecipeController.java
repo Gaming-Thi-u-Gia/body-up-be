@@ -19,8 +19,8 @@ import java.util.Set;
 @CrossOrigin
 public class IngredientRecipeController {
     IngredientRecipeService ingredientRecipeService;
-    @PostMapping("/add")
-    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> addIngredientRecipeService(@RequestParam int recipeId, @RequestBody IngredientRecipeRequestDto request) {
+        @PostMapping("/add")
+        public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> addIngredientRecipeService(@RequestParam int recipeId, @RequestBody IngredientRecipeRequestDto request) {
         return ResponseEntity.ok(ingredientRecipeService.addIngredientRecipe(recipeId,request));
     }
     @GetMapping("/id")

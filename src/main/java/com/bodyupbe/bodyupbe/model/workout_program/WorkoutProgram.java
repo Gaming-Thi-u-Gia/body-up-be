@@ -28,6 +28,8 @@ public class WorkoutProgram {
     @Column(length = 2000)
     String detail;
     String day;
+    String equipment;
+    String type;
     String time;
     String year;
     @Column(length = 2000)

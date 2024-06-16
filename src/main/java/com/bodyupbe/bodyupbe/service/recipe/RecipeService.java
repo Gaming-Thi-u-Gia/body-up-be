@@ -2,9 +2,7 @@ package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeDetailResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeSlimAndSetRecipeCategorySlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -32,22 +30,21 @@ public class RecipeService {
     UserRepository userRepository;
     private final RatingRecipeRepository ratingRecipeRepository;
 
-    public RecipeResponseDto addRecipe(RecipeRequestDto request){
-        Recipe recipe  = recipeMapper.toRecipe(request);
+    public RecipeResponseDto addRecipe(RecipeRequestDto request) {
+        Recipe recipe = recipeMapper.toRecipe(request);
         return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
     }
-    public RecipeResponseDto getRecipe(int id){
-        return recipeMapper.toRecipeResponseDto(recipeRepository.findById(id).orElseThrow(()->
+
+    public RecipeResponseDto getRecipe(int id) {
+        return recipeMapper.toRecipeResponseDto(recipeRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Recipe not found")));
     }
-    public List<RecipeResponseDto> getRecipeByName(String name) {
-        return recipeRepository.findRecipeByName(name).stream().map(recipeMapper::toRecipeResponseDto).toList();
-    }
-    public RecipeDetailResponseDto getRecipeById(int recipeId, Optional<Integer> userId){
+
+    public RecipeDetailResponseDto getRecipeById(int recipeId, Optional<Integer> userId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
                 new RuntimeException("Recipe not found"));
         RecipeDetailResponseDto recipeDetailResponseDto = recipeMapper.toRecipeDetailResponseDto(recipe);
-        if(userId.isPresent()){
+        if (userId.isPresent()) {
             boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeId);
             recipeDetailResponseDto.setBookmarked(isBookmarked);
             Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeId);
@@ -62,11 +59,12 @@ public class RecipeService {
         return recipeDetailResponseDto;
     }
 
-    public Set<RecipeResponseDto> getAllRecipe(){
+    public Set<RecipeResponseDto> getAllRecipe() {
         return recipeMapper.toSetRecipeResponseDto(recipeRepository.findAll());
     }
-    public RecipeResponseDto updateRecipe(int recipeId, RecipeRequestDto request){
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->
+
+    public RecipeResponseDto updateRecipe(int recipeId, RecipeRequestDto request) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
                 new RuntimeException("Recipe not found"));
         recipe.setName(request.getName());
         recipe.setAvgStar(request.getAvgStar());
@@ -74,20 +72,50 @@ public class RecipeService {
         recipe.setCookTime(request.getCookTime());
         return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
     }
-    public String deleteRecipe(int recipeId){
-         recipeRepository.deleteById(recipeId);
-        return "Recipe with id"+ recipeId +" deleted";
+
+    public String deleteRecipe(int recipeId) {
+        recipeRepository.deleteById(recipeId);
+        return "Recipe with id" + recipeId + " deleted";
     }
-    public Set<RecipeSlimAndSetRecipeCategorySlimResponseDto> getLatestRecipe(Optional<Integer> userId){
-        Set<Recipe> recipe = recipeRepository.findTop2ByOrderByCreateAtDesc();
-        Set<RecipeSlimAndSetRecipeCategorySlimResponseDto> recipeSlimAndSetRecipeCategorySlimResponseDtos = recipeMapper.toSetRecipeSlimAndSetRecipeCategorySlimResponseDto(recipe);
-        if(userId.isPresent()){
-            recipeSlimAndSetRecipeCategorySlimResponseDtos.forEach(recipeSlimAndSetRecipeCategorySlimResponseDto -> {
-                boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeSlimAndSetRecipeCategorySlimResponseDto.getId());
-                recipeSlimAndSetRecipeCategorySlimResponseDto.setBookmarked(isBookmarked);
+
+    public Set<RecipeLatestResponseDto> getLatestRecipe(Optional<Integer> userId) {
+        Set<Recipe> recipes = recipeRepository.findTop2ByOrderByCreateAtDesc();
+        Set<RecipeLatestResponseDto> recipeLatestResponseDtos = recipeMapper.toSetRecipeLatestResponseDto(recipes);
+        recipeLatestResponseDtos.forEach(recipeLatestResponseDto -> {
+                    if (userId.isPresent()) {
+                        boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeLatestResponseDto.getId());
+                        recipeLatestResponseDto.setBookmarked(isBookmarked);
+                        Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeLatestResponseDto.getId());
+                        if (ratingRecipe.isPresent()) {
+                            recipeLatestResponseDto.setCurrentRating(ratingRecipe.get().getStar());
+                        } else {
+                            recipeLatestResponseDto.setCurrentRating(0);
+                        }
+                    }
+                }
+        );
+        return recipeLatestResponseDtos;
+    }
+
+    public Set<RecipeCardResponseDto> getAllBookmarkedRecipe(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Set<RecipeCardResponseDto> setRecipeCardResponseDtos = recipeMapper.toSetRecipeCardResponseDto(user.getBookmarkRecipes());
+        setRecipeCardResponseDtos.forEach(recipeCardResponseDto -> {
+            Optional<RatingRecipe> ratingRecipe = ratingRecipeRepository.findRatingRecipeByRecipe_IdAndUser_Id(userId, recipeCardResponseDto.getId());
+            if (ratingRecipe.isPresent()) {
+                recipeCardResponseDto.setCurrentRating(ratingRecipe.get().getStar());
+            } else {
+                recipeCardResponseDto.setCurrentRating(0);
             }
-            );
-        };
-        return recipeSlimAndSetRecipeCategorySlimResponseDtos;
+            recipeCardResponseDto.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId, recipeCardResponseDto.getId()));
+
+        });
+        return setRecipeCardResponseDtos;
+    }
+    public Set<RecipeCardResponseDto> getRecipeByName(String nameRecipe) {
+        return recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipeByNameContainingIgnoreCase(nameRecipe));
+    }
+    public Set<RecipeCardResponseDto> getRecipeByCategory(Set<Integer> categoryIds, long CategorySize){
+        return recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipesByCategoryIds(categoryIds, categoryIds.size()));
     }
 }

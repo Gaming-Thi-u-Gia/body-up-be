@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
+import com.bodyupbe.bodyupbe.dto.response.recipe.BookmarkSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeResponseDto;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -24,27 +25,23 @@ public class BookmarkRecipeService {
     UserRepository userRepository;
     UserMapper userMapper;
     RecipeMapper recipeMapper;
-    public Optional<UserBookmarkRecipeResponseDto> toggleBookmarkRecipe(int userId, int recipeId) {
+    public BookmarkSlimResponseDto toggleBookmarkRecipe(int userId, int recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
+        boolean bookmarked;
         if(user.getBookmarkRecipes().contains(recipe)) {
             user.getBookmarkRecipes().remove(recipe);
             recipe.getBookmarkUsers().remove(user);
-            return Optional.of(userMapper.toUserBookmarkRecipeDto(userRepository.save(user)));
+            bookmarked = false;
+        } else {
+            user.getBookmarkRecipes().add(recipe);
+            recipe.getBookmarkUsers().add(user);
+            bookmarked = true;
         }
-
-        user.getBookmarkRecipes().add(recipe);
-        recipe.getBookmarkUsers().add(user);
-        return Optional.of(userMapper.toUserBookmarkRecipeDto(userRepository.save(user)));
+        userRepository.save(user);
+        return new BookmarkSlimResponseDto(recipeId, userId ,bookmarked);
     }
 
-
-    public UserBookmarkRecipeResponseDto getSetBookmarkRecipeByUserId(int userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return userMapper.toUserBookmarkRecipeDto(user);
-    }
 }

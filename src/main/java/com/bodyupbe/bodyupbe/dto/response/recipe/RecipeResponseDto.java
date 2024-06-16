@@ -22,7 +22,7 @@ public class RecipeResponseDto {
     String img;
     String cookingInstruction;
     Date createAt;
-    Set<RatingRecipeSlimAndRecipeSlimUserSlimResponseDto> ratingRecipes;
+    Set<RatingRecipeResponseSlimDto> ratingRecipes;
     Set<IngredientRecipeAndSetRecipeSlimResponseDto> ingredientRecipes;
     Set<OtherImageRecipeAndRecipeSlimResponseDto> otherImageRecipes;
     Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;

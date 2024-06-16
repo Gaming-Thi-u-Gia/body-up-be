@@ -1,10 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.mapper.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeDetailResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeSlimAndSetRecipeCategorySlimResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import org.mapstruct.Mapper;
 
@@ -20,4 +17,7 @@ public interface RecipeMapper {
     Set<RecipeResponseDto> toSetRecipeResponseDto(List<Recipe> recipes);
     Set<RecipeResponseDto> toSetRecipeResponseDto(Set<Recipe> recipes);
     Set<RecipeSlimAndSetRecipeCategorySlimResponseDto> toSetRecipeSlimAndSetRecipeCategorySlimResponseDto(Set<Recipe> recipes);
+    Set<RecipeLatestResponseDto> toSetRecipeLatestResponseDto(Set<Recipe> recipes);
+    Set<RecipeCardResponseDto> toSetRecipeCardResponseDto(Set<Recipe> recipes);
+    Set<RecipeCardResponseDto> toSetRecipeCardResponseDto(List<Recipe> recipes);
 }
