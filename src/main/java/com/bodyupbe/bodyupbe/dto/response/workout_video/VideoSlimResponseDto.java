@@ -19,5 +19,4 @@ public class VideoSlimResponseDto {
     String name;
     String url;
     boolean isFeatured;
-
 }

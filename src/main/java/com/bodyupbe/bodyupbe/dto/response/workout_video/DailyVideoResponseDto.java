@@ -14,6 +14,5 @@ import lombok.experimental.FieldDefaults;
 public class DailyVideoResponseDto {
     Integer id;
     String status;
-
     VideoSlimResponseDto video;
 }

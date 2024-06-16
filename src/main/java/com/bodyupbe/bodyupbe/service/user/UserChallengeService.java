@@ -3,9 +3,14 @@ package com.bodyupbe.bodyupbe.service.user;
 import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
 import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
+import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
+import com.bodyupbe.bodyupbe.repository.UserChallengeRepository;
+import com.bodyupbe.bodyupbe.repository.UserDailyChallengeRepository;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.repository.WorkoutProgramRepository;
 import lombok.AccessLevel;
@@ -24,6 +29,7 @@ public class UserChallengeService {
     UserRepository userRepository;
     UserMapper userMapper;
     private final WorkoutProgramRepository workoutProgramRepository;
+    private final UserDailyChallengeRepository userDailyChallengeRepository;
 
     public Set<UserChallengeResponseDto> getAllUserChallenges(User user) {
         return userMapper.toListUserChallengeResponseDto(user.getUserChallenges());
@@ -58,5 +64,14 @@ public class UserChallengeService {
 
     public UserChallengeResponseDto getUncompletedChallenge(User user) {
         return userMapper.toUserChallengeResponseDto(user.getUserChallenges().stream().filter(challenge -> challenge.getStatus().equals("uncompleted")).findFirst().orElseThrow(() -> new RuntimeException("Challenge not found")));
+    }
+
+    public UserChallengeResponseDto getCompletedChallenge(User user) {
+        return userMapper.toUserChallengeResponseDto(user.getUserChallenges().stream().filter(challenge -> challenge.getStatus().equals("completed")).findFirst().orElseThrow(() -> new RuntimeException("Challenge not found")));
+    }
+    //findByUserIdAndDailyExerciseWorkoutProgramId
+    public Set<UserDailyChallengeResponseDto> findByUserAndWorkoutProgram(Integer userId, Integer workoutProgramId) {
+        Set<UserDailyChallenge> userChallenges = userDailyChallengeRepository.findByUserIdAndDailyExercise_WorkoutProgramId(userId, workoutProgramId);
+        return userMapper.toListUserDailyChallengeResponseDto(userChallenges);
     }
 }

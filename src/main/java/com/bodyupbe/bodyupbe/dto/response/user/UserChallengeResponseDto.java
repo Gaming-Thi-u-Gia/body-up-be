@@ -1,11 +1,9 @@
 package com.bodyupbe.bodyupbe.dto.response.user;
 
 import com.bodyupbe.bodyupbe.dto.response.community.PostSlimResponse;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.DailyExerciseUserResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
-import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.user.User;
-import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,4 +21,5 @@ public class UserChallengeResponseDto {
     User user;
     WorkoutProgramResponseDto workoutProgram;
     Set<PostSlimResponse> posts;
+    Set<DailyExerciseUserResponseDto> dailyExercises;
 }
