@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -22,15 +24,21 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @Column(length = 2000)
     String name;
+    @Column(length = 2000)
+    String detail;
     double avgStar;
     @Column(name="prep_time")
-    String prepTime;
+    int prepTime;
     @Column(name = "cook_time")
-    String cookTime;
+    int cookTime;
+    @Column(length = 2000)
     String img;
-    @Column(name = "cook_detail")
-    String cookDetail;
+    @Column(name = "cook_instruction")
+    String cookingInstruction;
+    @CreationTimestamp
+    Date createAt;
 
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     @JsonManagedReference

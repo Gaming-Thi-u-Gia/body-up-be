@@ -20,6 +20,7 @@ public class UserProgressPhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     boolean visibility;
+    @Column(length = 2000)
     String caption;
     Date date;
     @Column(name = "img_url")
@@ -28,6 +29,8 @@ public class UserProgressPhoto {
     String photoAngle;
     @Column(name = "create_at")
     Date createAt;
+    @Column(name = "img_url")
+    String imgUrl;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

@@ -19,7 +19,9 @@ public class WorkoutProgramCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column(length = 2000)
     String name;
+    @Column(length = 2000)
     String type;
 
     @ManyToMany(mappedBy = "workoutProgramCategories")
