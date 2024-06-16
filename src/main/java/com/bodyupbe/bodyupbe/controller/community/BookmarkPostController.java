@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.controller.community;
 
+import com.bodyupbe.bodyupbe.dto.response.community.BookmarkResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -27,7 +28,7 @@ public class BookmarkPostController {
     UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<Optional<UserResponseDto>> bookmarkPost(@RequestParam int postId) {
+    public ResponseEntity<BookmarkResponseDto> bookmarkPost(@RequestParam int postId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);

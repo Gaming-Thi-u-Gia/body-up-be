@@ -40,11 +40,25 @@ public class PostController {
     //
     @GetMapping("/getAllPostByCategory")
     public ResponseEntity <List<PostResponseDto>> getAllPostByCategoryId(@RequestParam int categoryId) {
-        return ResponseEntity.ok(postService.getPostAllByCategoryId(categoryId));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isPresent()){
+            return ResponseEntity.ok(postService.getPostAllByCategoryId(Optional.of(optionalUser.get().getId()),categoryId));
+        }
+        else {
+            return ResponseEntity.ok(postService.getPostAllByCategoryId(Optional.empty(),categoryId));
+        }
     }
     @GetMapping("/getAllPostByUser")
-    public ResponseEntity <List<PostResponseDto>> getAllPostByUserId(@RequestParam int userId) {
-        return ResponseEntity.ok(postService.getPostByUserId(userId));
+    public ResponseEntity <List<PostResponseDto>> getAllPostByUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.getPostByUserId(Optional.of(optionalUser.get().getId())));
     }
     @DeleteMapping("/deletePost")
     public ResponseEntity<String> deletePost(@RequestParam int postId) {
@@ -53,9 +67,16 @@ public class PostController {
     }
     @GetMapping("/getPostById")
     public ResponseEntity <PostResponseDto> getPostById(@RequestParam int postId) {
-        return ResponseEntity.ok(postService.getPostById(postId));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isPresent()){
+            return ResponseEntity.ok(postService.getPostById(Optional.of(optionalUser.get().getId()), postId));
+        }
+        else {
+            return ResponseEntity.ok(postService.getPostById(Optional.empty(), postId));
+        }
     }
-
     @GetMapping("/getAllPostByBadgeId")
     public ResponseEntity <List<PostResponseDto>> getAllPostByBadgeId(@RequestParam int badgeId) {
         return ResponseEntity.ok(postService.getAllPostByBadgeId(badgeId));

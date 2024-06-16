@@ -22,6 +22,7 @@ public class PostResponseDto {
     Date dayBefore;
     Date dayAfter;
     Date createdAt;
+    boolean isBookmarked;
     UserResponseDto user;
     CategoryCommunityDto categoryCommunity;
     BadgeDto badge;

@@ -2,8 +2,10 @@ package com.bodyupbe.bodyupbe.service.community;
 
 import com.bodyupbe.bodyupbe.dto.mapper.community.PostMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
+import com.bodyupbe.bodyupbe.dto.response.community.BookmarkResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.PostRepository;
@@ -29,19 +31,37 @@ public class BookmarkPostService {
     UserMapper userMapper;
     PostMapper postMapper;
 
-    public Optional<UserResponseDto> bookmarkPost(User user, int postId) {
+
+    public BookmarkResponseDto bookmarkPost(User user, int postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-
+        UserSlimResponseDto userSlimResponseDto = userMapper.toUserSlimResponseDto(user);
+        boolean isBookmarked;
         if(user.getBookmarkPosts().contains(post)) {
             user.getBookmarkPosts().remove(post);
             post.getBookmarkUsers().remove(user);
-            return Optional.of(userMapper.toUserResponseDto(userRepository.save(user)));
-        }
+            isBookmarked = false;
+        } else {
+            user.getBookmarkPosts().add(post);
+            post.getBookmarkUsers().add(user);
+            isBookmarked = true;
 
-        user.getBookmarkPosts().add(post);
-        post.getBookmarkUsers().add(user);
-        return Optional.of(userMapper.toUserResponseDto(userRepository.save(user)));
+        }
+        userRepository.save(user);
+        return new BookmarkResponseDto(userSlimResponseDto, postId, isBookmarked);
+    }
+
+    public BookmarkResponseDto checkBookmarkPost(User user, int postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+        UserSlimResponseDto userSlimResponseDto = userMapper.toUserSlimResponseDto(user);
+        boolean isBookmarked;
+        if(user.getBookmarkPosts().contains(post)) {
+            isBookmarked = true;
+        } else {
+            isBookmarked = false;
+        }
+        return new BookmarkResponseDto(userSlimResponseDto, postId, isBookmarked);
     }
 
 
