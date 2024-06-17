@@ -79,7 +79,7 @@ public class PostController {
     }
 
     @GetMapping("/getAllPostBookmark")
-    public ResponseEntity <List<PostResponseDto>> getAllPostBookmark() {
+    public ResponseEntity <List<PostResponseDto>> getAllPostBookmark(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
@@ -87,7 +87,7 @@ public class PostController {
             throw new RuntimeException("User not found");
         }
 
-        return ResponseEntity.ok(postService.getAllPostBookmarkByUserId(Optional.of(optionalUser.get().getId())));
+        return ResponseEntity.ok(postService.getAllPostBookmarkByUserId(Optional.of(optionalUser.get().getId()), page, size));
 
     }
     @GetMapping("/getAllPostByBadgeId")

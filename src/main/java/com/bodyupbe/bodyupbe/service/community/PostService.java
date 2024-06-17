@@ -15,6 +15,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,8 +70,11 @@ public class PostService {
         }
         return postResponseDto;
     }
-    public List<PostResponseDto> getAllPostBookmarkByUserId(Optional<Integer> userId) {
-        List<Post> posts = postRepository.findPostByBookmarkUsers_Id(userId.get());
+    public List<PostResponseDto> getAllPostBookmarkByUserId(Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByBookmarkUsers_Id(userId.get(), pageable);
+        List<Post> posts = postsPage.getContent();
+
         List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
         for (PostResponseDto p : postResponseDto) {
             p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
