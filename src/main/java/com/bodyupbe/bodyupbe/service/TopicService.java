@@ -4,6 +4,7 @@ import com.bodyupbe.bodyupbe.dto.mapper.TopicMapper;
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.TopicVideoResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.repository.TopicRepository;
@@ -67,5 +68,10 @@ public class TopicService {
     public Set<TopicWorkoutProgramResponseDto> getTopicWithWorkoutProgram() {
         Set<Topic> topics = topicRepository.findTopicsByTopic("workout-program");
         return topicMapper.toTopicWorkoutProgram(topics);
+    }
+
+    public Set<TopicVideoResponseDto> getTopicWithWorkoutVideo() {
+        Set<Topic> topics = topicRepository.findTopicsByTopic("workout-video");
+        return topicMapper.toTopicVideo(topics);
     }
 }

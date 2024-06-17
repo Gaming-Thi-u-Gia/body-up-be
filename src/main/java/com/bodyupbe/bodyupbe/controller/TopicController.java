@@ -3,6 +3,7 @@ package com.bodyupbe.bodyupbe.controller;
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.TopicVideoResponseDto;
 import com.bodyupbe.bodyupbe.service.TopicService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -67,5 +68,10 @@ public class TopicController {
     @GetMapping("/getTopicWithWorkoutProgram")
     public ResponseEntity<Set<TopicWorkoutProgramResponseDto>> getTopicWithWorkoutProgram() {
         return ResponseEntity.ok(topicService.getTopicWithWorkoutProgram());
+    }
+
+    @GetMapping("/getTopicWithWorkoutVideo")
+    public ResponseEntity<Set<TopicVideoResponseDto>> getTopicWithWorkoutVideo() {
+        return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo());
     }
 }

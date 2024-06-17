@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.response.workout_video;
 
+import com.bodyupbe.bodyupbe.dto.request.TopicDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoCategoryRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +20,6 @@ public class VideoResponseDto {
     String url;
     boolean isFeatured;
 
-    Set<VideoCategorySlimResponseDto> videoCategories;
+    Set<TopicDto> videoTopics;
+    Set<VideoCategoryRequestDto> videoCategories;
 }

@@ -3,6 +3,7 @@ package com.bodyupbe.bodyupbe.dto.mapper;
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.TopicVideoResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
 import org.mapstruct.Mapper;
 
@@ -22,4 +23,6 @@ public interface TopicMapper {
     Set<TopicResponseDto> toTopic(Set<Topic> topics);
 
     Set<TopicWorkoutProgramResponseDto> toTopicWorkoutProgram(Set<Topic> topics);
+
+    Set<TopicVideoResponseDto> toTopicVideo(Set<Topic> topics);
 }
