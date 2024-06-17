@@ -67,6 +67,15 @@ public class PostService {
         }
         return postResponseDto;
     }
+    public List<PostResponseDto> getAllPostBookmarkByUserId(Optional<Integer> userId) {
+        List<Post> posts = postRepository.findPostByBookmarkUsers_Id(userId.get());
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        for (PostResponseDto p : postResponseDto) {
+            p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+        }
+        return postResponseDto;
+    }
+
 
     public void deletePost(int postId) {
         postRepository.deleteById(postId);
@@ -80,6 +89,8 @@ public class PostService {
         }
         return postResponseDto;
     }
+
+
 
     public List<PostResponseDto> getAllPostByBadgeId(int badgeId) {
         List<Post> posts = postRepository.findPostByBadge_Id(badgeId);

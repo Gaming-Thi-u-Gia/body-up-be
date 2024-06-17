@@ -13,7 +13,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findPostByUser_Id(int userId);
     List<Post> findPostByBadge_Id(int badgeId);
 
-
+    List<Post> findPostByBookmarkUsers_Id(int userId);
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Post p JOIN p.bookmarkUsers bu WHERE bu.id = :userId AND p.id = :postId")
     boolean findBookmarkedByUserIdAndPostId(int userId, int postId);
 }
