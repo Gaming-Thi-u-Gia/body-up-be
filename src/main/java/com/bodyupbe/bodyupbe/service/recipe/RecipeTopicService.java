@@ -29,44 +29,52 @@ public class RecipeTopicService {
     TopicRepository topicRepository;
     RecipeRepository recipeRepository;
     TopicMapper topicMapper;
+
     public Set<TopicRecipeResponseSlimDto> getAllTopicRecipe() {
         List<Topic> topics = topicRepository.findByTopic("recipe");
         return topicMapper.toSetTopicRecipeResponseSlimDto(topics);
     }
-    public TopicRecipeSlimAndSetRecipeCardResponseDto getRecipeByTopicId(int topicId){
-        TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto;
-        switch (topicId){
-            case -1->{
-                Topic topic = new Topic();
-                topic.setId(-1);
-                topic.setName("All Recipes");
-                topic.setDescription("Try out all the recipes and make something new!");
-                topic.setRecipes(new HashSet<>(recipeRepository.findAll()));
-                topicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topic);
-            }
-            case 0 ->{
-                Topic topic = new Topic();
-                topic.setId(0);
-                topic.setName("Latest Recipes");
-                topic.setDescription("Try out the latest recipes and make something new!");
-                 topic.setRecipes(new HashSet<>(recipeRepository.findByOrderByCreateAtDesc()));
-                topicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topic);
-            }
-            default -> {
-                Topic topic = topicRepository.findById(topicId).orElseThrow(() -> new RuntimeException("Topic not found"));
-                topicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topic);
 
-            }
+    public TopicRecipeSlimAndSetRecipeCardResponseDto getRecipeByTopicId(int topicId, Optional<Integer> userId) {
+        Topic topic = new Topic();
+
+        if (topicId == -1) {
+            topic.setId(-1);
+            topic.setName("All Recipes");
+            topic.setDescription("Try out all the recipes and make something new!");
+            topic.setRecipes(new HashSet<>(recipeRepository.findAll()));
+        } else if (topicId == 0) {
+            topic.setId(0);
+            topic.setName("Latest Recipes");
+            topic.setDescription("Try out the latest recipes and make something new!");
+            topic.setRecipes(new HashSet<>(recipeRepository.findByOrderByCreateAtDesc()));
         }
-        return  topicRecipeSlimAndSetRecipeCardResponseDto;
+        else{
+            topic = topicRepository.findById(topicId).orElseThrow(() -> new RuntimeException("Topic not found"));
+        }
+        TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toTopicRecipeSlimAndSetRecipeCardResponseDto(topic);
+
+        userId.ifPresent(id -> {
+            topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes().forEach(recipe -> {
+                recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(id, recipe.getId()));
+                recipe.setCurrentRating(recipeRepository.findRatingStarRecipeByUserId(id, recipe.getId())
+                        .map(RatingRecipe::getStar)
+                        .orElse(0));
+            });
+        });
+
+        return topicRecipeSlimAndSetRecipeCardResponseDto;
     }
-    public Set<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopicRecipe(){
+
+
+    public Set<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopicRecipe() {
         List<Topic> topics = topicRepository.findByTopic("recipe");
-        return topicMapper.toSetTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topics);
+        return topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
     }
+
     public Set<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopic4Recipe(Optional<Integer> userId) {
         List<Topic> topics = topicRepository.findByTopic("recipe");
-        Set<TopicRecipeSlimAndSetRecipeCardResponseDto> setTopicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toSetTopicRecipeSlimAndSetRecipeSlimVsSetRecipeCategorySlimResponseDto(topics);
+        Set<TopicRecipeSlimAndSetRecipeCardResponseDto> setTopicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
 
         if (userId.isPresent()) {
             setTopicRecipeSlimAndSetRecipeCardResponseDto.forEach(topic -> {

@@ -30,8 +30,15 @@ public class TopicRecipeController {
         return ResponseEntity.ok(topicRecipeService.getAllTopicRecipe());
     }
     @GetMapping("/topicId")
-    public ResponseEntity<TopicRecipeSlimAndSetRecipeCardResponseDto> getRecipeByTopicId(int topicId){
-        return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId));
+    public ResponseEntity<TopicRecipeSlimAndSetRecipeCardResponseDto> getRecipeByTopicId(@RequestParam int topicId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(currentPrincipalName);
+        if(user.isPresent()){
+            return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId, Optional.of(user.get().getId())));
+        }else{
+            return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId, Optional.empty()));
+        }
     }
     @GetMapping("/topic")
     public ResponseEntity<Set<TopicRecipeSlimAndSetRecipeCardResponseDto>> getRecipeByTopic(){

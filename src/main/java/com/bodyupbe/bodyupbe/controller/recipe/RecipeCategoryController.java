@@ -3,6 +3,7 @@ package com.bodyupbe.bodyupbe.controller.recipe;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeCategoryRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategorySlimAndSetRecipeSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryTableResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeCategoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,10 @@ public class RecipeCategoryController {
     public ResponseEntity<RecipeCategorySlimAndSetRecipeSlimResponseDto> getRecipeById(@RequestParam int recipeCategoryId){
         return ResponseEntity.ok(recipeCategoryService.getRecipeCategoryById(recipeCategoryId));
     }
-    @GetMapping("/all")
-    public ResponseEntity<Set<RecipeCategorySlimAndSetRecipeSlimResponseDto>> getAllRecipe(){
-        return ResponseEntity.ok(recipeCategoryService.getAllRecipeCategories());
-    }
+//    @GetMapping("/all")
+//    public ResponseEntity<Set<RecipeCategorySlimAndSetRecipeSlimResponseDto>> getAllRecipe(){
+//        return ResponseEntity.ok(recipeCategoryService.getAllRecipeCategories());
+//    }
     @PutMapping("/update")
     public ResponseEntity<RecipeCategorySlimAndSetRecipeSlimResponseDto> updateRecipe(@RequestParam int recipeCategoryId, @RequestBody  RecipeCategoryRequestDto request){
         return ResponseEntity.ok(recipeCategoryService.updateRecipeCategory(recipeCategoryId,request));
@@ -43,5 +44,8 @@ public class RecipeCategoryController {
         public ResponseEntity<Set<RecipeCategoryResponseSlimDto>> getPopularCategory(){
         return ResponseEntity.ok(recipeCategoryService.getPopularCategory());
     }
+    @GetMapping("/table")
+        public ResponseEntity<Set<RecipeCategoryTableResponseDto>> getAllRecipeCategoriesWithEachType() {
+        return ResponseEntity.ok(recipeCategoryService.getAllRecipeCategoriesWithEachType());
+    }
 }
-

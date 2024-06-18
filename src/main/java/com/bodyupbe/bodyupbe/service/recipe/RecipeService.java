@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.service.recipe;
 
+import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeCategoryMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.*;
@@ -7,6 +8,7 @@ import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.RatingRecipeRepository;
+import com.bodyupbe.bodyupbe.repository.RecipeCategoryRepository;
 import com.bodyupbe.bodyupbe.repository.RecipeRepository;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import lombok.AccessLevel;
@@ -15,7 +17,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,6 +30,8 @@ public class RecipeService {
     RecipeRepository recipeRepository;
     UserRepository userRepository;
     private final RatingRecipeRepository ratingRecipeRepository;
+    RecipeCategoryMapper recipeCategoryMapper;
+    private final RecipeCategoryRepository recipeCategoryRepository;
 
     public RecipeResponseDto addRecipe(RecipeRequestDto request) {
         Recipe recipe = recipeMapper.toRecipe(request);
@@ -113,7 +116,8 @@ public class RecipeService {
         });
         return setRecipeCardResponseDtos;
     }
-    public Set<RecipeCardResponseDto> getRecipeByName(String nameRecipe, Optional<Integer> userId) {
+    public RecipeCardSearchResponseDto getRecipeByName(String nameRecipe, Optional<Integer> userId) {
+        RecipeCardSearchResponseDto recipeCardSearchResponseDto = new RecipeCardSearchResponseDto();
         Set<RecipeCardResponseDto> setRecipeCardResponseDtos = recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipeByNameContainingIgnoreCase(nameRecipe));
         setRecipeCardResponseDtos.forEach(setRecipeCardResponseDto -> {
                     if (userId.isPresent()) {
@@ -128,9 +132,19 @@ public class RecipeService {
                     }
                 }
         );
-    return setRecipeCardResponseDtos.stream().limit(8).collect(Collectors.toSet());
+        recipeCardSearchResponseDto.setRecipes(setRecipeCardResponseDtos);
+        return recipeCardSearchResponseDto;
     }
-    public Set<RecipeCardResponseDto> getRecipeByCategory(Set<Integer> categoryIds, long CategorySize){
-        return recipeMapper.toSetRecipeCardResponseDto(recipeRepository.findRecipesByCategoryIds(categoryIds, categoryIds.size()));
+    public RecipeFilterResponseDto getRecipeByCategory(Set<Integer> categoryIds) {
+        RecipeFilterResponseDto recipeFilterResponseDto = new RecipeFilterResponseDto();
+        recipeFilterResponseDto.setRecipes(
+                recipeMapper.toSetRecipeCardResponseDto(
+                        recipeRepository.findRecipesByCategoryIds(categoryIds, categoryIds.size())
+                )
+        );
+        recipeFilterResponseDto.setRecipeCategories(recipeCategoryMapper.toSetRecipeCategoryResponseSlimDto(recipeCategoryRepository.findAllByIdIn(categoryIds)));
+        return recipeFilterResponseDto;
     }
+
+
 }

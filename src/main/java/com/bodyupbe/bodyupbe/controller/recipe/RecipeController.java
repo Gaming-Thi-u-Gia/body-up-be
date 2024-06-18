@@ -1,10 +1,7 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCardResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeDetailResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeLatestResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeService;
@@ -86,7 +83,7 @@ public class RecipeController {
         }
     }
     @GetMapping("/name")
-    public ResponseEntity<Set<RecipeCardResponseDto>> getRecipeByName(@RequestParam String recipeName) {
+    public ResponseEntity<RecipeCardSearchResponseDto> getRecipeByName(@RequestParam String recipeName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
@@ -97,7 +94,7 @@ public class RecipeController {
         }
     }
     @GetMapping("/category")
-    public ResponseEntity<Set<RecipeCardResponseDto>> getRecipeByCategory(@RequestParam Set<Integer> categoryIds) {
-        return ResponseEntity.ok(recipeService.getRecipeByCategory(categoryIds, categoryIds.size()));
+    public ResponseEntity<RecipeFilterResponseDto>  getRecipeByCategory(@RequestParam Set<Integer> categoryIds) {
+        return ResponseEntity.ok(recipeService.getRecipeByCategory(categoryIds));
     }
 }
