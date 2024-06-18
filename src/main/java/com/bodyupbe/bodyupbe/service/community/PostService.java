@@ -104,4 +104,10 @@ public class PostService {
     }
 
 
+//    public List<PostResponseDto>  getPostsCommentedAndCommentByUser(User user ) {
+//        List<Post> posts = postRepository.findPostsCommentedByUserId(user.getId());
+//        return postMapper.toListPostResponseDto(posts);
+//    }
+
+
 }
