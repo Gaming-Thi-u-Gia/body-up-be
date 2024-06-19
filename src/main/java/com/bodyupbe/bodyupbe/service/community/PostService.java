@@ -1,16 +1,17 @@
 package com.bodyupbe.bodyupbe.service.community;
 
+import com.bodyupbe.bodyupbe.dto.mapper.community.CommentMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.community.PostMapper;
 import com.bodyupbe.bodyupbe.dto.request.community.PostRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.community.CommentResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.community.PostCommentSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.model.community.Badge;
 import com.bodyupbe.bodyupbe.model.community.CategoryCommunity;
+import com.bodyupbe.bodyupbe.model.community.Comment;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.user.User;
-import com.bodyupbe.bodyupbe.repository.BadgeRepository;
-import com.bodyupbe.bodyupbe.repository.CategoryCommunityRepository;
-import com.bodyupbe.bodyupbe.repository.PostRepository;
-import com.bodyupbe.bodyupbe.repository.UserRepository;
+import com.bodyupbe.bodyupbe.repository.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,8 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -33,6 +36,8 @@ public class PostService {
     UserRepository userRepository;
     BadgeRepository badgeRepository;
     CategoryCommunityRepository categoryCommunityRepository;
+    CommentRepository commentRepository;
+    CommentMapper commentMapper;
 
     public PostResponseDto createPost(PostRequestDto postDto, User user, int badgeId, int categoryId) {
         Badge badge = badgeRepository.findById(badgeId).orElseThrow(() -> new RuntimeException("Badge not found"));
@@ -104,10 +109,18 @@ public class PostService {
     }
 
 
-//    public List<PostResponseDto>  getPostsCommentedAndCommentByUser(User user ) {
-//        List<Post> posts = postRepository.findPostsCommentedByUserId(user.getId());
-//        return postMapper.toListPostResponseDto(posts);
-//    }
+    public List<PostCommentSlimDto>  getPostsCommentedAndCommentByUser(User user ) {
+        List<Post> posts = postRepository.findPostsCommentedByUserId(user.getId());
+        List<PostCommentSlimDto> postResults = new ArrayList<>();
+        for (Post post : posts) {
+           Set<Comment> comments = commentRepository.findCommentByPost_IdAndUser_Id(post.getId(), user.getId());
+           Set<CommentResponseDto> commentResults= commentMapper.toSetCommentResponseDto(comments);
+           PostCommentSlimDto postResponseDto = postMapper.toPostCommentSlimDto(post);
+           postResponseDto.setComments(commentResults);
+            postResults.add(postResponseDto);
+        }
+        return postResults;
+    }
 
 
 }

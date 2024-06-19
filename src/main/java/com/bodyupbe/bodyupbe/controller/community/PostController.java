@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.controller.community;
 
 
 import com.bodyupbe.bodyupbe.dto.request.community.PostRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.community.PostCommentSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostSlimResponse;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -93,6 +94,17 @@ public class PostController {
     @GetMapping("/getAllPostByBadgeId")
     public ResponseEntity <List<PostResponseDto>> getAllPostByBadgeId(@RequestParam int badgeId) {
         return ResponseEntity.ok(postService.getAllPostByBadgeId(badgeId));
+    }
+
+    @GetMapping("/getPostsCommented")
+    public ResponseEntity <List<PostCommentSlimDto>> getPostsCommented() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.getPostsCommentedAndCommentByUser(optionalUser.get()));
     }
 
 
