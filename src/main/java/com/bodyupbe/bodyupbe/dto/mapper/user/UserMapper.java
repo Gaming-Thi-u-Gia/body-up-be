@@ -1,10 +1,8 @@
 package com.bodyupbe.bodyupbe.dto.mapper.user;
 import com.bodyupbe.bodyupbe.dto.request.user.UserProgressPhotoRequestDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserProgressPhotoResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.*;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
@@ -31,4 +29,10 @@ public interface UserMapper {
     Set<UserChallengeResponseDto> toListUserChallengeResponseDto(Set<UserChallenge> userChallenges);
 
     Set<UserDailyChallengeResponseDto> toListUserDailyChallengeResponseDto(Set<UserDailyChallenge> userDailyChallenges);
+
+    Set<UserChallengeSlimResponseDto> toListUserChallengeSlimResponseDto(Set<UserChallenge> userChallenges);
+
+    UserChallengeSlimResponseDto toUserChallengeSlimResponseDto(UserChallenge userChallenge);
+
+    Set<WorkoutProgramSlimResponseDto> toListWorkoutProgramSlimResponseDto(Set<UserChallenge> userChallenges);
 }

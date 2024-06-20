@@ -1,10 +1,14 @@
 package com.bodyupbe.bodyupbe.service.user;
 
 import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
+import com.bodyupbe.bodyupbe.dto.mapper.workout.WorkoutMapper;
 import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
@@ -19,7 +23,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,9 +36,10 @@ public class UserChallengeService {
     UserMapper userMapper;
     private final WorkoutProgramRepository workoutProgramRepository;
     private final UserDailyChallengeRepository userDailyChallengeRepository;
+    private final WorkoutMapper workoutMapper;
 
-    public Set<UserChallengeResponseDto> getAllUserChallenges(User user) {
-        return userMapper.toListUserChallengeResponseDto(user.getUserChallenges());
+    public Set<UserChallengeSlimResponseDto> getAllUserChallenges(User user) {
+        return userMapper.toListUserChallengeSlimResponseDto(user.getUserChallenges());
     }
 
     public UserChallengeResponseDto addUserChallenge(User user, int workoutProgramId) {
@@ -62,16 +69,24 @@ public class UserChallengeService {
         return userMapper.toUserChallengeResponseDto(userChallenge);
     }
 
-    public UserChallengeResponseDto getUncompletedChallenge(User user) {
-        return userMapper.toUserChallengeResponseDto(user.getUserChallenges().stream().filter(challenge -> challenge.getStatus().equals("uncompleted")).findFirst().orElseThrow(() -> new RuntimeException("Challenge not found")));
+    public UserChallengeSlimResponseDto getUncompletedChallenge(User user) {
+        return userMapper.toUserChallengeSlimResponseDto(user.getUserChallenges().stream()
+                .filter(challenge -> "uncompleted".equals(challenge.getStatus()))
+                .findFirst().orElseThrow(() -> new RuntimeException("Challenge not found")));
     }
 
-    public UserChallengeResponseDto getCompletedChallenge(User user) {
-        return userMapper.toUserChallengeResponseDto(user.getUserChallenges().stream().filter(challenge -> challenge.getStatus().equals("completed")).findFirst().orElseThrow(() -> new RuntimeException("Challenge not found")));
+    public Set<UserChallengeSlimResponseDto> getCompletedChallenge(User user) {
+        return userMapper.toListUserChallengeSlimResponseDto(user.getUserChallenges().stream()
+                .filter(challenge -> "completed".equals(challenge.getStatus()))
+                .collect(Collectors.toSet()));
     }
     //findByUserIdAndDailyExerciseWorkoutProgramId
     public Set<UserDailyChallengeResponseDto> findByUserAndWorkoutProgram(Integer userId, Integer workoutProgramId) {
         Set<UserDailyChallenge> userChallenges = userDailyChallengeRepository.findByUserIdAndDailyExercise_WorkoutProgramId(userId, workoutProgramId);
         return userMapper.toListUserDailyChallengeResponseDto(userChallenges);
+    }
+    //get all workout programs
+    public List<WorkoutProgramSlimResponseDto> getAllWorkoutPrograms(User user) {
+        return workoutMapper.toListWorkoutProgramSlimResponseDto(workoutProgramRepository.findAll());
     }
 }

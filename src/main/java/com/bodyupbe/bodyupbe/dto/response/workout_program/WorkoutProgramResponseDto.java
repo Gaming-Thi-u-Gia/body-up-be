@@ -29,6 +29,5 @@ public class WorkoutProgramResponseDto {
     String year;
     Date releaseDate;
     Set<DailyExercise> dailyExercises;
-    Set<UserChallengeSlimResponseDto> userChallenges;
     Set<WorkoutProgramCategorySlimResponseDto> workoutProgramCategories;
 }

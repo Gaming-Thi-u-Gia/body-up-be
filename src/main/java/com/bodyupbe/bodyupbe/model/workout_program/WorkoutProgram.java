@@ -36,6 +36,8 @@ public class WorkoutProgram {
     String banner;
     @Column(name = "release_date")
     Date releaseDate;
+    String equipment;
+    String type;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
     @JsonManagedReference

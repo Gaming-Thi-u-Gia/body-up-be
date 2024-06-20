@@ -2,8 +2,9 @@ package com.bodyupbe.bodyupbe.controller.user;
 
 import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.workout_program.DailyExerciseUserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.DailyVideoResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -45,7 +47,7 @@ public class UserChallengeController {
 
     // Get all challenges of the user
     @GetMapping("/getAllChallenges")
-    public ResponseEntity<Set<UserChallengeResponseDto>> getAllChallenges() {
+    public ResponseEntity<Set<UserChallengeSlimResponseDto>> getAllChallenges() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
@@ -82,7 +84,7 @@ public class UserChallengeController {
 
     //Get uncompleted challenge of the user
     @GetMapping("/getUncompletedChallenge")
-    public ResponseEntity<UserChallengeResponseDto> getUncompletedChallenge() {
+    public ResponseEntity<UserChallengeSlimResponseDto> getUncompletedChallenge() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
@@ -93,7 +95,7 @@ public class UserChallengeController {
     }
     //Get completed challenge of the user
     @GetMapping("/getCompletedChallenge")
-    public ResponseEntity<UserChallengeResponseDto> getCompletedChallenge() {
+    public ResponseEntity<Set<UserChallengeSlimResponseDto>> getCompletedChallenge() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
@@ -124,5 +126,16 @@ public class UserChallengeController {
             throw new RuntimeException("User not found");
         }
         return ResponseEntity.ok(userChallengeService.findByUserAndWorkoutProgram(optionalUser.get().getId(), workoutProgramId));
+    }
+    //get all workout programs
+    @GetMapping("/getAllWorkoutPrograms")
+    public ResponseEntity<List<WorkoutProgramSlimResponseDto>> getAllWorkoutPrograms() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(userChallengeService.getAllWorkoutPrograms(optionalUser.get()));
     }
 }

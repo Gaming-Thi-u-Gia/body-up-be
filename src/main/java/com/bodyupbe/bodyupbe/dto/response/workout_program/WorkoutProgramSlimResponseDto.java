@@ -22,5 +22,7 @@ public class WorkoutProgramSlimResponseDto {
     String day;
     String time;
     String year;
+    String banner;
+    String img;
     Date releaseDate;
 }
