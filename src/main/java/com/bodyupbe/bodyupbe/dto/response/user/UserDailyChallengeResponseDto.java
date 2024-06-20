@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.dto.response.user;
 
 
 import com.bodyupbe.bodyupbe.dto.response.workout_program.DailyExerciseUserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.DailyExerciseUserSlimResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,5 @@ import java.util.Set;
 public class UserDailyChallengeResponseDto {
     int id;
     String status;
-    Set<DailyExerciseUserResponseDto> dailyExercises;
+    DailyExerciseUserSlimResponseDto dailyExercise;
 }

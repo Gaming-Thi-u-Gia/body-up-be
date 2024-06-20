@@ -138,4 +138,27 @@ public class UserChallengeController {
         }
         return ResponseEntity.ok(userChallengeService.getAllWorkoutPrograms(optionalUser.get()));
     }
+    //getAllDay
+    @GetMapping("/getAllDay")
+    public ResponseEntity<Set<UserDailyChallengeResponseDto>> getAllDay(@RequestParam Integer workoutProgramId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(userChallengeService.getAllDay(optionalUser.get(),workoutProgramId));
+    }
+
+    //get first uncomplete challenge
+    @GetMapping("/getFirstUncompletedChallenge")
+    public ResponseEntity<UserDailyChallengeResponseDto> getFirstUncompletedChallenge() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(userChallengeService.getFirstUncompletedChallenge(optionalUser.get()));
+    }
 }

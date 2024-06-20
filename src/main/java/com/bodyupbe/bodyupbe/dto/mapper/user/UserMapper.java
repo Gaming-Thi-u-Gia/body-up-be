@@ -35,4 +35,6 @@ public interface UserMapper {
     UserChallengeSlimResponseDto toUserChallengeSlimResponseDto(UserChallenge userChallenge);
 
     Set<WorkoutProgramSlimResponseDto> toListWorkoutProgramSlimResponseDto(Set<UserChallenge> userChallenges);
+
+    UserDailyChallengeResponseDto toUserDailyChallengeResponseDto(UserDailyChallenge userDailyChallenge);
 }

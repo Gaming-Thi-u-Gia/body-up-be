@@ -6,8 +6,6 @@ import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserDailyChallengeSlimResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
@@ -37,6 +35,7 @@ public class UserChallengeService {
     private final WorkoutProgramRepository workoutProgramRepository;
     private final UserDailyChallengeRepository userDailyChallengeRepository;
     private final WorkoutMapper workoutMapper;
+    private final UserChallengeRepository userChallengeRepository;
 
     public Set<UserChallengeSlimResponseDto> getAllUserChallenges(User user) {
         return userMapper.toListUserChallengeSlimResponseDto(user.getUserChallenges());
@@ -88,5 +87,14 @@ public class UserChallengeService {
     //get all workout programs
     public List<WorkoutProgramSlimResponseDto> getAllWorkoutPrograms(User user) {
         return workoutMapper.toListWorkoutProgramSlimResponseDto(workoutProgramRepository.findAll());
+    }
+    //get all days of a workout program
+    public Set<UserDailyChallengeResponseDto> getAllDay(User user,Integer workoutProgramId) {
+        return userMapper.toListUserDailyChallengeResponseDto(userDailyChallengeRepository.findAllByUserAndWorkoutProgram(user.getId(),workoutProgramId));
+    }
+
+    //get first uncompleted challenge
+    public UserDailyChallengeResponseDto getFirstUncompletedChallenge(User user) {
+        return userMapper.toUserDailyChallengeResponseDto(userDailyChallengeRepository.findByStatusSortedByExerciseDay("uncomplete"));
     }
 }
