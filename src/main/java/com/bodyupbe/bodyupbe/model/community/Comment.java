@@ -49,4 +49,14 @@ public class Comment {
     @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<Comment> comments;
+
+
+    @Column(nullable = true)
+    Integer parentId;
+
+    @OneToMany(mappedBy = "parentId", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    Set<Comment> children;
+
+
 }

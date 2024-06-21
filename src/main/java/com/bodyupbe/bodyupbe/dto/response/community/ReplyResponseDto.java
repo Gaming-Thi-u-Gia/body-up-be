@@ -7,17 +7,14 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
-import java.util.Set;
 
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommentResponseDto {
+public class ReplyResponseDto {
     Integer id;
     String detail;
     int upVote;
     Date createAt;
     UserSlimResponseDto user;
-    Set<CommentResponseDto> children;
-    Integer parentId;
 }

@@ -30,14 +30,23 @@ public class CommentPostService {
     CommentRepository commentRepository;
     public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user, int postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        Comment parentComment = null;
+        if(commentRequestDto.getParentId() != null) {
+            parentComment = commentRepository.findById(commentRequestDto.getParentId()).orElseThrow(() -> new RuntimeException("Parent comment not found"));
+        }
         Comment comment = Comment.builder()
                 .detail(commentRequestDto.getDetail())
                 .upVote(commentRequestDto.getUpVote())
                 .user(user)
                 .post(post)
+                .parentId(commentRequestDto.getParentId())
                 .build();
         user.getComments().add(comment);
         post.getComments().add(comment);
+        if(parentComment!= null) {
+            parentComment.getChildren().add(comment);
+            comment.setParentId(parentComment.getId());
+        }
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
     }
 
@@ -65,5 +74,8 @@ public class CommentPostService {
         comment.setUpVote(upVote);
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
     }
+
+
+
 
 }

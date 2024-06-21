@@ -113,7 +113,7 @@ public class PostService {
         List<Post> posts = postRepository.findPostsCommentedByUserId(user.getId());
         List<PostCommentSlimDto> postResults = new ArrayList<>();
         for (Post post : posts) {
-           Set<Comment> comments = commentRepository.findCommentByPost_IdAndUser_Id(post.getId(), user.getId());
+           Set<Comment> comments = commentRepository.findCommentByPost_IdAndUser_IdOrderByCreateAtDesc(post.getId(), user.getId());
            Set<CommentResponseDto> commentResults= commentMapper.toSetCommentResponseDto(comments);
            PostCommentSlimDto postResponseDto = postMapper.toPostCommentSlimDto(post);
            postResponseDto.setComments(commentResults);
@@ -121,6 +121,11 @@ public class PostService {
         }
         return postResults;
     }
+
+
+
+
+
 
 
 }
