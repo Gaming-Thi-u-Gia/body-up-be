@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -96,5 +97,12 @@ public class UserChallengeService {
     //get first uncompleted challenge
     public UserDailyChallengeResponseDto getFirstUncompletedChallenge(User user) {
         return userMapper.toUserDailyChallengeResponseDto(userDailyChallengeRepository.findByStatusSortedByExerciseDay("uncomplete"));
+    }
+
+    //mark user daily challenge as completed
+    public void markChallengeAsCompleted(User user, int challengeId) {
+        UserDailyChallenge userDailyChallenge = userDailyChallengeRepository.findById(challengeId).orElseThrow(() -> new RuntimeException("Challenge not found"));
+        userDailyChallenge.setStatus("complete");
+        userDailyChallengeRepository.save(userDailyChallenge);
     }
 }

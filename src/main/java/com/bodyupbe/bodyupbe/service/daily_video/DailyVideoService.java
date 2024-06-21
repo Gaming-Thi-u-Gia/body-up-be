@@ -9,6 +9,7 @@ import com.bodyupbe.bodyupbe.model.workout_video.DailyVideo;
 import com.bodyupbe.bodyupbe.repository.DailyExerciseRepository;
 import com.bodyupbe.bodyupbe.repository.DailyVideoRepository;
 
+import com.bodyupbe.bodyupbe.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,10 +25,27 @@ import java.util.Set;
 public class DailyVideoService {
     DailyVideoRepository dailyVideoRepository;
     private final DailyVideoMapper dailyVideoMapper;
+    private final UserRepository userRepository;
 
     //Get daily video by day
     public Set<DailyVideoResponseDto> getDailyVideoByDay(User user,String day) {
         Set<DailyVideo> dailyVideos = dailyVideoRepository.findAllByUserIdAndDay(user.getId(), day);
         return dailyVideoMapper.toListDailyVideoResponseDto(dailyVideos);
+    }
+
+    public void updateDailyVideoStatus(int dailyVideoId, int userId, String newStatus) {
+        DailyVideo dailyVideo = dailyVideoRepository.findById(dailyVideoId).orElseThrow(() -> new IllegalArgumentException("DailyVideo not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Kiểm tra xem User có liên quan đến DailyVideo thông qua DailyExercise hay không
+        boolean isUserRelated = user.getUserDailyChallenges().stream()
+                .anyMatch(udc -> udc.getDailyExercise().getDailyViveos().contains(dailyVideo));
+
+        if (isUserRelated) {
+            dailyVideo.setStatus(newStatus);
+            dailyVideoRepository.save(dailyVideo);
+        } else {
+            throw new IllegalArgumentException("User is not related to the DailyVideo");
+        }
     }
 }

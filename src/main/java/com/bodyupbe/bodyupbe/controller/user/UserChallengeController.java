@@ -161,4 +161,17 @@ public class UserChallengeController {
         }
         return ResponseEntity.ok(userChallengeService.getFirstUncompletedChallenge(optionalUser.get()));
     }
+    //mark challenge as completed
+    @PutMapping("/markChallengeAsCompleted")
+    public void markChallengeAsCompleted(@RequestParam int challengeId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        userChallengeService.markChallengeAsCompleted(optionalUser.get(), challengeId);
+    }
+
+
 }
