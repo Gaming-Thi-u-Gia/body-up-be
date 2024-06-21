@@ -2,6 +2,8 @@ package com.bodyupbe.bodyupbe.controller.recipe;
 
 import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeSlimAndSetRecipeCardResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectResponse;
+import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeTopicService;
@@ -30,26 +32,17 @@ public class TopicRecipeController {
         return ResponseEntity.ok(topicRecipeService.getAllTopicRecipe());
     }
     @GetMapping("/topicId")
-    public ResponseEntity<TopicRecipeSlimAndSetRecipeCardResponseDto> getRecipeByTopicId(@RequestParam int topicId){
+    public ResponseEntity<ObjectResponse<TopicRecipeSlimAndSetRecipeCardResponseDto>> getRecipeByTopicId(@RequestParam(defaultValue = "0") int topicId, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "0") int pageSize){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        if(user.isPresent()){
-            return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId, Optional.of(user.get().getId())));
-        }else{
-            return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId, Optional.empty()));
-        }
+        return ResponseEntity.ok(topicRecipeService.getRecipeByTopicId(topicId, user.isPresent()?Optional.of(user.get().getId()):Optional.empty(),pageNo,pageSize));
     }
     @GetMapping("/topic")
-    public ResponseEntity<Set<TopicRecipeSlimAndSetRecipeCardResponseDto>> getRecipeByTopic(){
+    public ResponseEntity<ObjectSetResponse<TopicRecipeSlimAndSetRecipeCardResponseDto>> getTopic4Recipe(@RequestParam(defaultValue = "0") int pageNo  , @RequestParam(defaultValue = "2") int pageSize){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(topicRecipeService.getTopic4Recipe(Optional.of(user.get().getId())));
-        } else {
-            return ResponseEntity.ok(topicRecipeService.getTopic4Recipe(Optional.empty()));
-        }
+        return ResponseEntity.ok(topicRecipeService.getTopic4Recipe(user.isPresent()?Optional.of(user.get().getId()):Optional.empty(),pageNo,pageSize));
     }
 }

@@ -15,6 +15,7 @@
     import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Service;
 
+    import java.util.HashSet;
     import java.util.List;
     import java.util.Map;
     import java.util.Set;
@@ -27,37 +28,33 @@
     public class RecipeCategoryService {
         RecipeCategoryMapper recipeCategoryMapper;
         RecipeCategoryRepository recipeCategoryRepository;
-        public RecipeCategorySlimAndSetRecipeSlimResponseDto addRecipeCategory(RecipeCategoryRequestDto request){
-            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategoryMapper.toRecipeCategory(request)));
-        }
-        public RecipeCategorySlimAndSetRecipeSlimResponseDto getRecipeCategoryById(int id){
-            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.findById(id).orElse(null));
-        }
+//        public RecipeCategorySlimAndSetRecipeSlimResponseDto addRecipeCategory(RecipeCategoryRequestDto request){
+//            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategoryMapper.toRecipeCategory(request)));
+//        }
+//        public RecipeCategorySlimAndSetRecipeSlimResponseDto getRecipeCategoryById(int id){
+//            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.findById(id).orElse(null));
+//        }
     //    public Set<RecipeCategorySlimAndSetRecipeSlimResponseDto> getAllRecipeCategories(){
     //        return recipeCategoryMapper.toSetRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.findAll());
     //    }
-        public RecipeCategorySlimAndSetRecipeSlimResponseDto updateRecipeCategory(int recipeCategoryId, RecipeCategoryRequestDto request) {
-            RecipeCategory recipeCategory = recipeCategoryRepository.findById(recipeCategoryId).orElseThrow(() -> new RuntimeException("Recipe category not found"));
-            recipeCategory.setName(request.getName());
-            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategory));
-        }
-        public String deleteRecipeCategory(int recipeCategoryId){
-            recipeCategoryRepository.deleteById(recipeCategoryId);
-            return "Recipe category with id"+ recipeCategoryId +" deleted";
-        }
+//        public RecipeCategorySlimAndSetRecipeSlimResponseDto updateRecipeCategory(int recipeCategoryId, RecipeCategoryRequestDto request) {
+//            RecipeCategory recipeCategory = recipeCategoryRepository.findById(recipeCategoryId).orElseThrow(() -> new RuntimeException("Recipe category not found"));
+//            recipeCategory.setName(request.getName());
+//            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategory));
+//        }
+//        public String deleteRecipeCategory(int recipeCategoryId){
+//            recipeCategoryRepository.deleteById(recipeCategoryId);
+//            return "Recipe category with id"+ recipeCategoryId +" deleted";
+//        }
 
         public Set<RecipeCategoryResponseSlimDto> getPopularCategory() {
             Pageable topFour = PageRequest.of(0, 4);
             List<RecipeCategory> topCategories = recipeCategoryRepository.findTop4CategoriesWithMostRecipes(topFour);
-            return topCategories.stream().map(recipeCategoryResponseDto ->{
-                RecipeCategoryResponseSlimDto recipeCategoryResponseSlimDto = new RecipeCategoryResponseSlimDto();
-                recipeCategoryResponseSlimDto.setId(recipeCategoryResponseDto   .getId());
-                recipeCategoryResponseSlimDto.setName(recipeCategoryResponseDto.getName());
-                recipeCategoryResponseSlimDto.setType(recipeCategoryResponseDto.getType());
-                recipeCategoryResponseSlimDto.setImg(recipeCategoryResponseDto.getImg());
-                recipeCategoryResponseSlimDto.setTotalRecipe(recipeCategoryResponseDto.getRecipes().size());
-                return recipeCategoryResponseSlimDto;
-            }).collect(Collectors.toSet());
+            Set<RecipeCategoryResponseSlimDto> setRecipeCategoryResponseSlimDto = recipeCategoryMapper.toSetRecipeCategoryResponseSlimDto(new HashSet<>(topCategories));
+            setRecipeCategoryResponseSlimDto.forEach(recipeCategoryResponseSlimDto -> {
+                recipeCategoryResponseSlimDto.setTotalRecipe(recipeCategoryRepository.countRecipeByCategory(recipeCategoryResponseSlimDto.getId()));
+            });
+            return setRecipeCategoryResponseSlimDto;
         };
         public Set<RecipeCategoryTableResponseDto> getAllRecipeCategoriesWithEachType() {
             List<RecipeCategory> categories = recipeCategoryRepository.findAll();
@@ -70,7 +67,7 @@
                             Collectors.toSet()
                 ));
         Set<RecipeCategoryTableResponseDto> responseDtoSet = groupedByType.entrySet().stream()
-                .map(entry -> {
+                .map(entry -> { 
                     RecipeCategoryTableResponseDto responseDto = new RecipeCategoryTableResponseDto();
                     responseDto.setType(entry.getKey());
                     responseDto.setRecipeCategories(entry.getValue());
@@ -79,4 +76,6 @@
                 .collect(Collectors.toSet());
         return responseDtoSet;
     }
+
+
 }

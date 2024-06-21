@@ -26,42 +26,43 @@ public class RecipeFilterService {
     RecipeMapper recipeMapper;
     RecipeCategoryMapper recipeCategoryMapper;
 
-    public RecipeResponseDto assignCategoriesToRecipe(int recipeId, Set<Integer> categoryIds){
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
-        Set<RecipeCategory> recipeCategories = recipeCategoryRepository.findAllByIdIn(categoryIds);
-        recipe.getRecipeCategories().addAll(recipeCategories);
-        for(RecipeCategory recipeCategory : recipeCategories){
-            recipeCategory.getRecipes().add(recipe);
-        }
-        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
-    }
+//    public RecipeResponseDto assignCategoriesToRecipe(int recipeId, Set<Integer> categoryIds){
+//        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
+//        Set<RecipeCategory> recipeCategories = recipeCategoryRepository.findAllByIdIn(categoryIds);
+//        recipe.getRecipeCategories().addAll(recipeCategories);
+//        for(RecipeCategory recipeCategory : recipeCategories){
+//            recipeCategory.getRecipes().add(recipe);
+//        }
+//        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
+//    }
+//
+//
+//
+//    public RecipeResponseDto updateCategoriesToRecipe(int recipeId, Set<Integer> categoryIds){
+//        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
+//        Set<RecipeCategory> newCategories = recipeCategoryRepository.findAllByIdIn(categoryIds);
+//        for (RecipeCategory existingCategory : recipe.getRecipeCategories()) {
+//            existingCategory.getRecipes().remove(recipe);
+//        }
+//        recipe.getRecipeCategories().clear();
+//        recipe.getRecipeCategories().addAll(newCategories);
+//
+//        for (RecipeCategory newCategory : newCategories) {
+//            newCategory.getRecipes().add(recipe);
+//        }
+//        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
+//    }
+//    public Set<RecipeResponseDto> getAllRecipesByCategoryId(int categoryId){
+//        RecipeCategory recipeCategory = recipeCategoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Recipe category not found"));
+//        Set<Recipe> recipes = recipeCategory.getRecipes();
+//        return recipeMapper.toSetRecipeResponseDto(recipes);
+//    }
+//    public Set<RecipeResponseDto> getAllBySetCategory(Set<Integer> recipeCategoryIds){
+//        Set<RecipeCategory> recipeCategories = recipeCategoryRepository.findAllByIdIn(recipeCategoryIds);
+//        Set<Recipe> recipes = recipeRepository.findByRecipeCategories_IdIn(recipeCategoryIds);
+//        return recipeMapper.toSetRecipeResponseDto(recipes);
+//    }
 
-
-
-    public RecipeResponseDto updateCategoriesToRecipe(int recipeId, Set<Integer> categoryIds){
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
-        Set<RecipeCategory> newCategories = recipeCategoryRepository.findAllByIdIn(categoryIds);
-        for (RecipeCategory existingCategory : recipe.getRecipeCategories()) {
-            existingCategory.getRecipes().remove(recipe);
-        }
-        recipe.getRecipeCategories().clear();
-        recipe.getRecipeCategories().addAll(newCategories);
-
-        for (RecipeCategory newCategory : newCategories) {
-            newCategory.getRecipes().add(recipe);
-        }
-        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
-    }
-    public Set<RecipeResponseDto> getAllRecipesByCategoryId(int categoryId){
-        RecipeCategory recipeCategory = recipeCategoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Recipe category not found"));
-        Set<Recipe> recipes = recipeCategory.getRecipes();
-        return recipeMapper.toSetRecipeResponseDto(recipes);
-    }
-    public Set<RecipeResponseDto> getAllBySetCategory(Set<Integer> recipeCategoryIds){
-        Set<RecipeCategory> recipeCategories = recipeCategoryRepository.findAllByIdIn(recipeCategoryIds);
-        Set<Recipe> recipes = recipeRepository.findByRecipeCategories_IdIn(recipeCategoryIds);
-        return recipeMapper.toSetRecipeResponseDto(recipes);
-    }
 
 
 }

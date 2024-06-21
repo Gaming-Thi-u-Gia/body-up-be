@@ -33,11 +33,9 @@ public class BookmarkRecipeService {
         boolean bookmarked;
         if(user.getBookmarkRecipes().contains(recipe)) {
             user.getBookmarkRecipes().remove(recipe);
-            recipe.getBookmarkUsers().remove(user);
             bookmarked = false;
         } else {
             user.getBookmarkRecipes().add(recipe);
-            recipe.getBookmarkUsers().add(user);
             bookmarked = true;
         }
         User userResult = userRepository.save(user);

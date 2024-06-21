@@ -27,6 +27,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
     generate-ddl: true
+    show-sql: true
 logging:
   level:
     org.springframework.security: WARN

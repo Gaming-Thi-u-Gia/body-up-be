@@ -31,7 +31,6 @@ public class RatingRecipeService {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         RatingRecipe ratingRecipe = ratingRecipeRepository.findRatingByRecipeAndUser(recipe, user);
-
         if (ratingRecipe != null) {
             ratingRecipe.setStar(request.getStar());
             ratingRecipeRepository.save(ratingRecipe);
@@ -48,7 +47,7 @@ public class RatingRecipeService {
         ratingRecipeResponseSlimDto.setTotalRating(recipe.getRatingRecipes().size());
         return ratingRecipeResponseSlimDto;
     }
-
+    
     public double updateAverageRating(Recipe recipe) {
         int totalStar = 0;
         Set<RatingRecipe> ratingRecipes = recipe.getRatingRecipes();

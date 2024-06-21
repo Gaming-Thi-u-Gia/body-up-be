@@ -1,18 +1,23 @@
 package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.TopicMapper;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCardResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeSlimAndSetRecipeCardResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectResponse;
+import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
-import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.RecipeRepository;
 import com.bodyupbe.bodyupbe.repository.TopicRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -35,61 +40,68 @@ public class RecipeTopicService {
         return topicMapper.toSetTopicRecipeResponseSlimDto(topics);
     }
 
-    public TopicRecipeSlimAndSetRecipeCardResponseDto getRecipeByTopicId(int topicId, Optional<Integer> userId) {
-        Topic topic = new Topic();
-
+    public ObjectResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> getRecipeByTopicId(int topicId, Optional<Integer> userId, int pageNo, int pageSize) {
+        Topic topic;
+        Page<Recipe> pages;
         if (topicId == -1) {
+            topic = new Topic();
             topic.setId(-1);
             topic.setName("All Recipes");
             topic.setDescription("Try out all the recipes and make something new!");
-            topic.setRecipes(new HashSet<>(recipeRepository.findAll()));
+            pages = recipeRepository.findAll(PageRequest.of(pageNo, pageSize));
         } else if (topicId == 0) {
+            topic = new Topic();
             topic.setId(0);
             topic.setName("Latest Recipes");
             topic.setDescription("Try out the latest recipes and make something new!");
-            topic.setRecipes(new HashSet<>(recipeRepository.findByOrderByCreateAtDesc()));
+            pages = recipeRepository.findByOrderByCreateAtDesc(PageRequest.of(pageNo, pageSize));
+        } else {
+            topic = topicRepository.findById(topicId).orElseThrow(() -> new IllegalArgumentException("Topic not found"));
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            pages = topic.getRecipes().isEmpty() ? Page.empty() : recipeRepository.findByTopicId(topicId, pageable);
         }
-        else{
-            topic = topicRepository.findById(topicId).orElseThrow(() -> new RuntimeException("Topic not found"));
-        }
+        topic.setRecipes(new HashSet<>(pages.getContent()));
         TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toTopicRecipeSlimAndSetRecipeCardResponseDto(topic);
-
-        userId.ifPresent(id -> {
-            topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes().forEach(recipe -> {
-                recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(id, recipe.getId()));
-                recipe.setCurrentRating(recipeRepository.findRatingStarRecipeByUserId(id, recipe.getId())
-                        .map(RatingRecipe::getStar)
-                        .orElse(0));
-            });
-        });
-
-        return topicRecipeSlimAndSetRecipeCardResponseDto;
-    }
-
-
-    public Set<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopicRecipe() {
-        List<Topic> topics = topicRepository.findByTopic("recipe");
-        return topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
-    }
-
-    public Set<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopic4Recipe(Optional<Integer> userId) {
-        List<Topic> topics = topicRepository.findByTopic("recipe");
-        Set<TopicRecipeSlimAndSetRecipeCardResponseDto> setTopicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
-
         if (userId.isPresent()) {
-            setTopicRecipeSlimAndSetRecipeCardResponseDto.forEach(topic -> {
-                topic.setRecipes(topic.getRecipes().stream().limit(4).collect(Collectors.toSet()));
-                topic.getRecipes().forEach(recipe -> {
+            for(RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
+                recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipe.getId()));
+                Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipe.getId());
+                recipe.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+            }
+        }
+        ObjectResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> response = new ObjectResponse<>();
+        response.setContent(topicRecipeSlimAndSetRecipeCardResponseDto);
+        response.setTotalElements(pages.getTotalElements());
+        response.setTotalPages(pages.getTotalPages());
+        response.setPageNo(pages.getNumber());
+        response.setPageSize(pages.getSize());
+        response.setLast(pages.isLast());
+        return response;
+    }
+
+    //da xu ly phan trang
+    public ObjectSetResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopic4Recipe(Optional<Integer> userId, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Page<Topic> pages = topicRepository.findByTopic("recipe", pageable);
+        List<Topic> topics = pages.getContent();
+        Set<TopicRecipeSlimAndSetRecipeCardResponseDto> content = topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
+        if (userId.isPresent()) {
+            for(TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto : content) {
+                for(RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
                     recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipe.getId()));
                     Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipe.getId());
-                    if (ratingRecipe.isPresent()) {
-                        recipe.setCurrentRating(ratingRecipe.get().getStar());
-                    } else {
-                        recipe.setCurrentRating(0);
-                    }
-                });
-            });
+                    recipe.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+                }
+            }
         }
-        return setTopicRecipeSlimAndSetRecipeCardResponseDto;
+        ObjectSetResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> response = new ObjectSetResponse<>();
+        response.setContent(content);
+        response.setTotalElements(pages.getTotalElements());
+        response.setTotalPages(pages.getTotalPages());
+        response.setPageNo(pages.getNumber());
+        response.setPageSize(pages.getSize());
+        response.setTotalPages(pages.getTotalPages());
+        response.setLast(pages.isLast());
+        return response;
     }
 }

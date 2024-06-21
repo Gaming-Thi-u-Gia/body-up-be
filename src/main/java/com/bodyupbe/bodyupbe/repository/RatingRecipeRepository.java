@@ -13,5 +13,4 @@ public interface RatingRecipeRepository extends JpaRepository<RatingRecipe,Integ
     int findRatingByRecipe_IdAndUser_Id(int userId, int recipeId);
 
     int countRatingRecipeByRecipe_Id(int recipeId);
-    Optional<RatingRecipe> findRatingRecipeByRecipe_IdAndUser_Id(int recipeId, int userId);
 }

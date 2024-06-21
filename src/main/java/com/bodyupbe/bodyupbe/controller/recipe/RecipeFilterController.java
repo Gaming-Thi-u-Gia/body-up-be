@@ -18,23 +18,25 @@ import java.util.Set;
 public class RecipeFilterController {
     RecipeFilterService recipeFilterService;
 
-    @PostMapping("/assign")
-    public ResponseEntity<RecipeResponseDto> assignCategoriesToRecipe(@RequestParam int recipeId, @RequestBody Set<Integer> categoryIds){
-        return ResponseEntity.ok(recipeFilterService.assignCategoriesToRecipe(recipeId, categoryIds));
-    }
+//    @GetMapping("/list")
+//    public ResponseEntity<Set<RecipeResponseDto>> getAllBySetCategory(@RequestBody Set<Integer> recipeCategoryIds){
+//        return ResponseEntity.ok(recipeFilterService.(recipeCategoryIds));
+//    }
 
-    @PutMapping("/update")
-    public ResponseEntity<RecipeResponseDto> updateCategoriesToRecipe(@RequestParam int recipeId, @RequestBody Set<Integer> categoryIds){
-        return ResponseEntity.ok(recipeFilterService.updateCategoriesToRecipe(recipeId, categoryIds));
-    }
-    @GetMapping("/id")
-    public ResponseEntity<Set<RecipeResponseDto>> getAllRecipesByCategoryId(@RequestParam int categoryId){
-        return ResponseEntity.ok(recipeFilterService.getAllRecipesByCategoryId(categoryId));
-    }
-    @GetMapping("/list")
-    public ResponseEntity<Set<RecipeResponseDto>> getAllBySetCategory(@RequestBody Set<Integer> recipeCategoryIds){
-        return ResponseEntity.ok(recipeFilterService.getAllBySetCategory(recipeCategoryIds));
-    }
+//    @PostMapping("/assign")
+//    public ResponseEntity<RecipeResponseDto> assignCategoriesToRecipe(@RequestParam int recipeId, @RequestBody Set<Integer> categoryIds){
+//        return ResponseEntity.ok(recipeFilterService.assignCategoriesToRecipe(recipeId, categoryIds));
+//    }
+//
+//    @PutMapping("/update")
+//    public ResponseEntity<RecipeResponseDto> updateCategoriesToRecipe(@RequestParam int recipeId, @RequestBody Set<Integer> categoryIds){
+//        return ResponseEntity.ok(recipeFilterService.updateCategoriesToRecipe(recipeId, categoryIds));
+//    }
+//    @GetMapping("/id")
+//    public ResponseEntity<Set<RecipeResponseDto>> getAllRecipesByCategoryId(@RequestParam int categoryId){
+//        return ResponseEntity.ok(recipeFilterService.getAllRecipesByCategoryId(categoryId));
+//    }
+
 
 
 }
