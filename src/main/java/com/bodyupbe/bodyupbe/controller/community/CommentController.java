@@ -43,6 +43,11 @@ public class CommentController {
         return ResponseEntity.ok("Comment deleted successfully");
     }
 
+    @GetMapping("/getChildComments")
+    public ResponseEntity <List<CommentResponseDto>> getChildComments(@RequestParam int parentId) {
+        return ResponseEntity.ok(commentPostService.getChildComments(parentId));
+    }
+
     @GetMapping("/getAllComments")
     public ResponseEntity <List<CommentResponseDto>> getAllComments(@RequestParam int postId) {
         return ResponseEntity.ok(commentPostService.getAllCommentByPostId(postId));
@@ -56,6 +61,17 @@ public class CommentController {
     @PutMapping("/upvoteComment")
     public ResponseEntity<CommentResponseDto> upvoteComment(@RequestParam int commentId, @RequestParam int upVote) {
         return ResponseEntity.ok(commentPostService.upvoteComment(commentId,upVote));
+    }
+
+    @GetMapping("/getCommentById")
+    public ResponseEntity <CommentResponseDto> getCommentById(@RequestParam int commentId) {
+        return ResponseEntity.ok(commentPostService.getCommentById(commentId));
+    }
+
+
+    @GetMapping("/getRootById")
+    public ResponseEntity<Optional<CommentResponseDto>> getRootById(@RequestParam int commentId) {
+        return ResponseEntity.ok(commentPostService.getRootComment(commentId));
     }
 
 }

@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -50,6 +51,11 @@ public class CommentPostService {
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
     }
 
+    public List<CommentResponseDto> getChildComments(int parentId) {
+        List<Comment> childComments = commentRepository.findAllChildrenByParentId(parentId);
+        return commentMapper.toListCommentResponseDto(childComments);
+    }
+
     public String deleteComment(int commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
         commentRepository.delete(comment);
@@ -73,6 +79,19 @@ public class CommentPostService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
         comment.setUpVote(upVote);
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
+    }
+
+    public CommentResponseDto getCommentById(int commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        return commentMapper.toCommentResponseDto(comment);
+    }
+
+    public Optional<CommentResponseDto> getRootComment(int id){
+        Comment comment = commentRepository.findRootCommentByChildId(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        if(comment.getParentId() == null) {
+            return Optional.of(commentMapper.toCommentResponseDto(comment));
+        }
+        return Optional.empty();
     }
 
 
