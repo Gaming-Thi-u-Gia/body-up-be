@@ -33,7 +33,7 @@ public class DailyVideoService {
         return dailyVideoMapper.toListDailyVideoResponseDto(dailyVideos);
     }
 
-    public void updateDailyVideoStatus(int dailyVideoId, int userId, String newStatus) {
+    public void updateDailyVideoStatus(int dailyVideoId, int userId) {
         DailyVideo dailyVideo = dailyVideoRepository.findById(dailyVideoId).orElseThrow(() -> new IllegalArgumentException("DailyVideo not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -42,7 +42,7 @@ public class DailyVideoService {
                 .anyMatch(udc -> udc.getDailyExercise().getDailyViveos().contains(dailyVideo));
 
         if (isUserRelated) {
-            dailyVideo.setStatus(newStatus);
+            dailyVideo.setStatus("complete");
             dailyVideoRepository.save(dailyVideo);
         } else {
             throw new IllegalArgumentException("User is not related to the DailyVideo");
