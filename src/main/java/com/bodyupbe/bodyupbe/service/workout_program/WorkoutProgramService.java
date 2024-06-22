@@ -66,4 +66,10 @@ public class WorkoutProgramService {
         Topic topic = topicRepository.findById(topicId).orElseThrow(() -> new RuntimeException("Topic not found"));
         return workoutProgramMapper.toSetWorkoutProgram(topic.getWorkoutPrograms());
     }
+
+    public List<WorkoutProgramResponseDto> searchWorkoutProgram(String name) {
+        List<WorkoutProgram> workoutPrograms = workoutProgramRepository.findByNameContainingIgnoreCase(name);
+
+        return workoutProgramMapper.toListWorkoutProgramResponseDto(workoutPrograms);
+    }
 }

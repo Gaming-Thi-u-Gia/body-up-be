@@ -5,7 +5,10 @@ import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.TopicVideoResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
+import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.repository.TopicRepository;
 import com.bodyupbe.bodyupbe.repository.VideoRepository;
@@ -16,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -70,8 +75,21 @@ public class TopicService {
         return topicMapper.toTopicWorkoutProgram(topics);
     }
 
-    public Set<TopicVideoResponseDto> getTopicWithWorkoutVideo() {
+    public Set<TopicWorkoutProgramResponseDto> getTopicWithWorkoutProgramById(int topicId) {
+        Set<Topic> topics = topicRepository.findTopicsById(topicId);
+        return topicMapper.toTopicWorkoutProgram(topics);
+    }
+
+    public Set<TopicVideoResponseDto> getTopicWithWorkoutVideo(Optional<User> user) {
         Set<Topic> topics = topicRepository.findTopicsByTopic("workout-video");
-        return topicMapper.toTopicVideo(topics);
+        Set<TopicVideoResponseDto> setTopicVideoResponseDto = topicMapper.toTopicVideo(topics);
+        if (user.isPresent()) {
+            for (TopicVideoResponseDto topicVideoResponseDto : setTopicVideoResponseDto) {
+                for (VideoSlimResponseDto videoSlimResponseDto : topicVideoResponseDto.getVideos()) {
+                    videoSlimResponseDto.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(user.get().getId(), videoSlimResponseDto.getUrl()));
+                }
+            }
+        }
+        return setTopicVideoResponseDto;
     }
 }

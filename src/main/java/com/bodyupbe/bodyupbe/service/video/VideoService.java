@@ -4,9 +4,11 @@ import com.bodyupbe.bodyupbe.dto.mapper.video.VideoMapper;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
+import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.model.workout_video.VideoCategory;
 import com.bodyupbe.bodyupbe.repository.TopicRepository;
+import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.repository.VideoCategoryRepository;
 import com.bodyupbe.bodyupbe.repository.VideoRepository;
 import lombok.AccessLevel;
@@ -15,10 +17,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,6 +30,7 @@ public class VideoService {
     VideoRepository videoRepository;
     VideoCategoryRepository videoCategoryRepository;
     TopicRepository topicRepository;
+    UserRepository userRepository;
 
     public VideoResponseDto createVideo(VideoRequestDto videoRequestDto) {
         Video video = videoMapper.toVideo(videoRequestDto);
@@ -64,4 +65,16 @@ public class VideoService {
         Topic topic = topicRepository.findById(topicId).orElseThrow(() -> new RuntimeException("Topic not found"));
         return videoMapper.toSetVideos(topic.getVideos());
     }
+
+    public List<VideoResponseDto> searchVideo(String name) {
+        List<Video> videos = videoRepository.findByNameContainingIgnoreCase(name);
+        return videoMapper.toListVideoResponseDto(videos);
+    }
+
+    public Set<VideoResponseDto> getAllBookmarkedVideo(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Set<Video> bookmarkedVideos = user.getBookmarkVideos();
+        return videoMapper.toSetVideos(bookmarkedVideos);
+    }
+
 }

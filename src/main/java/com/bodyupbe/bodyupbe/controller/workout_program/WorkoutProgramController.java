@@ -52,4 +52,9 @@ public class WorkoutProgramController {
     public ResponseEntity<Set<WorkoutProgramResponseDto>> getWorkoutProgramByTopic(@RequestParam int topicId) {
         return ResponseEntity.ok(workoutProgramService.getWorkoutProgramByTopic(topicId));
     }
+
+    @GetMapping("/searchWorkoutProgram")
+    public ResponseEntity<List<WorkoutProgramResponseDto>> searchWorkoutProgram(@RequestParam String name) {
+        return ResponseEntity.ok(workoutProgramService.searchWorkoutProgram(name));
+    }
 }

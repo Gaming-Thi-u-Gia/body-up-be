@@ -22,30 +22,24 @@ import java.util.Set;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookmarkService {
-    UserRepository userRepository;
+
     VideoRepository videoRepository;
-    UserMapper userMapper;
-    VideoMapper videoMapper;
-    public Optional<UserResponseDto> setBookmarkVideo(int userId, int videoId) {
-        Video video = videoRepository.findById(videoId)
-                .orElseThrow(() -> new IllegalArgumentException("Video not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    UserRepository userRepository;
 
-        if(user.getBookmarkVideos().contains(video)) {
-            user.getBookmarkRecipes().remove(video);
-            video.getBookmarkUsers().remove(user);
-            return Optional.of(userMapper.toUserResponseDto(userRepository.save(user)));
+    public VideoBookmarkResponseSlim getBookmarkVideo(int userId, String url) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Video video = videoRepository.findVideoByUrl(url);
+
+        boolean isBookmarked = videoRepository.findBookmarkByUserIdAndVideoId(userId, video.getUrl());
+
+        if (isBookmarked) {
+            user.getBookmarkVideos().remove(video);
+            userRepository.save(user);
+            return new VideoBookmarkResponseSlim(userId, url, false);
+        } else {
+            user.getBookmarkVideos().add(video);
+            userRepository.save(user);
+            return new VideoBookmarkResponseSlim(userId, url, true);
         }
-
-        user.getBookmarkVideos().add(video);
-        video.getBookmarkUsers().add(user);
-        return Optional.of(userMapper.toUserResponseDto(userRepository.save(user)));
-    }
-
-    public Set<VideoBookmarkResponseSlim> getSetBookmarkVideoByUserId(int userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return videoMapper.toSetVideoBookmark(user.getBookmarkVideos());
     }
 }

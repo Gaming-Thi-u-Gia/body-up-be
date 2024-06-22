@@ -20,6 +20,5 @@ public class VideoResponseDto {
     String url;
     boolean isFeatured;
 
-    Set<TopicDto> videoTopics;
     Set<VideoCategoryRequestDto> videoCategories;
 }

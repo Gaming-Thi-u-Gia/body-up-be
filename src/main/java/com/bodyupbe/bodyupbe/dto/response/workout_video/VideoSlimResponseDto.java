@@ -18,6 +18,7 @@ public class VideoSlimResponseDto {
     String name;
     String url;
     boolean isFeatured;
+    boolean isBookmarked;
 
     Set<VideoCategoryRequestDto> videoCategories;
 }

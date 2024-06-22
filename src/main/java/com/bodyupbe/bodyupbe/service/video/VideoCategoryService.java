@@ -38,4 +38,6 @@ public class VideoCategoryService {
         Video video = videoRepository.findById(videoId).orElseThrow(() -> new RuntimeException("Category not found"));
         return videoCategoryMapper.toSetVideoCategory(video.getVideoCategories());
     }
+
+
 }

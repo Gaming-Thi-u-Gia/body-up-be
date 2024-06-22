@@ -1,6 +1,5 @@
 package com.bodyupbe.bodyupbe.dto.response.workout_video;
 
-import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoCategoryRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -4,15 +4,21 @@ import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.TopicVideoResponseDto;
+import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.repository.UserRepository;
+import com.bodyupbe.bodyupbe.service.AuthenticationResponse;
 import com.bodyupbe.bodyupbe.service.TopicService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -23,6 +29,7 @@ import java.util.Set;
 @CrossOrigin
 public class TopicController {
     TopicService topicService;
+    UserRepository userRepository;
 
     @GetMapping("/getTopicAll")
     public ResponseEntity<List<TopicResponseDto>> getTopicAll() {
@@ -72,6 +79,16 @@ public class TopicController {
 
     @GetMapping("/getTopicWithWorkoutVideo")
     public ResponseEntity<Set<TopicVideoResponseDto>> getTopicWithWorkoutVideo() {
-        return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isPresent()) {
+            return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo(optionalUser));
+        }
+        return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo(Optional.empty()));
+    }
+    @GetMapping("/getTopicWithWorkoutProgramById")
+    public ResponseEntity<Set<TopicWorkoutProgramResponseDto>> getTopicWithWorkoutProgramById(@RequestParam int topicId) {
+        return ResponseEntity.ok(topicService.getTopicWithWorkoutProgramById(topicId));
     }
 }
