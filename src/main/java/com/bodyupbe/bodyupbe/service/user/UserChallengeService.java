@@ -103,6 +103,10 @@ public class UserChallengeService {
     public void markChallengeAsCompleted(User user, int challengeId) {
         UserDailyChallenge userDailyChallenge = userDailyChallengeRepository.findById(challengeId).orElseThrow(() -> new RuntimeException("Challenge not found"));
         userDailyChallenge.setStatus("complete");
+        //update all video daily status
+        userDailyChallenge.getDailyExercise().getDailyViveos().forEach(dailyVideo -> {
+            dailyVideo.setStatus("complete");
+        });
         userDailyChallengeRepository.save(userDailyChallenge);
     }
 }
