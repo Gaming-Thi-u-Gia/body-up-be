@@ -1,7 +1,9 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
-import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.*;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCardResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeDetailResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeFilterResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeLatestResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectResponse;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -15,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class RecipeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        return ResponseEntity.ok(recipeService.getLatestRecipe(user.isPresent()? Optional.of(user.get().getId()):Optional.empty()));
+        return ResponseEntity.ok(recipeService.getLatestRecipe(user.isPresent() ? Optional.of(user.get().getId()) : Optional.empty()));
     }
 
     @GetMapping("/id")
@@ -59,33 +60,34 @@ public class RecipeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        return ResponseEntity.ok(recipeService.getRecipeById(recipeId,user.isPresent()? Optional.of(user.get().getId()):Optional.empty()));
+        return ResponseEntity.ok(recipeService.getRecipeById(recipeId, user.isPresent() ? Optional.of(user.get().getId()) : Optional.empty()));
     }
 
     @GetMapping("/saved-recipe")
-    public ResponseEntity<ObjectSetResponse<RecipeCardResponseDto>> getSavedBookmark(@RequestParam(defaultValue = "0")int pageNo, @RequestParam(defaultValue = "4")int pageSize) {
+    public ResponseEntity<ObjectSetResponse<RecipeCardResponseDto>> getSavedBookmark(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
         if (user.isPresent()) {
-            return ResponseEntity.ok(recipeService.getAllBookmarkedRecipe(user.get().getId(),pageNo, pageSize));
+            return ResponseEntity.ok(recipeService.getAllBookmarkedRecipe(user.get().getId(), pageNo, pageSize));
         } else {
-            throw  new RuntimeException("User not found");
+            throw new RuntimeException("User not found");
         }
     }
+
     @GetMapping("/name")
-    public ResponseEntity<ObjectSetResponse<RecipeCardResponseDto>> getRecipeByName(@RequestParam String recipeName, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize){
+    public ResponseEntity<ObjectSetResponse<RecipeCardResponseDto>> getRecipeByName(@RequestParam String recipeName, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        return ResponseEntity.ok(recipeService.getRecipeByName(recipeName, user.isPresent()? Optional.of(user.get().getId()):Optional.empty(),pageNo,pageSize));
+        return ResponseEntity.ok(recipeService.getRecipeByName(recipeName, user.isPresent() ? Optional.of(user.get().getId()) : Optional.empty(), pageNo, pageSize));
     }
 
     @GetMapping("/category")
-    public ResponseEntity<ObjectResponse<RecipeFilterResponseDto>>  getRecipeByCategory(@RequestParam Set<Integer> categoryIds, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
+    public ResponseEntity<ObjectResponse<RecipeFilterResponseDto>> getRecipeByCategory(@RequestParam Set<Integer> categoryIds, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        return ResponseEntity.ok(recipeService.getRecipeByCategory(categoryIds,user.isPresent()? Optional.of(user.get().getId()):Optional.empty(),pageNo,pageSize));
+        return ResponseEntity.ok(recipeService.getRecipeByCategory(categoryIds, user.isPresent() ? Optional.of(user.get().getId()) : Optional.empty(), pageNo, pageSize));
     }
 }

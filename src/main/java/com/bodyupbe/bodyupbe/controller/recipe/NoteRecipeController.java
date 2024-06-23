@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -19,26 +18,32 @@ import java.util.Set;
 @CrossOrigin
 public class NoteRecipeController {
     NoteRecipeService noteRecipeService;
+
     @PostMapping("/add")
     public ResponseEntity<NoteRecipeAndSetRecipeResponseDto> addNoteRecipeService(@RequestParam int recipeId, @RequestBody NoteRecipeRequestDto request) {
-        return ResponseEntity.ok(noteRecipeService.addNoteRecipe(recipeId,request));
+        return ResponseEntity.ok(noteRecipeService.addNoteRecipe(recipeId, request));
     }
+
     @GetMapping("/id")
     public ResponseEntity<NoteRecipeAndSetRecipeResponseDto> getNoteRecipeById(@RequestParam int noteRecipeId) {
         return ResponseEntity.ok(noteRecipeService.getNoteRecipeById(noteRecipeId));
     }
+
     @GetMapping("/all")
-    public ResponseEntity<Set<NoteRecipeAndSetRecipeResponseDto>> getAllNoteRecipe(){
+    public ResponseEntity<Set<NoteRecipeAndSetRecipeResponseDto>> getAllNoteRecipe() {
         return ResponseEntity.ok(noteRecipeService.getAllNoteRecipe());
     }
+
     @GetMapping("/recipe")
     public ResponseEntity<Set<NoteRecipeAndSetRecipeResponseDto>> getAllNoteRecipeByRecipeId(@RequestParam int recipeId) {
         return ResponseEntity.ok(noteRecipeService.findOtherImageRecipeByRecipeId(recipeId));
     }
+
     @PutMapping("/update")
-    public ResponseEntity<NoteRecipeAndSetRecipeResponseDto> updateNoteRecipe(@RequestParam int noteRecipeId , @RequestBody NoteRecipeRequestDto request) {
-        return ResponseEntity.ok(noteRecipeService.updateNoteRecipe(noteRecipeId,request));
+    public ResponseEntity<NoteRecipeAndSetRecipeResponseDto> updateNoteRecipe(@RequestParam int noteRecipeId, @RequestBody NoteRecipeRequestDto request) {
+        return ResponseEntity.ok(noteRecipeService.updateNoteRecipe(noteRecipeId, request));
     }
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteOtherImageRecipe(@RequestParam int noteRecipeId) {
         return ResponseEntity.ok(noteRecipeService.deleteOtherImageRecipe(noteRecipeId));

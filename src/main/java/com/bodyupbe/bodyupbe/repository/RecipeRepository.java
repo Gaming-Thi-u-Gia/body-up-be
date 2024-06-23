@@ -32,12 +32,11 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
     // find rating star recipe by user id
     @Query("SELECT rr FROM Recipe r JOIN r.ratingRecipes rr WHERE rr.user.id = :userId AND r.id = :recipeId")
     Optional<RatingRecipe> findRatingStarRecipeByUserId(@Param("userId") int userId , @Param("recipeId") int recipeId);
-        @Query("SELECT r FROM Recipe r WHERE r.id IN (" +
+    // find recipes by topic id
+    @Query("SELECT r FROM Recipe r WHERE r.id IN (" +
                 "SELECT r1.id FROM Recipe r1 JOIN r1.recipeCategories c1 WHERE c1.id IN :categoryIds " +
                 "GROUP BY r1.id HAVING COUNT(c1.id) = :categorySize)")
-
     Page<Recipe> findRecipesByCategoryIds(@Param("categoryIds") Set<Integer> categoryIds, @Param("categorySize") long categorySize,Pageable pageable);
-        // find recipes by topic id
     @Query("SELECT r FROM Recipe r JOIN r.recipeTopics t WHERE t.id = :topicId")
     Page<Recipe> findByTopicId(@Param("topicId") int topicId, Pageable pageable);
     //find bookmarked recipes by user id

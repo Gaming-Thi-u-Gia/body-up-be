@@ -1,33 +1,31 @@
-    package com.bodyupbe.bodyupbe.service.recipe;
+package com.bodyupbe.bodyupbe.service.recipe;
 
-    import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeCategoryMapper;
-    import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeCategoryRequestDto;
-    import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
-    import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategorySlimAndSetRecipeSlimResponseDto;
-    import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryTableResponseDto;
-    import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
-    import com.bodyupbe.bodyupbe.repository.RecipeCategoryRepository;
-    import lombok.AccessLevel;
-    import lombok.RequiredArgsConstructor;
-    import lombok.experimental.FieldDefaults;
-    import lombok.extern.slf4j.Slf4j;
-    import org.springframework.data.domain.PageRequest;
-    import org.springframework.data.domain.Pageable;
-    import org.springframework.stereotype.Service;
+import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeCategoryMapper;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryTableResponseDto;
+import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
+import com.bodyupbe.bodyupbe.repository.RecipeCategoryRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-    import java.util.HashSet;
-    import java.util.List;
-    import java.util.Map;
-    import java.util.Set;
-    import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-    @Slf4j
-    @Service
-    @RequiredArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    public class RecipeCategoryService {
-        RecipeCategoryMapper recipeCategoryMapper;
-        RecipeCategoryRepository recipeCategoryRepository;
+@Slf4j
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class RecipeCategoryService {
+    RecipeCategoryMapper recipeCategoryMapper;
+    RecipeCategoryRepository recipeCategoryRepository;
 //        public RecipeCategorySlimAndSetRecipeSlimResponseDto addRecipeCategory(RecipeCategoryRequestDto request){
 //            return recipeCategoryMapper.toRecipeCategorySlimAndSetRecipeSlimResponseDto(recipeCategoryRepository.save(recipeCategoryMapper.toRecipeCategory(request)));
 //        }
@@ -47,27 +45,30 @@
 //            return "Recipe category with id"+ recipeCategoryId +" deleted";
 //        }
 
-        public Set<RecipeCategoryResponseSlimDto> getPopularCategory() {
-            Pageable topFour = PageRequest.of(0, 4);
-            List<RecipeCategory> topCategories = recipeCategoryRepository.findTop4CategoriesWithMostRecipes(topFour);
-            Set<RecipeCategoryResponseSlimDto> setRecipeCategoryResponseSlimDto = recipeCategoryMapper.toSetRecipeCategoryResponseSlimDto(new HashSet<>(topCategories));
-            setRecipeCategoryResponseSlimDto.forEach(recipeCategoryResponseSlimDto -> {
-                recipeCategoryResponseSlimDto.setTotalRecipe(recipeCategoryRepository.countRecipeByCategory(recipeCategoryResponseSlimDto.getId()));
-            });
-            return setRecipeCategoryResponseSlimDto;
-        };
-        public Set<RecipeCategoryTableResponseDto> getAllRecipeCategoriesWithEachType() {
-            List<RecipeCategory> categories = recipeCategoryRepository.findAll();
-            List<RecipeCategoryResponseSlimDto> categoryDtoList = categories.stream()
-                    .map(category -> recipeCategoryMapper.toRecipeCategoryResponseSlimDto(category))
-                    .toList();
-            Map<String, Set<RecipeCategoryResponseSlimDto>> groupedByType = categoryDtoList.stream()
-                    .collect(Collectors.groupingBy(
-                            recipeCategoryResponseSlimDto -> recipeCategoryResponseSlimDto.getType(),
-                            Collectors.toSet()
+    public Set<RecipeCategoryResponseSlimDto> getPopularCategory() {
+        Pageable topFour = PageRequest.of(0, 4);
+        List<RecipeCategory> topCategories = recipeCategoryRepository.findTop4CategoriesWithMostRecipes(topFour);
+        Set<RecipeCategoryResponseSlimDto> setRecipeCategoryResponseSlimDto = recipeCategoryMapper.toSetRecipeCategoryResponseSlimDto(new HashSet<>(topCategories));
+        setRecipeCategoryResponseSlimDto.forEach(recipeCategoryResponseSlimDto -> {
+            recipeCategoryResponseSlimDto.setTotalRecipe(recipeCategoryRepository.countRecipeByCategory(recipeCategoryResponseSlimDto.getId()));
+        });
+        return setRecipeCategoryResponseSlimDto;
+    }
+
+    ;
+
+    public Set<RecipeCategoryTableResponseDto> getAllRecipeCategoriesWithEachType() {
+        List<RecipeCategory> categories = recipeCategoryRepository.findAll();
+        List<RecipeCategoryResponseSlimDto> categoryDtoList = categories.stream()
+                .map(category -> recipeCategoryMapper.toRecipeCategoryResponseSlimDto(category))
+                .toList();
+        Map<String, Set<RecipeCategoryResponseSlimDto>> groupedByType = categoryDtoList.stream()
+                .collect(Collectors.groupingBy(
+                        recipeCategoryResponseSlimDto -> recipeCategoryResponseSlimDto.getType(),
+                        Collectors.toSet()
                 ));
         Set<RecipeCategoryTableResponseDto> responseDtoSet = groupedByType.entrySet().stream()
-                .map(entry -> { 
+                .map(entry -> {
                     RecipeCategoryTableResponseDto responseDto = new RecipeCategoryTableResponseDto();
                     responseDto.setType(entry.getKey());
                     responseDto.setRecipeCategories(entry.getValue());

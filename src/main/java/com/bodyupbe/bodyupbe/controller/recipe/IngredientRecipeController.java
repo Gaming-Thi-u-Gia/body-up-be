@@ -18,26 +18,32 @@ import java.util.Set;
 @CrossOrigin
 public class IngredientRecipeController {
     IngredientRecipeService ingredientRecipeService;
-        @PostMapping("/add")
-        public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> addIngredientRecipeService(@RequestParam int recipeId, @RequestBody IngredientRecipeRequestDto request) {
-        return ResponseEntity.ok(ingredientRecipeService.addIngredientRecipe(recipeId,request));
+
+    @PostMapping("/add")
+    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> addIngredientRecipeService(@RequestParam int recipeId, @RequestBody IngredientRecipeRequestDto request) {
+        return ResponseEntity.ok(ingredientRecipeService.addIngredientRecipe(recipeId, request));
     }
+
     @GetMapping("/id")
     public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> getIngredientRecipeById(@RequestParam int ingredientRecipeId) {
         return ResponseEntity.ok(ingredientRecipeService.getIngredientRecipeById(ingredientRecipeId));
     }
+
     @GetMapping("/all")
-    public ResponseEntity<Set<IngredientRecipeAndSetRecipeSlimResponseDto>> getAllIngredientRecipe(){
+    public ResponseEntity<Set<IngredientRecipeAndSetRecipeSlimResponseDto>> getAllIngredientRecipe() {
         return ResponseEntity.ok(ingredientRecipeService.getAllIngredientRecipe());
     }
+
     @GetMapping("/recipe")
     public ResponseEntity<Set<IngredientRecipeAndSetRecipeSlimResponseDto>> getAllIngredientRecipeByRecipeId(@RequestParam int recipeId) {
         return ResponseEntity.ok(ingredientRecipeService.findIngredientRecipeByRecipeId(recipeId));
     }
+
     @PutMapping("/update")
-    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> updateIngredientRecipe(@RequestParam int ingredientRecipeId , @RequestBody IngredientRecipeRequestDto request) {
-        return ResponseEntity.ok(ingredientRecipeService.updateIngredientRecipe(ingredientRecipeId,request));
+    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> updateIngredientRecipe(@RequestParam int ingredientRecipeId, @RequestBody IngredientRecipeRequestDto request) {
+        return ResponseEntity.ok(ingredientRecipeService.updateIngredientRecipe(ingredientRecipeId, request));
     }
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteIngredientRecipe(@RequestParam int ingredientRecipeId) {
         return ResponseEntity.ok(ingredientRecipeService.deleteIngredientRecipe(ingredientRecipeId));

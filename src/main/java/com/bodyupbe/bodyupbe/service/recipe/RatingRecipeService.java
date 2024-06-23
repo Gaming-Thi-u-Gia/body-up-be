@@ -15,7 +15,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -27,6 +26,7 @@ public class RatingRecipeService {
     UserRepository userRepository;
     RatingRecipeRepository ratingRecipeRepository;
     RatingRecipeMapper ratingRecipeMapper;
+
     public RatingRecipeResponseSlimDto rating(int recipeId, int userId, RatingRecipeRequestDto request) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -39,7 +39,7 @@ public class RatingRecipeService {
             ratingRecipe.setRecipe(recipe);
             ratingRecipe.setUser(user);
             ratingRecipe.setStar(request.getStar());
-             ratingRecipeRepository.save(ratingRecipe);
+            ratingRecipeRepository.save(ratingRecipe);
         }
         double avgStar = updateAverageRating(recipe);
         RatingRecipeResponseSlimDto ratingRecipeResponseSlimDto = ratingRecipeMapper.toRatingRecipeResponseSlimDto(ratingRecipe);
@@ -47,7 +47,7 @@ public class RatingRecipeService {
         ratingRecipeResponseSlimDto.setTotalRating(recipe.getRatingRecipes().size());
         return ratingRecipeResponseSlimDto;
     }
-    
+
     public double updateAverageRating(Recipe recipe) {
         int totalStar = 0;
         Set<RatingRecipe> ratingRecipes = recipe.getRatingRecipes();

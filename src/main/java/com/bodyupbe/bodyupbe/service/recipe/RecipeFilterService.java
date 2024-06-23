@@ -2,9 +2,6 @@ package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeCategoryMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
-import com.bodyupbe.bodyupbe.model.recipe.Recipe;
-import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
 import com.bodyupbe.bodyupbe.repository.RecipeCategoryRepository;
 import com.bodyupbe.bodyupbe.repository.RecipeRepository;
 import lombok.AccessLevel;
@@ -12,9 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -62,7 +56,6 @@ public class RecipeFilterService {
 //        Set<Recipe> recipes = recipeRepository.findByRecipeCategories_IdIn(recipeCategoryIds);
 //        return recipeMapper.toSetRecipeResponseDto(recipes);
 //    }
-
 
 
 }

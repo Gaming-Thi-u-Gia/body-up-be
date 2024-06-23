@@ -42,7 +42,7 @@ public class RecipeService {
 //        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
 //    }
 
-//    public RecipeResponseDto getRecipe(int id) {
+    //    public RecipeResponseDto getRecipe(int id) {
 //        return recipeMapper.toRecipeResponseDto(recipeRepository.findById(id).orElseThrow(() ->
 //                new RuntimeException("Recipe not found")));
 //    }
@@ -66,17 +66,18 @@ public class RecipeService {
     public Set<RecipeLatestResponseDto> getLatestRecipe(Optional<Integer> userId) {
         Set<Recipe> recipes = recipeRepository.findTop2ByOrderByCreateAtDesc();
         Set<RecipeLatestResponseDto> setRecipeLatestResponseDto = recipeMapper.toSetRecipeLatestResponseDto(recipes);
-        if(userId.isPresent()){
-            for(RecipeLatestResponseDto recipeLatestResponseDto : setRecipeLatestResponseDto){
+        if (userId.isPresent()) {
+            for (RecipeLatestResponseDto recipeLatestResponseDto : setRecipeLatestResponseDto) {
                 recipeLatestResponseDto.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeLatestResponseDto.getId()));
                 Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeLatestResponseDto.getId());
-                recipeLatestResponseDto.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
-                log.info("ratingRecipe: "+recipeLatestResponseDto);
+                recipeLatestResponseDto.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
+                log.info("ratingRecipe: " + recipeLatestResponseDto);
             }
         }
         return setRecipeLatestResponseDto;
     }
-//detail
+
+    //detail
     public RecipeDetailResponseDto getRecipeById(int recipeId, Optional<Integer> userId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
                 new RuntimeException("Recipe not found"));
@@ -86,23 +87,24 @@ public class RecipeService {
             boolean isBookmarked = recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeDetailResponseDto.getId());
             recipeDetailResponseDto.setBookmarked(isBookmarked);
             Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeDetailResponseDto.getId());
-            recipeDetailResponseDto.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+            recipeDetailResponseDto.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
         }
-          int totalRating = recipeRepository.countRatingRecipesByRecipeId(recipeId);
+        int totalRating = recipeRepository.countRatingRecipesByRecipeId(recipeId);
         recipeDetailResponseDto.setTotalRating(totalRating);
         return recipeDetailResponseDto;
     }
-//saved
-    public ObjectSetResponse<RecipeCardResponseDto> getAllBookmarkedRecipe(int userId,int pageNo, int pageSize) {
+
+    //saved
+    public ObjectSetResponse<RecipeCardResponseDto> getAllBookmarkedRecipe(int userId, int pageNo, int pageSize) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Recipe> pages = recipeRepository.findBookmarkedRecipesByUserId(userId,pageable);
+        Page<Recipe> pages = recipeRepository.findBookmarkedRecipesByUserId(userId, pageable);
         List<Recipe> recipes = pages.getContent();
         Set<RecipeCardResponseDto> content = recipeMapper.toSetRecipeCardResponseDto(recipes);
-        for(RecipeCardResponseDto recipeCardResponseDto : content){
+        for (RecipeCardResponseDto recipeCardResponseDto : content) {
             recipeCardResponseDto.setBookmarked(true);
             Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId, recipeCardResponseDto.getId());
-            recipeCardResponseDto.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+            recipeCardResponseDto.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
         }
         ObjectSetResponse<RecipeCardResponseDto> response = new ObjectSetResponse<>();
         response.setContent(content);
@@ -114,18 +116,19 @@ public class RecipeService {
         response.setLast(pages.isLast());
         return response;
     }
-//search
-    public ObjectSetResponse<RecipeCardResponseDto> getRecipeByName(String nameRecipe, Optional<Integer> userId,int pageNo, int pageSize){
+
+    //search
+    public ObjectSetResponse<RecipeCardResponseDto> getRecipeByName(String nameRecipe, Optional<Integer> userId, int pageNo, int pageSize) {
         RecipeCardSearchResponseDto recipeCardSearchResponseDto = new RecipeCardSearchResponseDto();
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Recipe> pages = recipeRepository.findRecipeByNameContainingIgnoreCase(nameRecipe,pageable);
+        Page<Recipe> pages = recipeRepository.findRecipeByNameContainingIgnoreCase(nameRecipe, pageable);
         List<Recipe> recipes = pages.getContent();
         Set<RecipeCardResponseDto> content = recipeMapper.toSetRecipeCardResponseDto(recipes);
-        if(userId.isPresent()){
-            for(RecipeCardResponseDto recipeCardResponseDto : content){
+        if (userId.isPresent()) {
+            for (RecipeCardResponseDto recipeCardResponseDto : content) {
                 recipeCardResponseDto.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeCardResponseDto.getId()));
                 Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeCardResponseDto.getId());
-                recipeCardResponseDto.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+                recipeCardResponseDto.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
             }
         }
         ObjectSetResponse<RecipeCardResponseDto> response = new ObjectSetResponse<>();
@@ -138,19 +141,20 @@ public class RecipeService {
         response.setLast(pages.isLast());
         return response;
     }
-//filter
-    public ObjectResponse<RecipeFilterResponseDto> getRecipeByCategory(Set<Integer> categoryIds,Optional<Integer> userId, int pageNo, int pageSize) {
+
+    //filter
+    public ObjectResponse<RecipeFilterResponseDto> getRecipeByCategory(Set<Integer> categoryIds, Optional<Integer> userId, int pageNo, int pageSize) {
         RecipeFilterResponseDto content = new RecipeFilterResponseDto();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Recipe> pages = recipeRepository.findRecipesByCategoryIds(categoryIds, categoryIds.size(), pageable);
         List<Recipe> recipes = pages.getContent();
         Set<RecipeCardResponseDto> setRecipeCardResponseDto = recipeMapper.toSetRecipeCardResponseDto(recipes);
-        if(userId.isPresent()){
-            for(RecipeCardResponseDto recipeCardResponseDto : setRecipeCardResponseDto){
+        if (userId.isPresent()) {
+            for (RecipeCardResponseDto recipeCardResponseDto : setRecipeCardResponseDto) {
                 recipeCardResponseDto.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipeCardResponseDto.getId()));
                 Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipeCardResponseDto.getId());
-                recipeCardResponseDto.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+                recipeCardResponseDto.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
             }
         }
         content.setRecipes(setRecipeCardResponseDto);

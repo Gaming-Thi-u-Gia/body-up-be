@@ -1,14 +1,12 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeFilterService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

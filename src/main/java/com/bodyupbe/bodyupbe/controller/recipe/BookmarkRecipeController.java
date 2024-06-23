@@ -1,7 +1,6 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
 import com.bodyupbe.bodyupbe.dto.response.recipe.BookmarkSlimResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.recipe.BookmarkRecipeService;
@@ -29,9 +28,9 @@ public class BookmarkRecipeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             throw new RuntimeException("User not found");
         }
-        return ResponseEntity.ok(bookmarkRecipeService.toggleBookmarkRecipe(user.get().getId(),recipeId));
+        return ResponseEntity.ok(bookmarkRecipeService.toggleBookmarkRecipe(user.get().getId(), recipeId));
     }
 }

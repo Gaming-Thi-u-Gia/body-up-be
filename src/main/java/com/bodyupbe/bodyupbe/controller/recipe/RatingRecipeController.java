@@ -29,7 +29,7 @@ public class RatingRecipeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> user = userRepository.findByEmail(currentPrincipalName);
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             throw new RuntimeException("User not found");
         }
         return ResponseEntity.ok(ratingRecipeService.rating(recipeId, user.get().getId(), request));

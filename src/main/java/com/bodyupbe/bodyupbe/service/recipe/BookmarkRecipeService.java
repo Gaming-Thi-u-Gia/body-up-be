@@ -38,8 +38,7 @@ public class BookmarkRecipeService {
             user.getBookmarkRecipes().add(recipe);
             bookmarked = true;
         }
-        User userResult = userRepository.save(user);
-
+        userRepository.save(user);
         return new BookmarkSlimResponseDto(recipeId, userId ,bookmarked);
     }
 

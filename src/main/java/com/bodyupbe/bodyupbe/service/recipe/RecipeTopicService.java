@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -63,10 +62,10 @@ public class RecipeTopicService {
         topic.setRecipes(new HashSet<>(pages.getContent()));
         TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto = topicMapper.toTopicRecipeSlimAndSetRecipeCardResponseDto(topic);
         if (userId.isPresent()) {
-            for(RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
+            for (RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
                 recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipe.getId()));
                 Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipe.getId());
-                recipe.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+                recipe.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
             }
         }
         ObjectResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> response = new ObjectResponse<>();
@@ -81,16 +80,16 @@ public class RecipeTopicService {
 
     //da xu ly phan trang
     public ObjectSetResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopic4Recipe(Optional<Integer> userId, int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Topic> pages = topicRepository.findByTopic("recipe", pageable);
         List<Topic> topics = pages.getContent();
         Set<TopicRecipeSlimAndSetRecipeCardResponseDto> content = topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
         if (userId.isPresent()) {
-            for(TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto : content) {
-                for(RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
+            for (TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto : content) {
+                for (RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
                     recipe.setBookmarked(recipeRepository.findBookmarkedByUserIdAndRecipeId(userId.get(), recipe.getId()));
                     Optional<RatingRecipe> ratingRecipe = recipeRepository.findRatingStarRecipeByUserId(userId.get(), recipe.getId());
-                    recipe.setCurrentRating(ratingRecipe.isPresent()?ratingRecipe.get().getStar():0);
+                    recipe.setCurrentRating(ratingRecipe.isPresent() ? ratingRecipe.get().getStar() : 0);
                 }
             }
         }

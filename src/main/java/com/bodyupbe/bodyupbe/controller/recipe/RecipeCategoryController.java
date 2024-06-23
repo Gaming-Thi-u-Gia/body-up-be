@@ -1,15 +1,16 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
-import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeCategoryRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategorySlimAndSetRecipeSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryTableResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.RecipeCategoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
