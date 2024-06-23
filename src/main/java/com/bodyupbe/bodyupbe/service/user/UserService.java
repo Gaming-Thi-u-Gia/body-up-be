@@ -77,7 +77,7 @@ public class UserService {
     }
 
     public Set<UserProgressPhotoResponseDto> getUserProgressPhotoByUserId(int userId) {
-        Set<UserProgressPhoto> userProgressPhoto = userProgressPhotoRepository.findAllByUserId(userId);
+        Set<UserProgressPhoto> userProgressPhoto = userProgressPhotoRepository.findAllByUserIdOrderByDate(userId);
         return userMapper.toListUserProgressPhotoResponseDto(userProgressPhoto);
     }
 }

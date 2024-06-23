@@ -11,5 +11,5 @@ public interface UserProgressPhotoRepository extends JpaRepository<UserProgressP
     Set<UserProgressPhoto> findAllByPhotoAngle(String photoAngle);
     Set<UserProgressPhoto> findByUserAndPhotoAngleOrderByDateDesc(User user, String photoAngle);
     Set<UserProgressPhoto> findAllByUserIdAndPhotoAngle(int userId, String photoAngle);
-    Set<UserProgressPhoto> findAllByUserId(int userId);
+    Set<UserProgressPhoto> findAllByUserIdOrderByDate(int userId);
 }
