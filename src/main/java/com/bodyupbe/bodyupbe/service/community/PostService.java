@@ -56,8 +56,10 @@ public class PostService {
         return postMapper.toPostResponseDto(postRepository.save(post));
     }
 
-    public List<PostResponseDto> getPostAllByCategoryId(Optional<Integer> userId, int categoryId) {
-        List<Post> post = postRepository.findPostByCategoryCommunity_IdOrderByCreatedAtDesc(categoryId);
+    public List<PostResponseDto> getPostAllByCategoryId(Optional<Integer> userId, int categoryId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByCategoryCommunity_IdOrderByCreatedAtDesc(categoryId, pageable);
+        List<Post> post = postsPage.getContent();
         List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(post);
         if (userId.isPresent()) {
             for (PostResponseDto p : postResponseDto) {
@@ -67,8 +69,10 @@ public class PostService {
         return postResponseDto;
     }
 
-    public List<PostResponseDto> getPostByUserId(Optional<Integer> userId) {
-        List<Post> posts = postRepository.findPostByUser_Id(userId.get());
+    public List<PostResponseDto> getPostByUserId(Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByUser_Id(userId.get(), pageable);
+        List<Post> posts = postsPage.getContent();
         List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
         for (PostResponseDto p : postResponseDto) {
                 p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));

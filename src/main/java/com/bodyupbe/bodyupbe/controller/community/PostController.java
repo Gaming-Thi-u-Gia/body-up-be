@@ -40,27 +40,28 @@ public class PostController {
 
     //
     @GetMapping("/getAllPostByCategory")
-    public ResponseEntity <List<PostResponseDto>> getAllPostByCategoryId(@RequestParam int categoryId) {
+    public ResponseEntity <List<PostResponseDto>> getAllPostByCategoryId(@RequestParam int categoryId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
         if(optionalUser.isPresent()){
-            return ResponseEntity.ok(postService.getPostAllByCategoryId(Optional.of(optionalUser.get().getId()),categoryId));
+            return ResponseEntity.ok(postService.getPostAllByCategoryId(Optional.of(optionalUser.get().getId()),categoryId,page,size));
         }
         else {
-            return ResponseEntity.ok(postService.getPostAllByCategoryId(Optional.empty(),categoryId));
+            return ResponseEntity.ok(postService.getPostAllByCategoryId(Optional.empty(),categoryId,page,size));
         }
     }
     @GetMapping("/getAllPostByUser")
-    public ResponseEntity <List<PostResponseDto>> getAllPostByUserId() {
+    public ResponseEntity <List<PostResponseDto>> getAllPostByUserId(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
         if(optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
         }
-        return ResponseEntity.ok(postService.getPostByUserId(Optional.of(optionalUser.get().getId())));
+        return ResponseEntity.ok(postService.getPostByUserId(Optional.of(optionalUser.get().getId()),page,size));
     }
+
     @DeleteMapping("/deletePost")
     public ResponseEntity<String> deletePost(@RequestParam int postId) {
         postService.deletePost(postId);
