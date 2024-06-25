@@ -51,19 +51,6 @@ public class BookmarkPostService {
         return new BookmarkResponseDto(userSlimResponseDto, postId, isBookmarked);
     }
 
-    public BookmarkResponseDto checkBookmarkPost(User user, int postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        UserSlimResponseDto userSlimResponseDto = userMapper.toUserSlimResponseDto(user);
-        boolean isBookmarked;
-        if(user.getBookmarkPosts().contains(post)) {
-            isBookmarked = true;
-        } else {
-            isBookmarked = false;
-        }
-        return new BookmarkResponseDto(userSlimResponseDto, postId, isBookmarked);
-    }
-
 
     public  Set<PostResponseDto> getBookmarkPost(int userId) {
         User user = userRepository.findById(userId)

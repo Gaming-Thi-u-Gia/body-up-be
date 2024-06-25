@@ -64,8 +64,14 @@ public class PostController {
 
     @DeleteMapping("/deletePost")
     public ResponseEntity<String> deletePost(@RequestParam int postId) {
-        postService.deletePost(postId);
-         return ResponseEntity.ok("Post deleted successfully");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        postService.deletePost(postId, optionalUser.get());
+        return ResponseEntity.ok("Post deleted successfully");
     }
     @GetMapping("/getPostById")
     public ResponseEntity <PostResponseDto> getPostById(@RequestParam int postId) {
@@ -106,6 +112,17 @@ public class PostController {
             throw new RuntimeException("User not found");
         }
         return ResponseEntity.ok(postService.getPostsCommentedAndCommentByUser(optionalUser.get()));
+    }
+
+    @PutMapping("/editPost")
+    public ResponseEntity<PostResponseDto> editPost(@RequestBody PostRequestDto request, @RequestParam int postId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.editPost(request, optionalUser.get(), postId));
     }
 
 

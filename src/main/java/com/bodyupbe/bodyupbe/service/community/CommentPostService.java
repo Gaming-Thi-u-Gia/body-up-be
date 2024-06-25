@@ -50,14 +50,27 @@ public class CommentPostService {
         }
         return commentMapper.toCommentResponseDto(commentRepository.save(comment));
     }
+    public CommentResponseDto editComment(CommentRequestDto commentRequestDto,User user, int commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        if(!user.getId().equals(comment.getUser().getId())) {
+            throw new RuntimeException("You are not authorized to edit this comment");
+        }
+        comment.setDetail(commentRequestDto.getDetail());
+        comment.setUpVote(commentRequestDto.getUpVote());
+        return commentMapper.toCommentResponseDto(commentRepository.save(comment));
+    }
 
     public List<CommentResponseDto> getChildComments(int parentId) {
         List<Comment> childComments = commentRepository.findAllChildrenByParentId(parentId);
         return commentMapper.toListCommentResponseDto(childComments);
     }
 
-    public String deleteComment(int commentId) {
+    public String deleteComment(int commentId, User user) {
+
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        if(!user.getId().equals(comment.getUser().getId())) {
+            throw new RuntimeException("You are not authorized to edit this comment");
+        }
         commentRepository.delete(comment);
         return "success";
     }

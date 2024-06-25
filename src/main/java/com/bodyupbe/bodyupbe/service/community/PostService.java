@@ -55,6 +55,21 @@ public class PostService {
                 .build();
         return postMapper.toPostResponseDto(postRepository.save(post));
     }
+    public PostResponseDto editPost(PostRequestDto postDto, User user, int postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        Badge badge = badgeRepository.findById(post.getBadge().getId()).orElseThrow(() -> new RuntimeException("Badge not found"));
+        post.setBadge(badge);
+        if(!user.getId().equals(post.getUser().getId())) {
+            throw new RuntimeException("You are not authorized to edit this post");
+        }
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setImgBefore(postDto.getImgBefore());
+        post.setImgAfter(postDto.getImgAfter());
+        post.setDayBefore(postDto.getDayBefore());
+        post.setDayAfter(postDto.getDayAfter());
+        return postMapper.toPostResponseDto(postRepository.save(post));
+    }
 
     public List<PostResponseDto> getPostAllByCategoryId(Optional<Integer> userId, int categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -92,7 +107,16 @@ public class PostService {
     }
 
 
-    public void deletePost(int postId) {
+    public void deletePost(int postId,User user) {
+        user = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        if(!user.getId().equals(post.getUser().getId())) {
+            throw new RuntimeException("You are not authorized to delete this post");
+        }
+        if(user.getBookmarkPosts().contains(post)){
+            user.getBookmarkPosts().remove(post);
+            userRepository.save(user);
+        }
         postRepository.deleteById(postId);
     }
 

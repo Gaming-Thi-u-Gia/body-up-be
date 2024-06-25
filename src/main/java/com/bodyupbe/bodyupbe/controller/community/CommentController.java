@@ -36,10 +36,26 @@ public class CommentController {
         }
         return ResponseEntity.ok(commentPostService.createComment(request, optionalUser.get(),postId ));
     }
+    @PutMapping("/editComment")
+    public ResponseEntity<CommentResponseDto> editComment(@RequestBody CommentRequestDto request, @RequestParam int commentId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(commentPostService.editComment(request,optionalUser.get() ,commentId));
+    }
 
     @DeleteMapping("deleteComment")
     public ResponseEntity<String> deleteComment(@RequestParam int commentId) {
-        commentPostService.deleteComment(commentId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        commentPostService.deleteComment(commentId, optionalUser.get());
         return ResponseEntity.ok("Comment deleted successfully");
     }
 
