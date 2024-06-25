@@ -1,8 +1,10 @@
 package com.bodyupbe.bodyupbe.controller.workout_program;
 
 import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.ObjectWorkoutProgram.ObjectWorkoutProgramSetResponse;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramCategoryResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponse;
 import com.bodyupbe.bodyupbe.service.workout_program.WorkoutProgramService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -56,5 +58,10 @@ public class WorkoutProgramController {
     @GetMapping("/searchWorkoutProgram")
     public ResponseEntity<List<WorkoutProgramResponseDto>> searchWorkoutProgram(@RequestParam String name) {
         return ResponseEntity.ok(workoutProgramService.searchWorkoutProgram(name));
+    }
+
+    @GetMapping("/category-workout-program")
+    public ResponseEntity<ObjectWorkoutProgramSetResponse<WorkoutProgramSlimResponse>> getWorkoutProgramCategory(@RequestParam Set<Integer> categoryIds, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
+        return ResponseEntity.ok(workoutProgramService.getWorkoutProgramByCategory(categoryIds, pageNo, pageSize));
     }
 }

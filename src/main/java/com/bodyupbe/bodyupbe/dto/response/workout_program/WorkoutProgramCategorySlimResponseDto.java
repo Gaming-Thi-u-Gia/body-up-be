@@ -1,4 +1,4 @@
-package com.bodyupbe.bodyupbe.dto.response.workout_video;
+package com.bodyupbe.bodyupbe.dto.response.workout_program;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class VideoCategorySlimResponseDto {
+public class WorkoutProgramCategorySlimResponseDto {
     int id;
     String name;
     String type;

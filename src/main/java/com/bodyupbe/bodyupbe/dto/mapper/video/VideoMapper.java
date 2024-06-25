@@ -21,5 +21,7 @@ public interface VideoMapper {
 
     Set<VideoResponseDto> toSetVideos(Set<Video> videos);
 
+    Set<VideoSlimResponseDto> toSetVideoSlim(List<Video> videos);
+
     Set<VideoBookmarkResponseSlim> toSetVideoBookmark(Set<Video> videos);
 }

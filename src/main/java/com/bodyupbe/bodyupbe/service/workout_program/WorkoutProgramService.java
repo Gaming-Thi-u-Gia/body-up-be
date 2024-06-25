@@ -4,8 +4,10 @@ import com.bodyupbe.bodyupbe.dto.mapper.TopicMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.workout_program.WorkoutProgramCategoryMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.workout_program.WorkoutProgramMapper;
 import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.ObjectWorkoutProgram.ObjectWorkoutProgramSetResponse;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramCategoryResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponse;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCategory;
@@ -16,6 +18,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,5 +76,23 @@ public class WorkoutProgramService {
         List<WorkoutProgram> workoutPrograms = workoutProgramRepository.findByNameContainingIgnoreCase(name);
 
         return workoutProgramMapper.toListWorkoutProgramResponseDto(workoutPrograms);
+    }
+
+    public ObjectWorkoutProgramSetResponse<WorkoutProgramSlimResponse> getWorkoutProgramByCategory(Set<Integer> categoryIds, int pageNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<WorkoutProgram> pages = workoutProgramRepository.findWorkoutProgramByCategoryIds(categoryIds, categoryIds.size(), pageable);
+        List<WorkoutProgram> workoutPrograms = pages.getContent();
+
+        Set<WorkoutProgramSlimResponse> setWorkoutProgramCategorySlimResponseDto = workoutProgramMapper.toSetWorkoutProgramSlim(workoutPrograms);
+
+        ObjectWorkoutProgramSetResponse<WorkoutProgramSlimResponse> response = new ObjectWorkoutProgramSetResponse<>();
+        response.setContent(setWorkoutProgramCategorySlimResponseDto);
+        response.setTotalElements(pages.getTotalElements());
+        response.setTotalPages(pages.getTotalPages());
+        response.setPageNo(pages.getNumber());
+        response.setPageSize(pages.getSize());
+        response.setLast(pages.isLast());
+        return response;
     }
 }

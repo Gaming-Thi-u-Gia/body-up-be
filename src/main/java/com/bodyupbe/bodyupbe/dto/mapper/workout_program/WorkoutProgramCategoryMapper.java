@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.mapper.workout_program;
 
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramCategoryResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramCategorySlimResponseDto;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCategory;
 import org.mapstruct.Mapper;
 
@@ -15,5 +16,8 @@ public interface WorkoutProgramCategoryMapper {
 
     WorkoutProgramCategoryResponseDto toWorkoutProgramCategorySlimResponse(WorkoutProgramCategory workoutProgramCategory);
 
+    WorkoutProgramCategorySlimResponseDto toListWorkoutProgramCategorySlimResponseDto(WorkoutProgramCategory workoutProgramCategories);
     Set<WorkoutProgramCategoryResponseDto> toSetWorkoutProgramCategory(Set<WorkoutProgramCategory> workoutProgramCategories);
+
+    Set<WorkoutProgramCategorySlimResponseDto> toSetWorkoutProgramCategorySlim(Set<WorkoutProgramCategory> workoutProgramCategories);
 }

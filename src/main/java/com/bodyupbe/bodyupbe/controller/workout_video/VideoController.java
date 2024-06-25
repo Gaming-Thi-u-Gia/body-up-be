@@ -1,8 +1,10 @@
 package com.bodyupbe.bodyupbe.controller.workout_video;
 
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.ObjectVideo.ObjectVideoResponse;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoBookmarkResponseSlim;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
 import com.bodyupbe.bodyupbe.service.video.BookmarkService;
@@ -86,4 +88,5 @@ public class VideoController {
                 .orElseGet(() ->
                         ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
     }
+
 }
