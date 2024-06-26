@@ -150,10 +150,23 @@ public class PostService {
         return postResults;
     }
 
-
-
-
-
-
+    public List<PostResponseDto> getPostByBadgeNameAndCategoryId(String badgeName, int categoryId, Optional<Integer> userId) {
+        List<Post> posts = postRepository.findPostByBadge_NameAndCategoryCommunity_Id(badgeName, categoryId);
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        if (userId.isPresent()) {
+            for (PostResponseDto p : postResponseDto) {
+                p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+            }
+        }
+        return postResponseDto;
+    }
 
 }
+
+
+
+
+
+
+
+
