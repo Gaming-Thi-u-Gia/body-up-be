@@ -1,9 +1,7 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCardResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeDetailResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeFilterResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeLatestResponseDto;
+import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectResponse;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 import com.bodyupbe.bodyupbe.model.user.User;
@@ -29,14 +27,14 @@ public class RecipeController {
     RecipeService recipeService;
     private final UserRepository userRepository;
 
-//    @PostMapping("/add")
-//    public ResponseEntity<RecipeResponseDto> addRecipe(@RequestBody RecipeRequestDto request) {
-//        return ResponseEntity.ok(recipeService.addRecipe(request));
-//    }
-    //@GetMapping("/all")
-    //public ResponseEntity<Set<RecipeResponseDto>> getAllRecipe() {
-    //    return ResponseEntity.ok(recipeService.getAllRecipe());
-    //}
+    @PostMapping("/add")
+    public ResponseEntity<String> addRecipe(@RequestBody RecipeRequestDto request) {
+        return ResponseEntity.ok(recipeService.addRecipe(request));
+    }
+    @GetMapping("/all")
+    public ResponseEntity<Set<RecipeResponseDto>> getAllRecipe() {
+        return ResponseEntity.ok(recipeService.getAllRecipe());
+    }
 //    @PutMapping("/update")
 //    public ResponseEntity<RecipeResponseDto> updateRecipe(@RequestParam int recipeId, @RequestBody RecipeRequestDto request) {
 //        return ResponseEntity.ok(recipeService.updateRecipe(recipeId, request));

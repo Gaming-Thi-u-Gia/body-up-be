@@ -14,6 +14,9 @@ import java.util.Set;
 
 public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
 
+    @Query(value = "SELECT COUNT(*) FROM Recipe r")
+    int countRecipe();
+
     @Query("SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :recipeName, '%'))")
     Page<Recipe> findRecipeByNameContainingIgnoreCase(@Param("recipeName") String recipeName,Pageable pageable);
 

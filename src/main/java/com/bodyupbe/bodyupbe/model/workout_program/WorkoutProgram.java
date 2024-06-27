@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.Set;
@@ -37,6 +38,7 @@ public class WorkoutProgram {
     @Column(length = 2000)
     String banner;
     @Column(name = "release_date")
+    @CreationTimestamp
     Date releaseDate;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
@@ -63,5 +65,5 @@ public class WorkoutProgram {
             inverseJoinColumns = @JoinColumn(name = "workout_program_category_id",referencedColumnName = "id")
     )
     @JsonManagedReference
-    Set<WorkoutProgramCategory> workoutProgramCategories;
+        Set<WorkoutProgramCategory> workoutProgramCategories;
 }

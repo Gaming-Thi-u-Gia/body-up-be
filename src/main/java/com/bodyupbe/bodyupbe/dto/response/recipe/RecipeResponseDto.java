@@ -22,11 +22,5 @@ public class RecipeResponseDto {
     String img;
     String cookingInstruction;
     Date createAt;
-    Set<RatingRecipeResponseSlimDto> ratingRecipes;
-    Set<IngredientRecipeAndSetRecipeSlimResponseDto> ingredientRecipes;
-    Set<OtherImageRecipeAndRecipeSlimResponseDto> otherImageRecipes;
-    Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;
-    Set<UserSlimResponseDto> bookmarkUsers;
-    Set<TopicRecipeResponseSlimDto> topics;
     Set<RecipeCategoryResponseSlimDto> recipeCategories;
 }

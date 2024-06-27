@@ -1,4 +1,5 @@
 package com.bodyupbe.bodyupbe.dto.mapper.user;
+
 import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserResponseAndSetPostSlimResponseDto;

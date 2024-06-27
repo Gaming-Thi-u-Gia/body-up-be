@@ -10,5 +10,4 @@ public class IngredientRecipeRequestDto {
     Integer id;
     String amount;
     String name;
-
 }

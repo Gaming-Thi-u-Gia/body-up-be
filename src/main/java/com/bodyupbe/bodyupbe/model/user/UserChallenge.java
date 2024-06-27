@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -24,7 +26,9 @@ public class UserChallenge {
     int id;
     @Column(length = 2000)
     String status;
-
+//    @CreationTimestamp
+//    @Column(name = "create_at")
+//    Date createAt;
     @ManyToOne
     @JoinColumn(name="user_id",referencedColumnName = "id")
     @JsonBackReference
@@ -38,4 +42,5 @@ public class UserChallenge {
     @ManyToMany(mappedBy = "userChallenges")
     @JsonIgnore
     Set<Post> posts;
+
 }

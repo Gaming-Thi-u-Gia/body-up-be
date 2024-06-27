@@ -2,16 +2,14 @@ package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeCategoryMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
+import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectResponse;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
-import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
-import com.bodyupbe.bodyupbe.model.recipe.Recipe;
+import com.bodyupbe.bodyupbe.model.Topic;
+import com.bodyupbe.bodyupbe.model.recipe.*;
 import com.bodyupbe.bodyupbe.model.user.User;
-import com.bodyupbe.bodyupbe.repository.RatingRecipeRepository;
-import com.bodyupbe.bodyupbe.repository.RecipeCategoryRepository;
-import com.bodyupbe.bodyupbe.repository.RecipeRepository;
-import com.bodyupbe.bodyupbe.repository.UserRepository;
+import com.bodyupbe.bodyupbe.repository.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,19 +35,76 @@ public class RecipeService {
     private final RatingRecipeRepository ratingRecipeRepository;
     RecipeCategoryMapper recipeCategoryMapper;
     private final RecipeCategoryRepository recipeCategoryRepository;
+    TopicRepository topicRepository;
+    IngredientRecipeRepository ingredientRecipeRepository;
+    OtherImageRecipeRepository otherImageRecipeRepository;
+    NoteRecipeRepository noteRecipeRepository;
 
-//    public RecipeResponseDto addRecipe(RecipeRequestDto request) {
-//        Recipe recipe = recipeMapper.toRecipe(request);
-//        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
-//    }
+    public String addRecipe(RecipeRequestDto request) {
+        Recipe recipe = recipeMapper.toRecipe(request);
+
+        Set<RecipeCategory> categories = request.getRecipeCategories().stream()
+                .map(categoryRequest -> recipeCategoryRepository.findById(categoryRequest.getId())
+                        .orElseThrow(() -> new RuntimeException("RecipeCategory not found: " + categoryRequest.getId())))
+                .collect(Collectors.toSet());
+        Set<Topic> topics = request.getRecipeTopics().stream()
+                .map(topicRequest -> topicRepository.findById(topicRequest.getId())
+                        .orElseThrow(() -> new RuntimeException("Recipe Topic not found: " + topicRequest.getId())))
+                .collect(Collectors.toSet());
+
+        recipe.setRecipeCategories(categories);
+        recipe.setRecipeTopics(topics);
+        Recipe savedRecipe = recipeRepository.save(recipe);
+
+        Set<IngredientRecipe> ingredientRecipes = request.getIngredientRecipes().stream()
+                .map(ingredientRequest -> {
+                    IngredientRecipe ingredient = new IngredientRecipe();
+                    ingredient.setAmount(ingredientRequest.getAmount());
+                    ingredient.setName(ingredientRequest.getName());
+                    ingredient.setRecipe(savedRecipe);
+                    return ingredient;
+                })
+                .collect(Collectors.toSet());
+        ingredientRecipeRepository.saveAll(ingredientRecipes);
+
+        Set<OtherImageRecipe> otherImageRecipes = request.getOtherImageRecipes().stream()
+                .map(otherImageRequest -> {
+                    OtherImageRecipe otherImageRecipe = new OtherImageRecipe();
+                    otherImageRecipe.setImg(otherImageRequest.getImg());
+                    otherImageRecipe.setRecipe(savedRecipe);
+                    return otherImageRecipe;
+                })
+                .collect(Collectors.toSet());
+        otherImageRecipeRepository.saveAll(otherImageRecipes);
+
+        Set<NoteRecipe> noteRecipes = request.getNoteRecipes().stream()
+                .map(noteRecipeRequest -> {
+                    NoteRecipe noteRecipe = new NoteRecipe();
+                    noteRecipe.setDetail(noteRecipeRequest.getDetail());
+                    noteRecipe.setRecipe(savedRecipe);
+                    return noteRecipe;
+                })
+                .collect(Collectors.toSet());
+        noteRecipeRepository.saveAll(noteRecipes);
+
+        savedRecipe.setNoteRecipes(noteRecipes);
+        savedRecipe.setOtherImageRecipes(otherImageRecipes);
+        savedRecipe.setIngredientRecipes(ingredientRecipes);
+        recipeRepository.save(savedRecipe);
+        return "Add New Recipe Successfully With Recipe ID: " + savedRecipe.getId();
+    }
+
+
+
+
 
     //    public RecipeResponseDto getRecipe(int id) {
 //        return recipeMapper.toRecipeResponseDto(recipeRepository.findById(id).orElseThrow(() ->
 //                new RuntimeException("Recipe not found")));
 //    }
-//public Set<RecipeResponseDto> getAllRecipe() {
-//    return recipeMapper.toSetRecipeResponseDto(recipeRepository.findAll());
-//}
+public Set<RecipeResponseDto> getAllRecipe() {
+    return recipeMapper.toSetRecipeResponseDto(recipeRepository.findAll());
+}
 //    public RecipeResponseDto updateRecipe(int recipeId, RecipeRequestDto request) {
 //        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
 //                new RuntimeException("Recipe not found"));
