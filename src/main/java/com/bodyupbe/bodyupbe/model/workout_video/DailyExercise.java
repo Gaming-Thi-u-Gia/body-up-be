@@ -30,7 +30,7 @@ public class DailyExercise {
 
     @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<DailyVideo> dailyViveos;
+    Set<DailyVideo> dailyVideos;
 
     @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
     @JsonManagedReference

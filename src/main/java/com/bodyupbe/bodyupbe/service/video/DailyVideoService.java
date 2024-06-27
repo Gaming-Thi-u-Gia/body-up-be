@@ -1,2 +1,3 @@
-package com.bodyupbe.bodyupbe.service.video;public class DailyVideoService {
+package com.bodyupbe.bodyupbe.service.video;
+public class DailyVideoService {
 }

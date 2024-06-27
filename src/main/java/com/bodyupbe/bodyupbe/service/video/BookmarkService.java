@@ -1,8 +1,5 @@
 package com.bodyupbe.bodyupbe.service.video;
 
-import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
-import com.bodyupbe.bodyupbe.dto.mapper.video.VideoMapper;
-import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoBookmarkResponseSlim;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
@@ -14,8 +11,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Service
