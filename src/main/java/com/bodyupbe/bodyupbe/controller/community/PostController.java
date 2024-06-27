@@ -137,6 +137,18 @@ public class PostController {
             return ResponseEntity.ok(postService.getPostByBadgeNameAndCategoryId(badgeName, categoryId, Optional.empty(),page,size));
         }
     }
+    @GetMapping("/searchPost")
+    public ResponseEntity<List<PostResponseDto>> searchPostByTile(@RequestParam String title,@RequestParam int categoryId ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isPresent()){
+            return ResponseEntity.ok(postService.searchByPostTitle(title,categoryId, Optional.of(optionalUser.get().getId()),page,size));
+        }
+        else {
+            return ResponseEntity.ok(postService.searchByPostTitle(title, categoryId,Optional.empty(),page,size));
+        }
+    }
 
 
 

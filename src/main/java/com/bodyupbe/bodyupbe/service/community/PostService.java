@@ -163,9 +163,9 @@ public class PostService {
         return postResponseDto;
     }
 
-    public List<PostResponseDto> searchByPostTitle(String title, Optional<Integer> userId, int page, int size) {
+    public List<PostResponseDto> searchByPostTitle(String title, int categoryId ,Optional<Integer> userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Post> postsPage = postRepository.findPostByTitleContainingIgnoreCase(title, pageable);
+        Page<Post> postsPage = postRepository.findPostByTitleContainingIgnoreCaseAndCategoryCommunity_Id(title, categoryId,pageable);
         List<Post> posts = postsPage.getContent();
         List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
         if (userId.isPresent()) {
