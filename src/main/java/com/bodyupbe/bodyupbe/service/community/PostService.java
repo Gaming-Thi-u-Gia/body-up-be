@@ -150,8 +150,10 @@ public class PostService {
         return postResults;
     }
 
-    public List<PostResponseDto> getPostByBadgeNameAndCategoryId(String badgeName, int categoryId, Optional<Integer> userId) {
-        List<Post> posts = postRepository.findPostByBadge_NameAndCategoryCommunity_Id(badgeName, categoryId);
+    public List<PostResponseDto> getPostByBadgeNameAndCategoryId(String badgeName, int categoryId, Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByBadge_NameAndCategoryCommunity_Id(badgeName, categoryId, pageable);
+        List<Post> posts = postsPage.getContent();
         List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
         if (userId.isPresent()) {
             for (PostResponseDto p : postResponseDto) {
@@ -160,6 +162,21 @@ public class PostService {
         }
         return postResponseDto;
     }
+
+    public List<PostResponseDto> searchByPostTitle(String title, Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByTitleContainingIgnoreCase(title, pageable);
+        List<Post> posts = postsPage.getContent();
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        if (userId.isPresent()) {
+            for (PostResponseDto p : postResponseDto) {
+                p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+            }
+        }
+        return postResponseDto;
+    }
+
+
 
 }
 

@@ -36,6 +36,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/posts/getPostById/**")
                                 .permitAll()
+                                .requestMatchers("/api/v1/posts/filterPost")
+                                .permitAll()
                                 .requestMatchers("/api/v1/comments/upvoteComment")
                                 .permitAll()
                                 .requestMatchers("/api/v1/comments/getAllComments")

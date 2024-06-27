@@ -16,8 +16,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findPostByUser_Id(int userId, Pageable pageable);
     List<Post> findPostByBadge_Id(int badgeId);
 
-    List<Post> findPostByBadge_NameAndCategoryCommunity_Id(String name, int categoryId);
+    Page<Post> findPostByBadge_NameAndCategoryCommunity_Id(String name, int categoryId, Pageable pageable);
 
+    Page<Post> findPostByTitleContainingIgnoreCase(String title, Pageable pageable);
 
     @Query("SELECT DISTINCT p FROM Post p JOIN p.comments c WHERE c.user.id = :userId")
     List<Post> findPostsCommentedByUserId(@Param("userId") Integer userId);
