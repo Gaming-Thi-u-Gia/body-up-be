@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.mapper;
 
+import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseSlimDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeSlimAndSetRecipeCardResponseDto;
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
@@ -25,4 +27,7 @@ public interface TopicMapper {
     Set<TopicWorkoutProgramResponseDto> toTopicWorkoutProgram(Set<Topic> topics);
 
     Set<TopicVideoResponseDto> toTopicVideo(Set<Topic> topics);
+    Set<TopicRecipeResponseSlimDto> toSetTopicRecipeResponseSlimDto(List<Topic> topics);
+    Set<TopicRecipeSlimAndSetRecipeCardResponseDto> toSetTopicRecipeSlimAndSetRecipeCardResponseDto(List<Topic> topic);
+    TopicRecipeSlimAndSetRecipeCardResponseDto toTopicRecipeSlimAndSetRecipeCardResponseDto(Topic topic);
 }

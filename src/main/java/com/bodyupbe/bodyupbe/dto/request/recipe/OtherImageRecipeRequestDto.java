@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OtherImageRecipeDto {
+public class OtherImageRecipeRequestDto {
     Integer id;
     String img;
 }

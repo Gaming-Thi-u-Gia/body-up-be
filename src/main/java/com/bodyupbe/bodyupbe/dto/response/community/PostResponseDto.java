@@ -3,7 +3,7 @@ import com.bodyupbe.bodyupbe.dto.request.community.BadgeDto;
 import com.bodyupbe.bodyupbe.dto.request.community.CategoryCommunityDto;
 import com.bodyupbe.bodyupbe.dto.request.community.OtherImagePostDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserResponseAndSetPostSlimResponseDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,7 +22,7 @@ public class PostResponseDto {
     Date dayBefore;
     Date dayAfter;
     Date createdAt;
-    UserResponseDto user;
+    UserResponseAndSetPostSlimResponseDto user;
     CategoryCommunityDto categoryCommunity;
     BadgeDto badge;
     Set<CommentResponseDto> comments;

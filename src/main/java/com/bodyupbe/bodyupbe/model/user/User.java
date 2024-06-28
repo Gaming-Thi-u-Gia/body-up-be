@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +50,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     Role role;
     @Column(name = "create_at")
+    @CurrentTimestamp
     Date createAt;
 
     @Override
