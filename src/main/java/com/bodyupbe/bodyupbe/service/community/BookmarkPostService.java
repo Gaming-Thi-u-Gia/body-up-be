@@ -3,7 +3,7 @@ package com.bodyupbe.bodyupbe.service.community;
 import com.bodyupbe.bodyupbe.dto.mapper.community.PostMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.user.UserMapper;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserResponseAndSetPostSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.repository.PostRepository;
@@ -14,8 +14,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,7 +27,7 @@ public class BookmarkPostService {
     UserMapper userMapper;
     PostMapper postMapper;
 
-    public Optional<UserResponseDto> bookmarkPost(int userId, int postId) {
+    public Optional<UserResponseAndSetPostSlimResponseDto> bookmarkPost(int userId, int postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
         User user = userRepository.findById(userId)

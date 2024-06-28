@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.mapper;
 
+import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeResponseSlimDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.TopicRecipeSlimAndSetRecipeCardResponseDto;
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
@@ -12,6 +14,9 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface TopicMapper {
+    Set<TopicRecipeResponseSlimDto> toSetTopicRecipeResponseSlimDto(List<Topic> topics);
+    Set<TopicRecipeSlimAndSetRecipeCardResponseDto> toSetTopicRecipeSlimAndSetRecipeCardResponseDto(List<Topic> topic);
+    TopicRecipeSlimAndSetRecipeCardResponseDto toTopicRecipeSlimAndSetRecipeCardResponseDto(Topic topic);
     TopicResponseDto toTopicResponseDto(Topic topic);
 
     Topic toTopic(TopicDto topicDto);

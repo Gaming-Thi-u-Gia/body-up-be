@@ -20,6 +20,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Table(name = "recipes")
+@ToString
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +36,12 @@ public class Recipe {
     int cookTime;
     @Column(length = 2000)
     String img;
+    @Column(name = "cook_instruction",length = 2000)
     @Column(name = "cook_instruction" ,length = 2000)
     String cookingInstruction;
     @CreationTimestamp
+    @Column(name = "create_at")
     Date createAt;
-
     @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<RatingRecipe> ratingRecipes;

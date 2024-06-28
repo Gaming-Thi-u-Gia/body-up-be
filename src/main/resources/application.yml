@@ -20,11 +20,14 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+        ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
+    generate-ddl: true
+    show-sql: true
+logging:
+  level:
+    org.springframework.security: WARN
