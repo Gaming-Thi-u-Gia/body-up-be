@@ -15,5 +15,6 @@ import java.util.List;
 public class DailyVideoResponseDto {
     int id;
     String status;
+    String day;
     VideoSlimResponseDto video;
 }
