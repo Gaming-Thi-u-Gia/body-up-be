@@ -21,6 +21,12 @@ public interface UserDailyChallengeRepository extends JpaRepository<UserDailyCha
     Set<UserDailyChallenge> findAllByUserAndWorkoutProgram(@Param("userId") Integer userId,
                                                             @Param("workoutProgramId") Integer workoutProgramId);
 
-    @Query("SELECT udc FROM UserDailyChallenge udc JOIN udc.dailyExercise de WHERE udc.status = :status ORDER BY CAST(de.day AS INTEGER) ASC LIMIT 1")
-    UserDailyChallenge findByStatusSortedByExerciseDay(@Param("status") String status);
+    @Query("SELECT udc " +
+            "FROM UserDailyChallenge udc " +
+            "JOIN udc.dailyExercise de " +
+            "WHERE udc.status = :status AND udc.user.id = :userId " +
+            "ORDER BY CAST(de.day AS INTEGER) ASC limit 1")
+    UserDailyChallenge findByStatusSortedByExerciseDay(@Param("status") String status,@Param("userId") Integer userId);
+
+    UserDailyChallenge findByDailyExerciseIdAndUserId(Integer dailyExerciseId, Integer userId);
 }

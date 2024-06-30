@@ -14,6 +14,10 @@ public interface DailyVideoRepository extends JpaRepository<DailyVideo,Integer> 
             "JOIN dv.dailyExercise de " +
             "JOIN de.userDailyChallenges udc " +
             "JOIN udc.user u " +
-            "WHERE u.id = :userId AND de.day = :day")
-    Set<DailyVideo> findAllByUserIdAndDay(@Param("userId") Integer userId, @Param("day") String day);
+            "JOIN de.workoutProgram wp " +
+            "WHERE u.id = :userId AND de.day = :day AND wp.id = :workoutProgramId")
+    Set<DailyVideo> findAllByUserIdAndDayAndWorkoutProgramId(@Param("userId") Integer userId,
+                                                             @Param("day") String day,
+                                                             @Param("workoutProgramId") Integer workoutProgramId);
+
 }

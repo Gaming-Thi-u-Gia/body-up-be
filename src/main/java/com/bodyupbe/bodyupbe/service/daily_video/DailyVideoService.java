@@ -28,8 +28,8 @@ public class DailyVideoService {
     private final UserRepository userRepository;
 
     //Get daily video by day
-    public Set<DailyVideoResponseDto> getDailyVideoByDay(User user,String day) {
-        Set<DailyVideo> dailyVideos = dailyVideoRepository.findAllByUserIdAndDay(user.getId(), day);
+    public Set<DailyVideoResponseDto> getDailyVideoByDay(User user,String day,int workoutProgramId) {
+        Set<DailyVideo> dailyVideos = dailyVideoRepository.findAllByUserIdAndDayAndWorkoutProgramId(user.getId(), day,workoutProgramId);
         return dailyVideoMapper.toListDailyVideoResponseDto(dailyVideos);
     }
 
