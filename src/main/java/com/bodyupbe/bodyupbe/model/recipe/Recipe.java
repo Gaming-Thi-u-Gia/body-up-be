@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.model.recipe;
 
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -34,10 +35,9 @@ public class Recipe {
     int prepTime;
     @Column(name = "cook_time")
     int cookTime;
-    @Column(length = 2000)
+    @Column(length = 50000)
     String img;
     @Column(name = "cook_instruction",length = 2000)
-    @Column(name = "cook_instruction" ,length = 2000)
     String cookingInstruction;
     @CreationTimestamp
     @Column(name = "create_at")
@@ -69,7 +69,7 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "topic_id",referencedColumnName = "id")
     )
     @JsonManagedReference
-    Set<Topic> recipeTopics;
+        Set<Topic> recipeTopics;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -79,4 +79,12 @@ public class Recipe {
     )
     @JsonManagedReference
     Set<RecipeCategory> recipeCategories;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "dailyRecipes",
+            joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "daily_exercise_id",referencedColumnName = "id")
+    )
+    @JsonManagedReference
+    Set<DailyExercise> dailyExercises;
 }

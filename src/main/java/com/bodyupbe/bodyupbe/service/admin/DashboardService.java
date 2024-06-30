@@ -66,7 +66,7 @@ public class DashboardService {
 //        return results.stream()
 //                .map(result -> new UserChallengeStatusCountResponseDto((String) result.get("status"), (Long) result.get("count")))
 //                .collect(Collectors.toSet());
-//    }+
+//    }
 public List<MonthlyUserCountResponseDto> getMonthlyUserChallengeComletedCount() {
     Calendar calendar = new GregorianCalendar();
     calendar.set(Calendar.DAY_OF_MONTH, 1);

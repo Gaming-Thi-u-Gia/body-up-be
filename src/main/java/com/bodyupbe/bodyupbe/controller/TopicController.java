@@ -69,7 +69,7 @@ public class TopicController {
 
     @GetMapping("/getTopicForWorkout")
     public ResponseEntity<Set<TopicResponseDto>> getTopicForWorkout() {
-        return ResponseEntity.ok(topicService.getTopicForWourkoutProgram());
+        return ResponseEntity.ok(topicService.  getTopicForWourkoutProgram());
     }
 
     @GetMapping("/getTopicWithWorkoutProgram")

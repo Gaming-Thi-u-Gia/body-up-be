@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -84,6 +85,9 @@ public class RecipeTopicService {
         Page<Topic> pages = topicRepository.findByTopic("recipe", pageable);
         List<Topic> topics = pages.getContent();
         Set<TopicRecipeSlimAndSetRecipeCardResponseDto> content = topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
+        for(TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto : content){
+            topicRecipeSlimAndSetRecipeCardResponseDto.setRecipes(topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes().stream().limit(4).collect(Collectors.toSet()));
+        }
         if (userId.isPresent()) {
             for (TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto : content) {
                 for (RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {

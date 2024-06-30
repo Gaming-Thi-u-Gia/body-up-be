@@ -17,7 +17,7 @@ public class OtherImageRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(length = 2000)
+    @Column(length = 50000)
     String img;
 
     @ManyToOne

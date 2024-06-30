@@ -4,6 +4,8 @@ import com.bodyupbe.bodyupbe.dto.mapper.video.VideoMapper;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
+import com.bodyupbe.bodyupbe.model.recipe.Recipe;
+import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.model.workout_video.VideoCategory;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,9 +35,21 @@ public class VideoService {
     TopicRepository topicRepository;
     UserRepository userRepository;
 
-    public VideoResponseDto createVideo(VideoRequestDto videoRequestDto) {
-        Video video = videoMapper.toVideo(videoRequestDto);
-        return videoMapper.toVideoResponseDto(videoRepository.save(video));
+    public String createVideo(VideoRequestDto request) {
+        Video video = videoMapper.toVideo(request);
+        Set<VideoCategory> categories = request.getVideoCategories().stream()
+                .map(categoryRequest -> videoCategoryRepository.findById(categoryRequest.getId())
+                        .orElseThrow(() -> new RuntimeException("Video Category  not found: " + categoryRequest.getId())))
+                .collect(Collectors.toSet());
+        Set<Topic> topics = request.getVideoTopics().stream()
+                .map(topicRequest -> topicRepository.findById(topicRequest.getId())
+                        .orElseThrow(() -> new RuntimeException("Recipe Topic not found: " + topicRequest.getId())))
+                .collect(Collectors.toSet());
+
+        video.setVideoCategories(categories);
+        video.setVideoTopics(topics);
+        Video savedVideo = videoRepository.save(video);
+        return "Add New Video Successfully With Video ID: " + savedVideo.getId();
     }
 
     public List<VideoResponseDto> getVideoAll() {
