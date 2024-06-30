@@ -1,11 +1,10 @@
 package com.bodyupbe.bodyupbe.model.recipe;
 
+import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -14,19 +13,18 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
-@Table(name = "recipe_categorys")
-public class RecipeCategory {
+@Table(name = "daily_recipes")
+public class DailyRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(length = 2000)
-    String name;
-    @Column(length = 2000)
-    String type;
-    @Column(length = 2000)
-    String img;
-
-    @ManyToMany(mappedBy = "recipeCategories", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne
+    @JoinColumn(name="recipe_id",referencedColumnName = "id")
     @JsonBackReference
-    Set<Recipe> recipes;
+    Recipe recipe;
+    @ManyToOne
+    @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
+    @JsonBackReference
+    DailyExercise dailyExercise;
+    String part;
 }

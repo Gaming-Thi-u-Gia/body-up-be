@@ -40,59 +40,7 @@ public class RecipeService {
     OtherImageRecipeRepository otherImageRecipeRepository;
     NoteRecipeRepository noteRecipeRepository;
 
-    public String addRecipe(RecipeRequestDto request) {
-        Recipe recipe = recipeMapper.toRecipe(request);
 
-        Set<RecipeCategory> categories = request.getRecipeCategories().stream()
-                .map(categoryRequest -> recipeCategoryRepository.findById(categoryRequest.getId())
-                        .orElseThrow(() -> new RuntimeException("RecipeCategory not found: " + categoryRequest.getId())))
-                .collect(Collectors.toSet());
-        Set<Topic> topics = request.getRecipeTopics().stream()
-                .map(topicRequest -> topicRepository.findById(topicRequest.getId())
-                        .orElseThrow(() -> new RuntimeException("Recipe Topic not found: " + topicRequest.getId())))
-                .collect(Collectors.toSet());
-
-        recipe.setRecipeCategories(categories);
-        recipe.setRecipeTopics(topics);
-        Recipe savedRecipe = recipeRepository.save(recipe);
-
-        Set<IngredientRecipe> ingredientRecipes = request.getIngredientRecipes().stream()
-                .map(ingredientRequest -> {
-                    IngredientRecipe ingredient = new IngredientRecipe();
-                    ingredient.setAmount(ingredientRequest.getAmount());
-                    ingredient.setName(ingredientRequest.getName());
-                    ingredient.setRecipe(savedRecipe);
-                    return ingredient;
-                })
-                .collect(Collectors.toSet());
-        ingredientRecipeRepository.saveAll(ingredientRecipes);
-
-        Set<OtherImageRecipe> otherImageRecipes = request.getOtherImageRecipes().stream()
-                .map(otherImageRequest -> {
-                    OtherImageRecipe otherImageRecipe = new OtherImageRecipe();
-                    otherImageRecipe.setImg(otherImageRequest.getImg());
-                    otherImageRecipe.setRecipe(savedRecipe);
-                    return otherImageRecipe;
-                })
-                .collect(Collectors.toSet());
-        otherImageRecipeRepository.saveAll(otherImageRecipes);
-
-        Set<NoteRecipe> noteRecipes = request.getNoteRecipes().stream()
-                .map(noteRecipeRequest -> {
-                    NoteRecipe noteRecipe = new NoteRecipe();
-                    noteRecipe.setDetail(noteRecipeRequest.getDetail());
-                    noteRecipe.setRecipe(savedRecipe);
-                    return noteRecipe;
-                })
-                .collect(Collectors.toSet());
-        noteRecipeRepository.saveAll(noteRecipes);
-
-        savedRecipe.setNoteRecipes(noteRecipes);
-        savedRecipe.setOtherImageRecipes(otherImageRecipes);
-        savedRecipe.setIngredientRecipes(ingredientRecipes);
-        recipeRepository.save(savedRecipe);
-        return "Add New Recipe Successfully With Recipe ID: " + savedRecipe.getId();
-    }
 
     //    public RecipeResponseDto getRecipe(int id) {
 //        return recipeMapper.toRecipeResponseDto(recipeRepository.findById(id).orElseThrow(() ->
@@ -110,10 +58,7 @@ public Set<RecipeResponseDto> getAllRecipe() {
 //        recipe.setCookTime(request.getCookTime());
 //        return recipeMapper.toRecipeResponseDto(recipeRepository.save(recipe));
 //    }
-//    public String deleteRecipe(int recipeId) {
-//        recipeRepository.deleteById(recipeId);
-//        return "Recipe with id" + recipeId + " deleted";
-//    }
+
 //home
     public Set<RecipeLatestResponseDto> getLatestRecipe(Optional<Integer> userId) {
         Set<Recipe> recipes = recipeRepository.findTop2ByOrderByCreateAtDesc();

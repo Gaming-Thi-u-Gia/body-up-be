@@ -1,6 +1,6 @@
-package com.bodyupbe.bodyupbe.dto.response.recipe;
+package com.bodyupbe.bodyupbe.dto.response.admin.dashboard;
 
-import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,20 +11,20 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RecipeDetailResponseDto {
+public class RecipeSlimResponseForAdminDto {
     Integer id;
     String name;
     String detail;
     double avgStar;
+    int totalRating;
     int prepTime;
     int cookTime;
     String img;
     String cookingInstruction;
-    int currentRating;
-    int totalRating;
-    boolean bookmarked;
+    Date createdAt;
     Set<RecipeCategoryResponseSlimDto> recipeCategories;
     Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;
     Set<IngredientRecipeSlimResponseDto> ingredientRecipes;
     Set<OtherImageRecipeAndRecipeSlimResponseDto> otherImageRecipes;
+    Set<TopicRecipeResponseSlimDto> recipeTopics;
 }

@@ -1,6 +1,8 @@
 package com.bodyupbe.bodyupbe.dto.mapper.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSlimResponseForAdminDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.*;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import org.mapstruct.Mapper;
@@ -20,4 +22,6 @@ public interface RecipeMapper {
     Set<RecipeLatestResponseDto> toSetRecipeLatestResponseDto(Set<Recipe> recipes);
     Set<RecipeCardResponseDto> toSetRecipeCardResponseDto(Set<Recipe> recipes);
     Set<RecipeCardResponseDto> toSetRecipeCardResponseDto(List<Recipe> recipes);
+    RecipeSlimResponseForAdminDto toRecipeSlimResponseForAdminDto(Recipe recipe);
+    Set<RecipeCardResponseForAdminDto> toRecipeCardResponseForAdminDto(List<RecipeCardResponseForAdminDto> recipes);
 }

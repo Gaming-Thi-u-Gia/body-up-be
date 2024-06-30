@@ -37,10 +37,7 @@ public class RecipeController {
 //        return ResponseEntity.ok(recipeService.updateRecipe(recipeId, request));
 //    }
 
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<String> deleteRecipe(@RequestParam int recipeId) {
-//        return ResponseEntity.ok(recipeService.deleteRecipe(recipeId));
-//    }
+
 
     @GetMapping("/latest")
     public ResponseEntity<Set<RecipeLatestResponseDto>> getLatestRecipe() {

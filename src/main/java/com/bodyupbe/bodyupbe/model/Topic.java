@@ -37,7 +37,7 @@ public class Topic {
     @JsonBackReference
     Set<WorkoutProgram> workoutPrograms;
 
-    @ManyToMany(mappedBy = "recipeTopics")
+    @ManyToMany(mappedBy = "recipeTopics", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Recipe> recipes;
 }

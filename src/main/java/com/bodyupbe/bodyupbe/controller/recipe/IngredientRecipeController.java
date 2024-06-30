@@ -1,7 +1,7 @@
 package com.bodyupbe.bodyupbe.controller.recipe;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.IngredientRecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.IngredientRecipeAndSetRecipeSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.IngredientRecipeSlimResponseDto;
 import com.bodyupbe.bodyupbe.service.recipe.IngredientRecipeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,27 +20,27 @@ public class IngredientRecipeController {
     IngredientRecipeService ingredientRecipeService;
 
     @PostMapping("/add")
-    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> addIngredientRecipeService(@RequestParam int recipeId, @RequestBody IngredientRecipeRequestDto request) {
+    public ResponseEntity<IngredientRecipeSlimResponseDto> addIngredientRecipeService(@RequestParam int recipeId, @RequestBody IngredientRecipeRequestDto request) {
         return ResponseEntity.ok(ingredientRecipeService.addIngredientRecipe(recipeId, request));
     }
 
     @GetMapping("/id")
-    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> getIngredientRecipeById(@RequestParam int ingredientRecipeId) {
+    public ResponseEntity<IngredientRecipeSlimResponseDto> getIngredientRecipeById(@RequestParam int ingredientRecipeId) {
         return ResponseEntity.ok(ingredientRecipeService.getIngredientRecipeById(ingredientRecipeId));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Set<IngredientRecipeAndSetRecipeSlimResponseDto>> getAllIngredientRecipe() {
+    public ResponseEntity<Set<IngredientRecipeSlimResponseDto>> getAllIngredientRecipe() {
         return ResponseEntity.ok(ingredientRecipeService.getAllIngredientRecipe());
     }
 
     @GetMapping("/recipe")
-    public ResponseEntity<Set<IngredientRecipeAndSetRecipeSlimResponseDto>> getAllIngredientRecipeByRecipeId(@RequestParam int recipeId) {
+    public ResponseEntity<Set<IngredientRecipeSlimResponseDto>> getAllIngredientRecipeByRecipeId(@RequestParam int recipeId) {
         return ResponseEntity.ok(ingredientRecipeService.findIngredientRecipeByRecipeId(recipeId));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<IngredientRecipeAndSetRecipeSlimResponseDto> updateIngredientRecipe(@RequestParam int ingredientRecipeId, @RequestBody IngredientRecipeRequestDto request) {
+    public ResponseEntity<IngredientRecipeSlimResponseDto> updateIngredientRecipe(@RequestParam int ingredientRecipeId, @RequestBody IngredientRecipeRequestDto request) {
         return ResponseEntity.ok(ingredientRecipeService.updateIngredientRecipe(ingredientRecipeId, request));
     }
 

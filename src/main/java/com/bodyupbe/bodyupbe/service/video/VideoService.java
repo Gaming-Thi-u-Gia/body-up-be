@@ -35,22 +35,7 @@ public class VideoService {
     TopicRepository topicRepository;
     UserRepository userRepository;
 
-    public String createVideo(VideoRequestDto request) {
-        Video video = videoMapper.toVideo(request);
-        Set<VideoCategory> categories = request.getVideoCategories().stream()
-                .map(categoryRequest -> videoCategoryRepository.findById(categoryRequest.getId())
-                        .orElseThrow(() -> new RuntimeException("Video Category  not found: " + categoryRequest.getId())))
-                .collect(Collectors.toSet());
-        Set<Topic> topics = request.getVideoTopics().stream()
-                .map(topicRequest -> topicRepository.findById(topicRequest.getId())
-                        .orElseThrow(() -> new RuntimeException("Recipe Topic not found: " + topicRequest.getId())))
-                .collect(Collectors.toSet());
 
-        video.setVideoCategories(categories);
-        video.setVideoTopics(topics);
-        Video savedVideo = videoRepository.save(video);
-        return "Add New Video Successfully With Video ID: " + savedVideo.getId();
-    }
 
     public List<VideoResponseDto> getVideoAll() {
         List<Video> videos = videoRepository.findAll();

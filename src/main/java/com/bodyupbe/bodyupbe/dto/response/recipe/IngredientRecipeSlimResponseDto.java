@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class IngredientRecipeAndSetRecipeSlimResponseDto {
+public class IngredientRecipeSlimResponseDto {
     Integer id;
     String amount;
     String name;

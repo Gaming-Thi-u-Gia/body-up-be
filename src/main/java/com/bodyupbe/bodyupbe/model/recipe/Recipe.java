@@ -62,16 +62,16 @@ public class Recipe {
     @JsonBackReference
     Set<User> bookmarkUsers;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "recipe_collection",
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "topic_id",referencedColumnName = "id")
     )
     @JsonManagedReference
-        Set<Topic> recipeTopics;
+    Set<Topic> recipeTopics;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "recipe_filter",
             joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
@@ -79,12 +79,7 @@ public class Recipe {
     )
     @JsonManagedReference
     Set<RecipeCategory> recipeCategories;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "dailyRecipes",
-            joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "daily_exercise_id",referencedColumnName = "id")
-    )
+    @OneToMany(mappedBy = "recipe",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonManagedReference
-    Set<DailyExercise> dailyExercises;
+    Set<DailyRecipe> dailyRecipes;
 }

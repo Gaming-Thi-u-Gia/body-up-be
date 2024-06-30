@@ -1,6 +1,9 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "WHERE u.createAt >= :startDate " +
             "GROUP BY TO_CHAR(u.createAt, 'YYYY-MM')")
     List<Object[]> findUserCountByMonthSince(Date startDate);
+    @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto(u.id, u.userName, u.firstName, u.lastName, u.email, u.avatar, u.bio, u.role, u.createAt) FROM User u")
+    Page<UserSlimResponseDto> findAllUserSlim(Pageable pageable);
 }
