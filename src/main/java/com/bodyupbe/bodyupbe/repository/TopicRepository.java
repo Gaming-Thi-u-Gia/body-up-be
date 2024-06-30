@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.List;
 
 public interface TopicRepository extends JpaRepository<Topic,Integer> {
+    Page<Topic> findTopicsByTopic(String topic, Pageable pageable);
     Set<Topic> findTopicsByTopic(String topic);
 
     Set<Topic> findTopicsById(int id);

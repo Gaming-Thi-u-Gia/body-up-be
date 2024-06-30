@@ -95,4 +95,13 @@ public class WorkoutProgramService {
         response.setLast(pages.isLast());
         return response;
     }
+
+    public List<WorkoutProgramResponseDto> getLatestWorkoutPrograms() {
+        Pageable limit = PageRequest.of(0, 4);
+        List<WorkoutProgram> workoutPrograms = workoutProgramRepository.findTop4ByOrderByReleaseDateDesc(limit);
+        return workoutProgramMapper.toListWorkoutProgramResponseDto(workoutPrograms);
+    }
+
+
+
 }
