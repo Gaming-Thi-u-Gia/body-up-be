@@ -13,6 +13,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class VideoRequestDto {
+    int id;
     String name;
     String url;
     boolean isFeatured;

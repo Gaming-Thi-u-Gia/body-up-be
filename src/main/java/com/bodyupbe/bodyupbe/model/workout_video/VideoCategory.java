@@ -22,7 +22,7 @@ public class VideoCategory {
     @Column(length = 2000)
     String type;
 
-    @ManyToMany(mappedBy = "videoCategories")
+    @ManyToMany(mappedBy = "videoCategories", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Video> videos;
 }

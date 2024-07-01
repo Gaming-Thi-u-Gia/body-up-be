@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.mapper.video;
 
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.VideoResponseForAdminDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoBookmarkResponseSlim;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoSlimResponseDto;
@@ -24,4 +25,6 @@ public interface VideoMapper {
     Set<VideoSlimResponseDto> toSetVideoSlim(List<Video> videos);
 
     Set<VideoBookmarkResponseSlim> toSetVideoBookmark(Set<Video> videos);
+
+    VideoResponseForAdminDto toVideoResponseForAdminDto(Video video);
 }

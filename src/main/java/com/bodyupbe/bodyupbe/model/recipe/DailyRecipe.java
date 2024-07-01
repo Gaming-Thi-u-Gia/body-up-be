@@ -18,7 +18,7 @@ public class DailyRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @ManyToOne
+    @ManyToOne( cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name="recipe_id",referencedColumnName = "id")
     @JsonBackReference
     Recipe recipe;

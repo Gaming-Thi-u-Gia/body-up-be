@@ -1,6 +1,9 @@
 package com.bodyupbe.bodyupbe.dto.mapper.community;
 
 import com.bodyupbe.bodyupbe.dto.request.community.PostRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.PostCardResponseForAdminDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.PostResponseForAdminDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostSlimResponse;
 import com.bodyupbe.bodyupbe.model.community.Post;
@@ -19,4 +22,9 @@ public interface PostMapper {
     List<PostResponseDto> toListPostResponseDto(List<Post> posts);
 
     Set<PostResponseDto> toSetPostResponseDto(Set<Post> posts);
+
+    Set<PostCardResponseForAdminDto> toPostCardResponseForAdminDto(List<PostCardResponseForAdminDto> recipes);
+
+    PostResponseForAdminDto toPostResponseForAdminDto(Post post);
+
 }

@@ -42,24 +42,29 @@ public class Recipe {
     @CreationTimestamp
     @Column(name = "create_at")
     Date createAt;
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<RatingRecipe> ratingRecipes;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<IngredientRecipe> ingredientRecipes;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<OtherImageRecipe> otherImageRecipes;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<NoteRecipe> noteRecipes;
 
-    @ManyToMany(mappedBy = "bookmarkRecipes")
-    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "bookmark_recipes",
+            joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id")
+    )
+    @JsonManagedReference
     Set<User> bookmarkUsers;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -79,7 +84,7 @@ public class Recipe {
     )
     @JsonManagedReference
     Set<RecipeCategory> recipeCategories;
-    @OneToMany(mappedBy = "recipe",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true)
     @JsonManagedReference
     Set<DailyRecipe> dailyRecipes;
 }

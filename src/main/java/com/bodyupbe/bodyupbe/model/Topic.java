@@ -29,11 +29,11 @@ public class Topic {
     @Column(length = 2000)
     String description;
 
-    @ManyToMany(mappedBy = "videoTopics")
+    @ManyToMany(mappedBy = "videoTopics", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Video> videos;
 
-    @ManyToMany(mappedBy = "programTopics")
+    @ManyToMany(mappedBy = "programTopics", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<WorkoutProgram> workoutPrograms;
 
