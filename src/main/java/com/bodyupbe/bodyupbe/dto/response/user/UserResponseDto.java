@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class UserResponseAndSetPostSlimResponseDto {
+public class UserResponseDto {
     Integer id;
     String userName;
     String firstName;
