@@ -89,4 +89,8 @@ public class VideoController {
                         ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
     }
 
+    @GetMapping("/getVideoLatest")
+    public ResponseEntity<List<VideoSlimResponseDto>> getLatestVideoCategory() {
+        return ResponseEntity.ok(videoService.getLatestVideoCategory());
+    }
 }

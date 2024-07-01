@@ -1,7 +1,7 @@
 package com.bodyupbe.bodyupbe.controller.workout_video;
 
 import com.bodyupbe.bodyupbe.dto.response.workout_video.DailyVideoResponseDto;
-import com.bodyupbe.bodyupbe.service.video.DailyVideoService;
+import com.bodyupbe.bodyupbe.service.daily_video.DailyVideoService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

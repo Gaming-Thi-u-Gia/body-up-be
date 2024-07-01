@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.repository;
 
 import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.model.workout_video.VideoCategory;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,8 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             "GROUP BY v1.id HAVING COUNT(c1.id) = :categorySize)")
     Page<Video> findVideosByCategoryIds(@Param("categoryIds") Set<Integer> categoryIds, @Param("categorySize") long categorySize, Pageable pageable);
     Video findVideoByUrl(String url);
+
+    @Query("SELECT wp FROM Video wp ORDER BY wp.id DESC")
+    List<Video> findTop4ByOrderByReleaseDateDesc(Pageable pageable);
+
 }

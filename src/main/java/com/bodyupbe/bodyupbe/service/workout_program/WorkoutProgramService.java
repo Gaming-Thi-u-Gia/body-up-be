@@ -102,6 +102,4 @@ public class WorkoutProgramService {
         return workoutProgramMapper.toListWorkoutProgramResponseDto(workoutPrograms);
     }
 
-
-
 }

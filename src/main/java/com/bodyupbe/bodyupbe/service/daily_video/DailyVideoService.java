@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.service.daily_video;
 
 
 import com.bodyupbe.bodyupbe.dto.mapper.daily_exercise.DailyVideoMapper;
+import com.bodyupbe.bodyupbe.dto.mapper.video.VideoDailyMapper;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.DailyVideoResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 
@@ -27,6 +28,13 @@ public class DailyVideoService {
     private final DailyVideoMapper dailyVideoMapper;
     private final UserRepository userRepository;
 
+    VideoDailyMapper videoDailyMapper;
+
+    public Set<DailyVideoResponseDto> getVideosByDay(String day, Integer workoutProgramId) {
+        Set<DailyVideo> videos = dailyVideoRepository.findAllByDayAndWorkoutProgramId(day, workoutProgramId);
+        return videoDailyMapper.dailyVideoToDailyVideoResponseDto(videos);
+    }
+
     //Get daily video by day
     public Set<DailyVideoResponseDto> getDailyVideoByDay(User user,String day) {
         Set<DailyVideo> dailyVideos = dailyVideoRepository.findAllByUserIdAndDay(user.getId(), day);
@@ -39,7 +47,7 @@ public class DailyVideoService {
 
         // Kiểm tra xem User có liên quan đến DailyVideo thông qua DailyExercise hay không
         boolean isUserRelated = user.getUserDailyChallenges().stream()
-                .anyMatch(udc -> udc.getDailyExercise().getDailyViveos().contains(dailyVideo));
+                .anyMatch(udc -> udc.getDailyExercise().getDailyVideos().contains(dailyVideo));
 
         if (isUserRelated) {
             dailyVideo.setStatus("complete");

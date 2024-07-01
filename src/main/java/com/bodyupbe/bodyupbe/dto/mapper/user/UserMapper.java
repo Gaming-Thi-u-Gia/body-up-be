@@ -3,7 +3,6 @@ package com.bodyupbe.bodyupbe.dto.mapper.user;
 import com.bodyupbe.bodyupbe.dto.request.user.UserProgressPhotoRequestDto;
 import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeResponseDto;
-import com.bodyupbe.bodyupbe.dto.response.user.UserResponseAndSetPostSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.*;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;

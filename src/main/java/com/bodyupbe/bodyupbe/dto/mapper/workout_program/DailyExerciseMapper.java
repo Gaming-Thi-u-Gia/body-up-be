@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.dto.mapper.workout_program;
 
+import com.bodyupbe.bodyupbe.dto.response.workout_program.DailyExerciseUserResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.DailyExerciseResponseDto;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import org.mapstruct.Mapper;
@@ -16,6 +17,8 @@ public interface DailyExerciseMapper {
 
     List<DailyExerciseResponseDto> toDailyExerciseResponseDtoList1(Set<DailyExercise> dailyExercises);
     Set<DailyExerciseResponseDto> toDailyExerciseResponseDtoList(Set<DailyExercise> dailyExercises);
+
+    Set<DailyExerciseUserResponseDto> toListDailyExerciseUserResponseDto(Set<DailyExercise> dailyExercise);
 }
 
 

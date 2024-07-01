@@ -2,11 +2,13 @@ package com.bodyupbe.bodyupbe.service.video;
 
 import com.bodyupbe.bodyupbe.dto.mapper.video.VideoCategoryMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.video.VideoMapper;
+import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.ObjectVideo.ObjectVideoSetResponse;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoCategoryResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoCategorySlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoCategoryTableResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoSlimResponseDto;
+import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.model.workout_video.VideoCategory;
 import com.bodyupbe.bodyupbe.repository.VideoCategoryRepository;
@@ -91,4 +93,7 @@ public class VideoCategoryService {
         response.setLast(pages.isLast());
         return response;
     }
+
+
+
 }

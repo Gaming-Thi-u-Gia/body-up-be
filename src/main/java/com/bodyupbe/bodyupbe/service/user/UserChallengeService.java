@@ -104,7 +104,7 @@ public class UserChallengeService {
         UserDailyChallenge userDailyChallenge = userDailyChallengeRepository.findById(challengeId).orElseThrow(() -> new RuntimeException("Challenge not found"));
         userDailyChallenge.setStatus("complete");
         //update all video daily status
-        userDailyChallenge.getDailyExercise().getDailyViveos().forEach(dailyVideo -> {
+        userDailyChallenge.getDailyExercise().getDailyVideos().forEach(dailyVideo -> {
             dailyVideo.setStatus("complete");
         });
         userDailyChallengeRepository.save(userDailyChallenge);
