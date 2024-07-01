@@ -66,15 +66,15 @@ public class TopicService {
         return topicMapper.toSetTopicResponseDto(video.getVideoTopics());
     }
 
-//    public Set<TopicResponseDto> getTopicForVideo() {
-//        Set<Topic> topics = topicRepository.findTopicsByTopic("workout-video");
-//        return topicMapper.toSetTopicResponseDto(topics);
-//    }
-//
-//    public Set<TopicResponseDto> getTopicForWourkoutProgram() {
-//        Set<Topic> topics = topicRepository.findTopicsByTopic("workout-program");
-//        return topicMapper.toSetTopicResponseDto(topics);
-//    }
+    public Set<TopicResponseDto> getTopicForVideo() {
+        Set<Topic> topics = topicRepository.findTopicsByTopic("workout-video");
+        return topicMapper.toSetTopicResponseDto(topics);
+    }
+
+    public Set<TopicResponseDto> getTopicForWourkoutProgram() {
+        Set<Topic> topics = topicRepository.findTopicsByTopic("workout-program");
+        return topicMapper.toSetTopicResponseDto(topics);
+    }
 
     public ObjectWorkoutProgramSetResponse<TopicWorkoutProgramResponseDto> getTopicWithWorkoutProgram(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);

@@ -58,20 +58,20 @@ public class TopicController {
         return ResponseEntity.ok(topicService.createTopic(topicDto));
     }
 
-//    @GetMapping("/getTopicForVideo")
-//    public ResponseEntity<Set<TopicResponseDto>> getTopicForVideo() {
-//        return ResponseEntity.ok(topicService.getTopicForVideo());
-//    }
+    @GetMapping("/getTopicForVideo")
+    public ResponseEntity<Set<TopicResponseDto>> getTopicForVideo() {
+        return ResponseEntity.ok(topicService.getTopicForVideo());
+    }
 
     @GetMapping("/getTopicByVideoId")
     public ResponseEntity<Set<TopicResponseDto>> getTopicByVideoId(@RequestParam int videoId) {
         return ResponseEntity.ok(topicService.getTopicByVideoId(videoId));
     }
 
-//    @GetMapping("/getTopicForWorkout")
-//    public ResponseEntity<Set<TopicResponseDto>> getTopicForWorkout() {
-//        return ResponseEntity.ok(topicService.getTopicForWourkoutProgram());
-//    }
+    @GetMapping("/getTopicForWorkout")
+    public ResponseEntity<Set<TopicResponseDto>> getTopicForWorkout() {
+        return ResponseEntity.ok(topicService.getTopicForWourkoutProgram());
+    }
 
     @GetMapping("/getTopicWithWorkoutProgram")
     public ResponseEntity<ObjectWorkoutProgramSetResponse<TopicWorkoutProgramResponseDto>> getTopicWithWorkoutProgram(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "1") int pageSize) {

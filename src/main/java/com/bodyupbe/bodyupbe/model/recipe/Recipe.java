@@ -79,12 +79,7 @@ public class Recipe {
     )
     @JsonManagedReference
     Set<RecipeCategory> recipeCategories;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "dailyRecipes",
-            joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "daily_exercise_id",referencedColumnName = "id")
-    )
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<DailyExercise> dailyExercises;
+    Set<DailyRecipe> dailyRecipes;
 }

@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.model.workout_video;
 
+import com.bodyupbe.bodyupbe.model.recipe.DailyRecipe;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -35,4 +36,7 @@ public class DailyExercise {
     @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<UserDailyChallenge> userDailyChallenges;
+    @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    Set<DailyRecipe> dailyRecipes;
 }
