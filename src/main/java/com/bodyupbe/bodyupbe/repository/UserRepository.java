@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.repository;
 
 import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.user.UserProgressPhoto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "WHERE u.createAt >= :startDate " +
             "GROUP BY TO_CHAR(u.createAt, 'YYYY-MM')")
     List<Object[]> findUserCountByMonthSince(Date startDate);
+    User findByUserName2(String userName2);
 }

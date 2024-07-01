@@ -40,6 +40,8 @@ public class WorkoutProgram {
     @Column(name = "release_date")
     @CreationTimestamp
     Date releaseDate;
+    String equipment;
+    String type;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
     @JsonManagedReference

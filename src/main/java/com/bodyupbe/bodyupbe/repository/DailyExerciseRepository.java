@@ -1,6 +1,6 @@
 package com.bodyupbe.bodyupbe.repository;
 
-import com.bodyupbe.bodyupbe.dto.response.workout_video.DailyExerciseResponseDto;
+
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
