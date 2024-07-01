@@ -11,7 +11,6 @@ import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
-import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import com.bodyupbe.bodyupbe.repository.UserChallengeRepository;
 import com.bodyupbe.bodyupbe.repository.UserDailyChallengeRepository;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
@@ -20,10 +19,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,32 +45,18 @@ public class UserChallengeService {
 
     public UserChallengeSlimResponseDto addUserChallenge(User user, int workoutProgramId) {
         for (UserChallenge userChallenge : user.getUserChallenges()) {
-            if (userChallenge.getStatus().equals("uncompleted")) {
-                throw new RuntimeException("You have an uncompleted challenge");
+            if (userChallenge.getStatus().equals("uncomplete")) {
+                throw new RuntimeException("You have an uncomplete challenge");
             }
         }
         WorkoutProgram workoutProgram = workoutProgramRepository.findById(workoutProgramId).orElseThrow(() -> new RuntimeException("Workout program not found"));
         UserChallenge userChallenge = UserChallenge.builder()
                 .user(user)
-                .status("uncompleted")
+                .status("uncomplete")
                 .workoutProgram(workoutProgram)
                 .build();
         user.getUserChallenges().add(userChallenge);
-        user = userRepository.save(user);
-        // Giả sử workoutProgram.getDailyExercises() trả về một Set
-        Set<DailyExercise> dailyExercisesSet = workoutProgram.getDailyExercises();
-        // Chuyển đổi Set thành List
-        List<DailyExercise> dailyExercisesList = new ArrayList<>(dailyExercisesSet);
-        for (int i = 0; i < workoutProgram.getDailyExercises().size(); i++) {
-            UserDailyChallenge userDailyChallenge = UserDailyChallenge.builder()
-                    .user(user)
-                    .status("uncomplete")
-                    .dailyExercise(dailyExercisesList.get(i))
-                    .build();
-            user.getUserDailyChallenges().add(userDailyChallenge);
-        }
-        userRepository.save(user);
-        return userMapper.toUserChallengeSlimResponseDto(userChallengeRepository.save(userChallenge));
+        return userMapper.toUserChallengeSlimResponseDto(userChallenge);
     }
 
     public void deleteUserChallenge(User user, int challengeId) {
@@ -86,13 +72,13 @@ public class UserChallengeService {
 
     public UserChallengeSlimResponseDto getUncompletedChallenge(User user) {
         return userMapper.toUserChallengeSlimResponseDto(user.getUserChallenges().stream()
-                .filter(challenge -> "uncompleted".equals(challenge.getStatus()))
+                .filter(challenge -> "uncomplete".equals(challenge.getStatus()))
                 .findFirst().orElseThrow(() -> new RuntimeException("Challenge not found")));
     }
 
     public Set<UserChallengeSlimResponseDto> getCompletedChallenge(User user) {
         return userMapper.toListUserChallengeSlimResponseDto(user.getUserChallenges().stream()
-                .filter(challenge -> "completed".equals(challenge.getStatus()))
+                .filter(challenge -> "complete".equals(challenge.getStatus()))
                 .collect(Collectors.toSet()));
     }
     //findByUserIdAndDailyExerciseWorkoutProgramId
@@ -102,7 +88,7 @@ public class UserChallengeService {
     }
     //get all workout programs
     public List<WorkoutProgramSlimResponseDto> getAllWorkoutPrograms(User user) {
-        return workoutMapper.toListWorkoutProgramSlimResponseDto(workoutProgramRepository.findAll());
+        return workoutMapper.toListWorkoutProgramSlimResponseDto(workoutProgramRepository.findTop10WorkoutPrograms());
     }
     //get all days of a workout program
     public Set<UserDailyChallengeResponseDto> getAllDay(User user,Integer workoutProgramId) {
@@ -111,17 +97,27 @@ public class UserChallengeService {
 
     //get first uncompleted challenge
     public UserDailyChallengeResponseDto getFirstUncompletedChallenge(User user) {
-        return userMapper.toUserDailyChallengeResponseDto(userDailyChallengeRepository.findByStatusSortedByExerciseDay("uncomplete"));
+        UserDailyChallenge userDailyChallenge = userDailyChallengeRepository.findByStatusSortedByExerciseDay("uncomplete", user.getId());
+        if(userDailyChallenge == null){
+            throw new RuntimeException("Doesn't have uncomplete challenge");
+        }
+        return userMapper.toUserDailyChallengeResponseDto(userDailyChallenge);
     }
 
     //mark user daily challenge as completed
     public void markChallengeAsCompleted(User user, int challengeId) {
-        UserDailyChallenge userDailyChallenge = userDailyChallengeRepository.findById(challengeId).orElseThrow(() -> new RuntimeException("Challenge not found"));
+        UserDailyChallenge userDailyChallenge = userDailyChallengeRepository.findByDailyExerciseIdAndUserId(challengeId,user.getId());
         userDailyChallenge.setStatus("complete");
         //update all video daily status
         userDailyChallenge.getDailyExercise().getDailyVideos().forEach(dailyVideo -> {
             dailyVideo.setStatus("complete");
         });
         userDailyChallengeRepository.save(userDailyChallenge);
+    }
+    //mark finish user challenge
+    public void markFinishChallenge(User user, int challengeId) {
+        UserChallenge userChallenge = userChallengeRepository.findByWorkoutProgramIdAndUserId(challengeId,user.getId());
+        userChallenge.setStatus("complete");
+        userChallengeRepository.save(userChallenge);
     }
 }

@@ -14,6 +14,9 @@ import java.util.Set;
 public interface WorkoutProgramRepository extends JpaRepository<WorkoutProgram,Integer> {
     List<WorkoutProgram> findByNameContainingIgnoreCase(String name);
 
+    @Query(value = "SELECT wp FROM WorkoutProgram wp ORDER BY wp.id DESC LIMIT 10")
+    List<WorkoutProgram> findTop10WorkoutPrograms();
+
     @Query("SELECT wp FROM WorkoutProgram wp ORDER BY wp.releaseDate DESC")
     List<WorkoutProgram> findTop4ByOrderByReleaseDateDesc(Pageable pageable);
 

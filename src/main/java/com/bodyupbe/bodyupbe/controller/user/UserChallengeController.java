@@ -107,14 +107,14 @@ public class UserChallengeController {
 
     //getDailyVideoByDay
     @GetMapping("/getDailyVideoByDay")
-    public ResponseEntity<Set<DailyVideoResponseDto>> getDailyVideoByDay(@RequestParam String day) {
+    public ResponseEntity<Set<DailyVideoResponseDto>> getDailyVideoByDay(@RequestParam String day,@RequestParam Integer workoutProgramId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
         }
-        return ResponseEntity.ok(dailyVideoService.getDailyVideoByDay(optionalUser.get(), day));
+        return ResponseEntity.ok(dailyVideoService.getDailyVideoByDay(optionalUser.get(), day,workoutProgramId));
     }
     //findByUserAndWorkoutProgram
     @GetMapping("/findByUserAndWorkoutProgram")
