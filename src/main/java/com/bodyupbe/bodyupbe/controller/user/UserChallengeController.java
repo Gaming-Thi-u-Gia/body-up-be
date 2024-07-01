@@ -35,14 +35,14 @@ public class UserChallengeController {
 
     // Add a new challenge to the user
     @PostMapping("/addChallenge")
-    public ResponseEntity<UserChallengeResponseDto> addChallenge(@RequestBody UserChallengeRequestDto userChallengeRequestDto) {
+    public ResponseEntity<UserChallengeSlimResponseDto> addChallenge(@RequestParam int workoutProgramId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
         }
-        return ResponseEntity.ok(userChallengeService.addUserChallenge(optionalUser.get(), userChallengeRequestDto.getWorkoutProgram().getId()));
+        return ResponseEntity.ok(userChallengeService.addUserChallenge(optionalUser.get(), workoutProgramId));
     }
 
     // Get all challenges of the user

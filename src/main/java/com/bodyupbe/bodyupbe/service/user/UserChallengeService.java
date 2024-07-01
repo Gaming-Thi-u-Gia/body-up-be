@@ -11,6 +11,7 @@ import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import com.bodyupbe.bodyupbe.repository.UserChallengeRepository;
 import com.bodyupbe.bodyupbe.repository.UserDailyChallengeRepository;
 import com.bodyupbe.bodyupbe.repository.UserRepository;
@@ -21,8 +22,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class UserChallengeService {
         return userMapper.toListUserChallengeSlimResponseDto(user.getUserChallenges());
     }
 
-    public UserChallengeResponseDto addUserChallenge(User user, int workoutProgramId) {
+    public UserChallengeSlimResponseDto addUserChallenge(User user, int workoutProgramId) {
         for (UserChallenge userChallenge : user.getUserChallenges()) {
             if (userChallenge.getStatus().equals("uncompleted")) {
                 throw new RuntimeException("You have an uncompleted challenge");
@@ -55,7 +56,21 @@ public class UserChallengeService {
                 .workoutProgram(workoutProgram)
                 .build();
         user.getUserChallenges().add(userChallenge);
-        return userMapper.toUserChallengeResponseDto(userChallenge);
+        user = userRepository.save(user);
+        // Giả sử workoutProgram.getDailyExercises() trả về một Set
+        Set<DailyExercise> dailyExercisesSet = workoutProgram.getDailyExercises();
+        // Chuyển đổi Set thành List
+        List<DailyExercise> dailyExercisesList = new ArrayList<>(dailyExercisesSet);
+        for (int i = 0; i < workoutProgram.getDailyExercises().size(); i++) {
+            UserDailyChallenge userDailyChallenge = UserDailyChallenge.builder()
+                    .user(user)
+                    .status("uncomplete")
+                    .dailyExercise(dailyExercisesList.get(i))
+                    .build();
+            user.getUserDailyChallenges().add(userDailyChallenge);
+        }
+        userRepository.save(user);
+        return userMapper.toUserChallengeSlimResponseDto(userChallengeRepository.save(userChallenge));
     }
 
     public void deleteUserChallenge(User user, int challengeId) {
