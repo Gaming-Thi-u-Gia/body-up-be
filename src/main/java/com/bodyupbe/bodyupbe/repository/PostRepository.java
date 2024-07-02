@@ -19,6 +19,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findPostByBadge_NameAndCategoryCommunity_Id(String name, int categoryId, Pageable pageable);
 
     Page<Post> findPostByTitleContainingIgnoreCaseAndCategoryCommunity_Id(String title,int categoryId ,Pageable pageable);
+    //write find postBookmarkedByUserAndBadgeName
+    Page<Post> findPostByBookmarkUsers_IdAndBadge_Name(int userId, String name, Pageable pageable);
+    Page<Post> findPostByBookmarkUsers_IdAndTitleContainingIgnoreCase(int userId, String title, Pageable pageable);
+    Page<Post> findPostByBadgeNameAndUser_Id(String name, int userId, Pageable pageable);
+    Page<Post> findPostByTitleContainingIgnoreCaseAndUser_Id(String title, int userId, Pageable pageable);
 
     @Query("SELECT DISTINCT p FROM Post p JOIN p.comments c WHERE c.user.id = :userId")
     List<Post> findPostsCommentedByUserId(@Param("userId") Integer userId);

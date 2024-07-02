@@ -125,6 +125,49 @@ public class PostController {
         return ResponseEntity.ok(postService.editPost(request, optionalUser.get(), postId));
     }
 
+    @GetMapping("/filterMyPost")
+    public ResponseEntity <List<PostResponseDto>> filterMyPost(@RequestParam String badgeName,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.getPostByBadgeNameAndUserId(badgeName,Optional.of(optionalUser.get().getId()),page,size));
+    }
+    @GetMapping("/searchMyPost")
+    public ResponseEntity <List<PostResponseDto>> searchMyPost(@RequestParam String title,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.findPostByTitleAndUserId(title,Optional.of(optionalUser.get().getId()),page,size));
+    }
+
+    @GetMapping("/filterBookmarkPost")
+    public ResponseEntity <List<PostResponseDto>> filterBookmarkPost(@RequestParam String badgeName,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.getPostBookmarkedByBadgeNameAndUserId(badgeName,Optional.of(optionalUser.get().getId()),page,size));
+    }
+
+    @GetMapping("/searchBookmarkPost")
+    public ResponseEntity <List<PostResponseDto>> searchBookmarkPost(@RequestParam String title,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(postService.searchPostBookmark(title,Optional.of(optionalUser.get().getId()),page,size));
+    }
+
     @GetMapping("/filterPost")
     public ResponseEntity <List<PostResponseDto>> filterPostByBadgeNameAndCategoryId(@RequestParam String badgeName, @RequestParam int categoryId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

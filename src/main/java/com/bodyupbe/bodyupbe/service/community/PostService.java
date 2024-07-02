@@ -162,6 +162,57 @@ public class PostService {
         }
         return postResponseDto;
     }
+    public List<PostResponseDto> getPostBookmarkedByBadgeNameAndUserId(String badgeName, Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByBookmarkUsers_IdAndBadge_Name(userId.get(),badgeName, pageable);
+        List<Post> posts = postsPage.getContent();
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        if (userId.isPresent()) {
+            for (PostResponseDto p : postResponseDto) {
+                p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+            }
+        }
+        return postResponseDto;
+    }
+
+    public List<PostResponseDto> searchPostBookmark(String title, Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByBookmarkUsers_IdAndTitleContainingIgnoreCase(userId.get(),title, pageable);
+        List<Post> posts = postsPage.getContent();
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        if (userId.isPresent()) {
+            for (PostResponseDto p : postResponseDto) {
+                p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+            }
+        }
+        return postResponseDto;
+    }
+
+    public List<PostResponseDto> getPostByBadgeNameAndUserId(String badgeName, Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByBadgeNameAndUser_Id(badgeName, userId.get(), pageable);
+        List<Post> posts = postsPage.getContent();
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        if (userId.isPresent()) {
+            for (PostResponseDto p : postResponseDto) {
+                p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+            }
+        }
+        return postResponseDto;
+    }
+
+    public List<PostResponseDto> findPostByTitleAndUserId(String title, Optional<Integer> userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findPostByTitleContainingIgnoreCaseAndUser_Id(title, userId.get(), pageable);
+        List<Post> posts = postsPage.getContent();
+        List<PostResponseDto> postResponseDto = postMapper.toListPostResponseDto(posts);
+        if (userId.isPresent()) {
+            for (PostResponseDto p : postResponseDto) {
+                p.setBookmarked(postRepository.findBookmarkedByUserIdAndPostId(userId.get(), p.getId()));
+            }
+        }
+        return postResponseDto;
+    }
 
     public List<PostResponseDto> searchByPostTitle(String title, int categoryId ,Optional<Integer> userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -175,6 +226,8 @@ public class PostService {
         }
         return postResponseDto;
     }
+
+
 
 
 
