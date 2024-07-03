@@ -1,7 +1,9 @@
 package com.bodyupbe.bodyupbe.repository;
 
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSelectForAdminResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSlimResponseForAdminDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.VideoSelectForAdminResponseDto;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import lombok.NonNull;
@@ -52,7 +54,8 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
     @NonNull
     @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto(r.id, r.name, r.detail, r.avgStar,r.img) FROM Recipe r ORDER BY r.createAt DESC")
     Page<RecipeCardResponseForAdminDto> findAllSlim(Pageable pageable);
-
+    @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSelectForAdminResponseDto(r.id, r.name) FROM Recipe r ORDER BY r.id desc ")
+    List<RecipeSelectForAdminResponseDto> getRecipeSelectForAdmin();
 
 }
 

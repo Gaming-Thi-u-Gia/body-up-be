@@ -27,7 +27,7 @@ public class DailyExercise {
     @ManyToOne
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
     @JsonBackReference
-    WorkoutProgram workoutProgram;
+        WorkoutProgram workoutProgram;
 
     @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
     @JsonManagedReference

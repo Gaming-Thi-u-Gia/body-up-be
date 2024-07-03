@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.controller.admin;
 
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramRequestDto;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.*;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -74,5 +77,17 @@ public class AdminController {
     @GetMapping("video-detail")
     public ResponseEntity<VideoResponseForAdminDto> getVideoDetailForAdminById(@RequestParam int videoId) {
         return ResponseEntity.ok(adminService.getVideoDetailForAdminById(videoId));
+    }
+    @GetMapping("/list-video-select")
+    public List<VideoSelectForAdminResponseDto> getAllVideoSelectForAdmin() {
+        return adminService.getAllVideoSelectForAdmin();
+    }
+    @GetMapping("/list-recipe-select")
+    public List<RecipeSelectForAdminResponseDto> getAllRecipeSelectForAdmin() {
+        return adminService.getAllRecipeSelectForAdmin();
+    }
+    @PostMapping("/create-program")
+    public ResponseEntity<String> createProgram(@RequestBody WorkoutProgramRequestDto request) {
+        return ResponseEntity.ok(adminService.addWorkoutProgram(request));
     }
 }

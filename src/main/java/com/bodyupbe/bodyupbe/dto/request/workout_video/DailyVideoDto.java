@@ -9,4 +9,5 @@ import lombok.experimental.FieldDefaults;
 public class DailyVideoDto {
     Integer id;
     String status;
+    VideoRequestDto video;
 }

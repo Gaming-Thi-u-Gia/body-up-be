@@ -1,16 +1,16 @@
-package com.bodyupbe.bodyupbe.dto.response.admin.dashboard;
+package com.bodyupbe.bodyupbe.dto.request.recipe;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
-public class VideoSelectForAdminResponseDto {
+@ToString
+public class RecipeSelectForAdminRequestDto {
     int id;
     String name;
 }

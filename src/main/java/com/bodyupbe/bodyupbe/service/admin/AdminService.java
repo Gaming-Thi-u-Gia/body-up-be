@@ -4,6 +4,7 @@ import com.bodyupbe.bodyupbe.dto.mapper.community.PostMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.RecipeMapper;
 import com.bodyupbe.bodyupbe.dto.mapper.video.VideoMapper;
 import com.bodyupbe.bodyupbe.dto.request.recipe.RecipeRequestDto;
+import com.bodyupbe.bodyupbe.dto.request.workout_program.WorkoutProgramRequestDto;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.*;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
@@ -11,6 +12,10 @@ import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.*;
+import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
+import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCategory;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyVideo;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.model.workout_video.VideoCategory;
 import com.bodyupbe.bodyupbe.repository.*;
@@ -46,6 +51,11 @@ public class AdminService {
     VideoCategoryRepository videoCategoryRepository;
     PostRepository postRepository;
     PostMapper postMapper;
+    DailyRecipeRepository dailyRecipeRepository;
+    DailyVideoRepository dailyVideoRepository;
+    WorkoutProgramRepository workoutProgramRepository;
+    WorkoutProgramCategoryRepository  workoutProgramCategoryRepository;
+    private final DailyExerciseRepository dailyExerciseRepository;
 
     public String createVideo(VideoRequestDto request) {
         Video video = videoMapper.toVideo(request);
@@ -277,5 +287,89 @@ public class AdminService {
         Video video = videoRepository.findById(videoId).orElseThrow(() ->
                 new RuntimeException("Video not found"));
         return videoMapper.toVideoResponseForAdminDto(video);
+    }
+    public String addWorkoutProgram(WorkoutProgramRequestDto request) {
+        WorkoutProgram workoutProgram = new WorkoutProgram();
+        workoutProgram.setName(request.getName());
+        workoutProgram.setType(request.getType());
+        workoutProgram.setEquipment(request.getEquipment());
+        workoutProgram.setDetail(request.getDetail());
+        workoutProgram.setDay(request.getDay());
+        workoutProgram.setTime(request.getTime());
+        workoutProgram.setYear(request.getYear());
+        workoutProgram.setImg(request.getImg());
+        workoutProgram.setBanner(request.getBanner());
+
+        Set<Topic> topics = request.getProgramTopics().stream()
+                .map(topicRequest -> topicRepository.findById(topicRequest.getId())
+                        .orElseThrow(() -> new RuntimeException("Topic not found: " + topicRequest.getId())))
+                .collect(Collectors.toSet());
+        workoutProgram.setProgramTopics(topics);
+
+        Set<WorkoutProgramCategory> categories = request.getWorkoutProgramCategories().stream()
+                .map(categoryRequest -> workoutProgramCategoryRepository.findById(categoryRequest.getId())
+                        .orElseThrow(() -> new RuntimeException("Workout Program Category not found: " + categoryRequest.getId())))
+                .collect(Collectors.toSet());
+        workoutProgram.setWorkoutProgramCategories(categories);
+
+        WorkoutProgram savedWorkoutProgram = workoutProgramRepository.save(workoutProgram);
+
+        Set<DailyExercise> dailyExercises = request.getDailyExercises().stream()
+                .map(dailyExerciseRequest -> {
+                    DailyExercise dailyExercise = new DailyExercise();
+                    dailyExercise.setDay(dailyExerciseRequest.getDay());
+                    dailyExercise.setWorkoutProgram(savedWorkoutProgram);
+
+                    DailyExercise savedDailyExercise = dailyExerciseRepository.save(dailyExercise);
+
+                    Set<DailyVideo> dailyVideos = dailyExerciseRequest.getDailyVideos().stream()
+                            .map(dailyVideoRequest -> {
+                                DailyVideo dailyVideo = new DailyVideo();
+                                dailyVideo.setStatus("uncomplete");
+                                dailyVideo.setDailyExercise(savedDailyExercise);
+
+                                Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
+                                        .orElseThrow(() -> new RuntimeException("Video not found: " + dailyVideoRequest.getVideo().getId()));
+                                dailyVideo.setVideo(video);
+                                return dailyVideo;
+                            })
+                            .collect(Collectors.toSet());
+                    savedDailyExercise.setDailyVideos(dailyVideos);
+
+                    Set<DailyRecipe> dailyRecipes = dailyExerciseRequest.getDailyRecipes().stream()
+                            .map(dailyRecipeRequest -> {
+                                DailyRecipe dailyRecipe = new DailyRecipe();
+                                dailyRecipe.setDailyExercise(savedDailyExercise);
+                                dailyRecipe.setPart(dailyRecipeRequest.getPart());
+
+                                Recipe recipe = recipeRepository.findById(dailyRecipeRequest.getRecipe().getId())
+                                        .orElseThrow(() -> new RuntimeException("Recipe not found: " + dailyRecipeRequest.getRecipe().getId()));
+                                dailyRecipe.setRecipe(recipe);
+                                return dailyRecipe;
+                            })
+                            .collect(Collectors.toSet());
+                    savedDailyExercise.setDailyRecipes(dailyRecipes);
+
+                    dailyVideoRepository.saveAll(dailyVideos);
+                    dailyRecipeRepository.saveAll(dailyRecipes);
+
+                    return savedDailyExercise;
+                })
+                .collect(Collectors.toSet());
+
+        savedWorkoutProgram.setDailyExercises(dailyExercises);
+        workoutProgramRepository.save(savedWorkoutProgram);
+
+        return "Add New Workout Program Successfully With Program ID: " + savedWorkoutProgram.getId();
+    }
+
+
+
+
+    public List<VideoSelectForAdminResponseDto> getAllVideoSelectForAdmin() {
+        return videoRepository.getVideoSelectForAdmin();
+    }
+    public List<RecipeSelectForAdminResponseDto> getAllRecipeSelectForAdmin() {
+        return recipeRepository.getRecipeSelectForAdmin();
     }
 }

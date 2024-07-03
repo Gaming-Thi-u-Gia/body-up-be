@@ -42,7 +42,7 @@ public class WorkoutProgram {
     Date releaseDate;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("workoutProgram-dailyExercises")
     Set<DailyExercise> dailyExercises;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
