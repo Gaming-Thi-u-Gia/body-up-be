@@ -114,11 +114,11 @@ public class User implements UserDetails {
     @JsonManagedReference
     Set<Comment> comments;
 
-    @ManyToMany(mappedBy = "bookmarkUsers",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Post> bookmarkPosts;
 
-    @ManyToMany(mappedBy = "bookmarkUsers",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Video> bookmarkVideos;
 

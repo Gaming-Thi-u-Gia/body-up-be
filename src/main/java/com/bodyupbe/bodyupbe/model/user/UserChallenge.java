@@ -29,12 +29,12 @@ public class UserChallenge {
 //    @CreationTimestamp
 //    @Column(name = "create_at")
 //    Date createAt;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id",referencedColumnName = "id")
     @JsonBackReference
     User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
     @JsonBackReference
     WorkoutProgram workoutProgram;

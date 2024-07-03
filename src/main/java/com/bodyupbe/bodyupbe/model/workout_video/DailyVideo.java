@@ -25,7 +25,7 @@ public class DailyVideo {
     @JsonBackReference
     DailyExercise dailyExercise;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="video_id", referencedColumnName = "id")
     @JsonBackReference
     Video video;

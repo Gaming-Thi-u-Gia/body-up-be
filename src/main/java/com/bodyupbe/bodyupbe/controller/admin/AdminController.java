@@ -90,4 +90,20 @@ public class AdminController {
     public ResponseEntity<String> createProgram(@RequestBody WorkoutProgramRequestDto request) {
         return ResponseEntity.ok(adminService.addWorkoutProgram(request));
     }
+    @DeleteMapping("/delete-workout-program")
+    public ResponseEntity<String> deleteWorkoutProgram(@RequestParam int workoutProgramId) {
+        return ResponseEntity.ok(adminService.deleteWorkoutProgram(workoutProgramId));
+    }
+    @GetMapping("/list-workout-program")
+    ObjectSetResponse<WorkoutProgramCardResponseForAdminDto> getListWorkoutProgram(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize){
+        return adminService.getListWorkoutProgram(pageNo, pageSize);
+    }
+    @GetMapping("/workout-program-detail")
+    public ResponseEntity<WorkoutProgramDetailForAdminDto> getWorkoutProgramDetailForAdminById(@RequestParam int workoutProgramId) {
+        return ResponseEntity.ok(adminService.getWorkoutProgramDetailForAdminById(workoutProgramId));
+    }
+    @PutMapping("/update-workout-program")
+    public ResponseEntity<String> updateWorkoutProgram(@RequestBody WorkoutProgramRequestDto request) {
+        return ResponseEntity.ok(adminService.updateWorkoutProgram(request));
+    }
 }

@@ -29,7 +29,7 @@ public class Video {
     @Column(name = "is_featured")
     boolean isFeatured;
 
-    @OneToMany(mappedBy = "video",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "video",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<DailyVideo> dailyVideos;
 

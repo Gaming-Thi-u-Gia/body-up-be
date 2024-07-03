@@ -42,14 +42,14 @@ public class WorkoutProgram {
     Date releaseDate;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
-    @JsonManagedReference("workoutProgram-dailyExercises")
+    @JsonManagedReference
     Set<DailyExercise> dailyExercises;
 
     @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_collection",
             joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
@@ -58,7 +58,7 @@ public class WorkoutProgram {
     @JsonManagedReference
     Set<Topic> programTopics;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_filter",
             joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),

@@ -2,7 +2,9 @@ package com.bodyupbe.bodyupbe.repository;
 
 import com.bodyupbe.bodyupbe.dto.response.workout_video.DailyExerciseResponseDto;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,5 +16,6 @@ public interface DailyExerciseRepository extends JpaRepository<DailyExercise,Int
 
     @Query("SELECT de FROM DailyExercise de JOIN FETCH de.workoutProgram wp JOIN FETCH de.dailyVideos dv JOIN FETCH dv.video")
     List<DailyExercise> findAllWithDetails();
-
+    List<DailyExercise> findByWorkoutProgramId(Integer workoutProgramId);
+    void deleteByWorkoutProgramId(Integer workoutProgramId);
 }

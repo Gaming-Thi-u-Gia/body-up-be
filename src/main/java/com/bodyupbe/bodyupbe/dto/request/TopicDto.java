@@ -11,4 +11,9 @@ public class TopicDto {
     String topic;
     String name;
     String description;
+
+    public TopicDto(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
