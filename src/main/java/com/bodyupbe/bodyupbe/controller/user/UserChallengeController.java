@@ -173,6 +173,17 @@ public class UserChallengeController {
         userChallengeService.markChallengeAsCompleted(optionalUser.get(), challengeId);
     }
 
+    @PutMapping("/markCompletedUserChallenge")
+    public void markFinishUserChallenge(@RequestParam int challengeId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipalName);
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        userChallengeService.markFinishChallenge(optionalUser.get(), challengeId);
+    }
+
     //updateDailyVideoStatus
     @PutMapping("/updateDailyVideoStatus")
     public void updateDailyVideoStatus(@RequestParam int dailyVideoId) {

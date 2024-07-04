@@ -11,10 +11,9 @@ import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
-import com.bodyupbe.bodyupbe.repository.UserChallengeRepository;
-import com.bodyupbe.bodyupbe.repository.UserDailyChallengeRepository;
-import com.bodyupbe.bodyupbe.repository.UserRepository;
-import com.bodyupbe.bodyupbe.repository.WorkoutProgramRepository;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyVideo;
+import com.bodyupbe.bodyupbe.repository.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,25 +38,62 @@ public class UserChallengeService {
     private final UserDailyChallengeRepository userDailyChallengeRepository;
     private final WorkoutMapper workoutMapper;
     private final UserChallengeRepository userChallengeRepository;
+    private final DailyVideoRepository dailyVideoRepository;
 
     public Set<UserChallengeSlimResponseDto> getAllUserChallenges(User user) {
         return userMapper.toListUserChallengeSlimResponseDto(user.getUserChallenges());
     }
 
-    public UserChallengeSlimResponseDto addUserChallenge(User user, int workoutProgramId) {
+//    public UserChallengeSlimResponseDto addUserChallenge(User user, int workoutProgramId) {
+//        for (UserChallenge userChallenge : user.getUserChallenges()) {
+//            if (userChallenge.getStatus().equals("uncomplete")) {
+//                throw new RuntimeException("You have an uncomplete challenge");
+//            }
+//        }
+//        WorkoutProgram workoutProgram = workoutProgramRepository.findById(workoutProgramId).orElseThrow(() -> new RuntimeException("Workout program not found"));
+//        UserChallenge userChallenge = UserChallenge.builder()
+//                .user(user)
+//                .status("uncomplete")
+//                .workoutProgram(workoutProgram)
+//                .build();
+//        user.getUserChallenges().add(userChallenge);
+//        userRepository.save(user);
+//        return userMapper.toUserChallengeSlimResponseDto(userChallengeRepository.save(userChallenge));
+//    }
+
+    public UserChallengeSlimResponseDto  addUserChallenge(User user, int workoutProgramId) {
         for (UserChallenge userChallenge : user.getUserChallenges()) {
             if (userChallenge.getStatus().equals("uncomplete")) {
                 throw new RuntimeException("You have an uncomplete challenge");
             }
         }
-        WorkoutProgram workoutProgram = workoutProgramRepository.findById(workoutProgramId).orElseThrow(() -> new RuntimeException("Workout program not found"));
-        UserChallenge userChallenge = UserChallenge.builder()
-                .user(user)
-                .status("uncomplete")
-                .workoutProgram(workoutProgram)
-                .build();
-        user.getUserChallenges().add(userChallenge);
-        return userMapper.toUserChallengeSlimResponseDto(userChallenge);
+        WorkoutProgram workoutProgram = workoutProgramRepository.findById(workoutProgramId).orElseThrow(() -> new RuntimeException("Workout Program not found"));
+        UserChallenge userChallenge = new UserChallenge();
+        userChallenge.setStatus("uncomplete");
+        userChallenge.setUser(user);
+        userChallenge.setWorkoutProgram(workoutProgram);
+        userChallengeRepository.save(userChallenge);
+
+        // Add all DailyExercises to UserDailyChallenge with status "uncomplete"
+        Set<DailyExercise> dailyExercises = workoutProgram.getDailyExercises();
+        for (DailyExercise dailyExercise : dailyExercises) {
+            UserDailyChallenge userDailyChallenge = new UserDailyChallenge();
+            userDailyChallenge.setStatus("uncomplete");
+            userDailyChallenge.setDailyExercise(dailyExercise);
+            userDailyChallenge.setUser(user);
+            userDailyChallengeRepository.save(userDailyChallenge);
+    
+            // Add all Videos to DailyVideo with status "uncomplete"
+            Set<DailyVideo> dailyVideos = dailyExercise.getDailyVideos();
+            for (DailyVideo dailyVideo : dailyVideos) {
+                DailyVideo newDailyVideo = new DailyVideo();
+                newDailyVideo.setStatus("uncomplete");
+                newDailyVideo.setDailyExercise(dailyExercise);
+                newDailyVideo.setVideo(dailyVideo.getVideo());
+                dailyVideoRepository.save(newDailyVideo);
+            }
+        }
+        return userMapper.toUserChallengeSlimResponseDto(userChallengeRepository.save(userChallenge));
     }
 
     public void deleteUserChallenge(User user, int challengeId) {
