@@ -110,4 +110,5 @@ public class AdminController {
     public List<TopUserChallengeResponseDto> getTop3UsersWithMostCompletedChallenges() {
         return adminService.getTop3UsersWithMostCompletedChallenges();
     }
+
 }

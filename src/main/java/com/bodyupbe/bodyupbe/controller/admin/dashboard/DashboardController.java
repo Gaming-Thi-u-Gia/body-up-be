@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.controller.admin.dashboard;
 
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.MonthlyUserCountResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.ProductStatisticResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.UserChallengeStatusCountResponseDto;
 import com.bodyupbe.bodyupbe.service.admin.DashboardService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,13 @@ public class DashboardController {
     @GetMapping("/monthly-user-count")
     public ResponseEntity<List<MonthlyUserCountResponseDto>> getMonthlyUserCount() {
         return ResponseEntity.ok(dashboardService.getMonthlyUserCount());
+    }
+    @GetMapping("/monthly-user-challenge-completed-count")
+    public ResponseEntity<List<UserChallengeStatusCountResponseDto>> getMonthlyUserChallengeCompletedCount() {
+        return ResponseEntity.ok(dashboardService.getMonthlyUserChallengeCompletedCount());
+    }
+    @GetMapping("/monthly-user-challenge-uncompleted-count")
+    public ResponseEntity<List<UserChallengeStatusCountResponseDto>> getMonthlyUserChallengeUncompletedCount() {
+        return ResponseEntity.ok(dashboardService.getMonthlyUserChallengeUncompletedCount());
     }
 }

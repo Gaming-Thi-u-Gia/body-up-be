@@ -26,9 +26,9 @@ public class UserChallenge {
     int id;
     @Column(length = 2000)
     String status;
-//    @CreationTimestamp
-//    @Column(name = "create_at")
-//    Date createAt;
+    @CreationTimestamp
+    @Column(name = "create_at")
+    Date createAt;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id",referencedColumnName = "id")
     @JsonBackReference
