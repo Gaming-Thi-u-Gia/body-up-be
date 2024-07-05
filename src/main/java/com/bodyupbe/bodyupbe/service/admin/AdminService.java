@@ -13,6 +13,7 @@ import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.*;
+import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCategory;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
@@ -143,27 +144,33 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
+    @Transactional
     public String updateRecipe(RecipeRequestDto request) {
-        Recipe recipe = recipeRepository.findById(request.getId()).orElseThrow(() ->
-                new RuntimeException("Recipe not found"));
+        Recipe recipe = recipeRepository.findById(request.getId())
+                .orElseThrow(() -> new RuntimeException("Recipe not found"));
+
         Set<RecipeCategory> categories = request.getRecipeCategories().stream()
                 .map(categoryRequest -> recipeCategoryRepository.findById(categoryRequest.getId())
                         .orElseThrow(() -> new RuntimeException("RecipeCategory not found: " + categoryRequest.getId())))
                 .collect(Collectors.toSet());
+        recipe.setRecipeCategories(categories);
+
         Set<Topic> topics = request.getRecipeTopics().stream()
                 .map(topicRequest -> topicRepository.findById(topicRequest.getId())
                         .orElseThrow(() -> new RuntimeException("Recipe Topic not found: " + topicRequest.getId())))
                 .collect(Collectors.toSet());
-        recipe.setRecipeCategories(categories);
         recipe.setRecipeTopics(topics);
-        Recipe savedRecipe = recipeRepository.save(recipe);
+
+        ingredientRecipeRepository.deleteByRecipeId(recipe.getId());
+        noteRecipeRepository.deleteByRecipeId(recipe.getId());
+        otherImageRecipeRepository.deleteByRecipeId(recipe.getId());
 
         Set<IngredientRecipe> ingredientRecipes = request.getIngredientRecipes().stream()
                 .map(ingredientRequest -> {
                     IngredientRecipe ingredient = new IngredientRecipe();
                     ingredient.setAmount(ingredientRequest.getAmount());
                     ingredient.setName(ingredientRequest.getName());
-                    ingredient.setRecipe(savedRecipe);
+                    ingredient.setRecipe(recipe);
                     return ingredient;
                 })
                 .collect(Collectors.toSet());
@@ -173,7 +180,7 @@ public class AdminService {
                 .map(otherImageRequest -> {
                     OtherImageRecipe otherImageRecipe = new OtherImageRecipe();
                     otherImageRecipe.setImg(otherImageRequest.getImg());
-                    otherImageRecipe.setRecipe(savedRecipe);
+                    otherImageRecipe.setRecipe(recipe);
                     return otherImageRecipe;
                 })
                 .collect(Collectors.toSet());
@@ -183,23 +190,27 @@ public class AdminService {
                 .map(noteRecipeRequest -> {
                     NoteRecipe noteRecipe = new NoteRecipe();
                     noteRecipe.setDetail(noteRecipeRequest.getDetail());
-                    noteRecipe.setRecipe(savedRecipe);
+                    noteRecipe.setRecipe(recipe);
                     return noteRecipe;
                 })
                 .collect(Collectors.toSet());
         noteRecipeRepository.saveAll(noteRecipes);
-        savedRecipe.setNoteRecipes(noteRecipes);
-        savedRecipe.setOtherImageRecipes(otherImageRecipes);
-        savedRecipe.setIngredientRecipes(ingredientRecipes);
-        savedRecipe.setName(request.getName());
-        savedRecipe.setImg(request.getImg());
-        savedRecipe.setPrepTime(request.getPrepTime());
-        savedRecipe.setCookTime(request.getCookTime());
-        savedRecipe.setCookingInstruction(request.getCookingInstruction());
-        savedRecipe.setDetail(request.getDetail());
-        recipeRepository.save(savedRecipe);
-        return "Update Recipe Successfully With Recipe ID: " + savedRecipe.getId();
+
+        recipe.setIngredientRecipes(ingredientRecipes);
+        recipe.setOtherImageRecipes(otherImageRecipes);
+        recipe.setNoteRecipes(noteRecipes);
+        recipe.setName(request.getName());
+        recipe.setImg(request.getImg());
+        recipe.setPrepTime(request.getPrepTime());
+        recipe.setCookTime(request.getCookTime());
+        recipe.setCookingInstruction(request.getCookingInstruction());
+        recipe.setDetail(request.getDetail());
+
+        recipeRepository.save(recipe);
+
+        return "Update Recipe Successfully With Recipe ID: " + recipe.getId();
     }
+
     public RecipeSlimResponseForAdminDto getRecipeDetailForAdminById(int recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
                 new RuntimeException("Recipe not found"));
@@ -237,6 +248,7 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
+    @Transactional
     public String updateVideo (VideoRequestDto request){
         Video video = videoRepository.findById(request.getId()).orElseThrow(() ->
                 new RuntimeException("Video not found"));
@@ -485,6 +497,9 @@ public class AdminService {
         workoutProgramRepository.save(workoutProgram);
 
         return "Update Workout Program Successfully With Program ID: " + workoutProgram.getId();
+    }
+    public List<TopUserChallengeResponseDto> getTop3UsersWithMostCompletedChallenges() {
+        return userRepository.findTop3UsersWithMostCompletedChallenges();
     }
 
 }

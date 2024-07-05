@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface OtherImageRecipeRepository extends JpaRepository<OtherImageRecipe,Integer> {
     List<OtherImageRecipe> findOtherImageRecipeByRecipe(Recipe recipe);
+    void deleteByRecipeId(int recipeId);
 }

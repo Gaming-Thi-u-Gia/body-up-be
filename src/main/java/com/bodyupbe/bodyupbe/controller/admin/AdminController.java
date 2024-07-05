@@ -106,4 +106,8 @@ public class AdminController {
     public ResponseEntity<String> updateWorkoutProgram(@RequestBody WorkoutProgramRequestDto request) {
         return ResponseEntity.ok(adminService.updateWorkoutProgram(request));
     }
+    @GetMapping("/top3-completed-challenges")
+    public List<TopUserChallengeResponseDto> getTop3UsersWithMostCompletedChallenges() {
+        return adminService.getTop3UsersWithMostCompletedChallenges();
+    }
 }

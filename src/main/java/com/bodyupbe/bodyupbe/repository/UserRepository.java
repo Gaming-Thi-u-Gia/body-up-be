@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.TopUserChallengeResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import org.springframework.data.domain.Page;
@@ -24,4 +25,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<Object[]> findUserCountByMonthSince(Date startDate);
     @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto(u.id, u.userName, u.firstName, u.lastName, u.email, u.avatar, u.bio, u.role, u.createAt) FROM User u")
     Page<UserSlimResponseDto> findAllUserSlim(Pageable pageable);
+    @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.TopUserChallengeResponseDto(" +
+            "u.id, u.userName, u.firstName, u.lastName, u.email, COUNT(uc)) " +
+            "FROM User u JOIN u.userChallenges uc " +
+            "WHERE uc.status = 'completed' " +
+            "GROUP BY u.id, u.userName, u.firstName, u.lastName, u.email " +
+            "ORDER BY COUNT(uc) DESC")
+    List<TopUserChallengeResponseDto> findTop3UsersWithMostCompletedChallenges();
 }
