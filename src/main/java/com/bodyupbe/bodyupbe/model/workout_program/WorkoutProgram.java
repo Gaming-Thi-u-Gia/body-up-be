@@ -1,8 +1,10 @@
 package com.bodyupbe.bodyupbe.model.workout_program;
 
+import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -66,4 +68,8 @@ public class WorkoutProgram {
     )
     @JsonManagedReference
         Set<WorkoutProgramCategory> workoutProgramCategories;
+
+    @OneToOne(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
+    @JsonBackReference
+    Notification notification;
 }

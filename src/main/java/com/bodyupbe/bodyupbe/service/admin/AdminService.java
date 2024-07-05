@@ -10,9 +10,11 @@ import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.*;
 import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
+import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.*;
+import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCategory;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
@@ -60,6 +62,7 @@ public class AdminService {
     WorkoutProgramCategoryRepository workoutProgramCategoryRepository;
     WorkoutProgramMapper workoutProgramMapper;
     DailyExerciseRepository dailyExerciseRepository;
+    NotificationRepository notificationRepository;
 
     public String createVideo(VideoRequestDto request) {
         Video video = videoMapper.toVideo(request);
@@ -316,6 +319,7 @@ public class AdminService {
     }
 
     public String addWorkoutProgram(WorkoutProgramRequestDto request) {
+        // Tạo và lưu chương trình tập luyện mới
         WorkoutProgram workoutProgram = new WorkoutProgram();
         workoutProgram.setName(request.getName());
         workoutProgram.setType(request.getType());
@@ -340,6 +344,7 @@ public class AdminService {
         workoutProgram.setWorkoutProgramCategories(categories);
 
         WorkoutProgram savedWorkoutProgram = workoutProgramRepository.save(workoutProgram);
+
         Set<DailyExercise> dailyExercises = request.getDailyExercises().stream()
                 .map(dailyExerciseRequest -> {
                     DailyExercise dailyExercise = new DailyExercise();
@@ -386,8 +391,20 @@ public class AdminService {
         savedWorkoutProgram.setDailyExercises(dailyExercises);
         workoutProgramRepository.save(savedWorkoutProgram);
 
+        Notification notification = new Notification();
+        notification.setMessage("There is a new workout program added: " + savedWorkoutProgram.getName());
+        notification.setWorkoutProgram(savedWorkoutProgram);
+        Notification savedNotification = notificationRepository.save(notification);
+
+        List<User> allUsers = userRepository.findAll();
+        allUsers.forEach(user -> {
+            user.getNotifications().add(savedNotification);
+            userRepository.save(user);
+        });
+
         return "Add New Workout Program Successfully With Program ID: " + savedWorkoutProgram.getId();
     }
+
 
     public List<VideoSelectForAdminResponseDto> getAllVideoSelectForAdmin() {
         return videoRepository.getVideoSelectForAdmin();
@@ -497,7 +514,6 @@ public class AdminService {
                         DailyRecipe dailyRecipe = new DailyRecipe();
                         dailyRecipe.setDailyExercise(dailyExercise);
                         dailyRecipe.setPart(dailyRecipeRequest.getPart());
-
                         Recipe recipe = recipeRepository.findById(dailyRecipeRequest.getRecipe().getId())
                                 .orElseThrow(() -> new RuntimeException("Recipe not found: " + dailyRecipeRequest.getRecipe().getId()));
                         dailyRecipe.setRecipe(recipe);

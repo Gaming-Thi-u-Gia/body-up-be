@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.model.user;
 
+import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.community.Comment;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
@@ -137,4 +138,12 @@ public class User implements UserDetails {
         this.role = role;
         this.createAt = createAt;
     }
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "user_notifications",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id")
+    )
+    @JsonManagedReference
+    Set<Notification> notifications;
 }

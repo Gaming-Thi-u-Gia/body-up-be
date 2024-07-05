@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.dto.request.recipe;
 
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSelectForAdminResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCardResponseDto;
 import lombok.AccessLevel;
@@ -12,6 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DailyRecipeRequestDto {
     int id;
-    RecipeSelectForAdminResponseDto recipe;
+    RecipeCardResponseForAdminDto recipe;
     String part;
 }
