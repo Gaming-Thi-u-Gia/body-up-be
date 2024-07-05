@@ -31,8 +31,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.addRecipe(request));
     }
     @GetMapping("/list-recipe")
-    public ResponseEntity<ObjectSetResponse<RecipeCardResponseForAdminDto>> listRecipe(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
-        return ResponseEntity.ok(adminService.getAllRecipeDetailForAdmin(pageNo,pageSize));
+    public ResponseEntity<ObjectSetResponse<RecipeCardResponseForAdminDto>> listRecipe(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize, @RequestParam(defaultValue = "") String name) {
+        return ResponseEntity.ok(adminService.getAllRecipeDetailForAdmin(pageNo,pageSize,name));
     }
     @PutMapping("/update-recipe")
     public ResponseEntity<String> updateRecipe(@RequestBody RecipeRequestDto request) {
@@ -47,12 +47,12 @@ public class AdminController {
         return ResponseEntity.ok(adminService.deleteRecipe(recipeId));
     }
     @GetMapping("/list-user")
-    ObjectSetResponse<UserSlimResponseDto> getListUser(@RequestParam(defaultValue = "0") int pageNo,@RequestParam(defaultValue = "10") int pageSize){
-        return adminService.getListUser(pageNo, pageSize);
+    ObjectSetResponse<UserSlimResponseDto> getListUser(@RequestParam(defaultValue = "0") int pageNo,@RequestParam(defaultValue = "10") int pageSize,@RequestParam(defaultValue = "") String name){
+        return adminService.getListUser(pageNo, pageSize,name);
     }
     @GetMapping("/list-video")
-    ObjectSetResponse<VideoCardResponseForAdminDto> getListVideo(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "12") int pageSize){
-        return adminService.getListVideo(pageNo, pageSize);
+    ObjectSetResponse<VideoCardResponseForAdminDto> getListVideo(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "12") int pageSize, @RequestParam(defaultValue = "") String name){
+        return adminService.getListVideo(pageNo, pageSize, name);
     }
     @PutMapping("/update-video")
     public ResponseEntity<String> updateVideo(@RequestBody VideoRequestDto request) {
@@ -63,8 +63,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.deleteVideo(videoId));
     }
     @GetMapping("/list-post")
-    ObjectSetResponse<PostCardResponseForAdminDto> getListPost(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize){
-        return adminService.getListPost(pageNo, pageSize);
+    ObjectSetResponse<PostCardResponseForAdminDto> getListPost(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "") String name){
+        return adminService.getListPost(pageNo, pageSize,name);
     }
     @GetMapping("/post-detail")
     public ResponseEntity<PostResponseForAdminDto> getPostDetailForAdminById(@RequestParam int postId) {
@@ -95,8 +95,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.deleteWorkoutProgram(workoutProgramId));
     }
     @GetMapping("/list-workout-program")
-    ObjectSetResponse<WorkoutProgramCardResponseForAdminDto> getListWorkoutProgram(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize){
-        return adminService.getListWorkoutProgram(pageNo, pageSize);
+    ObjectSetResponse<WorkoutProgramCardResponseForAdminDto> getListWorkoutProgram(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "") String name){
+        return adminService.getListWorkoutProgram(pageNo, pageSize,name);
     }
     @GetMapping("/workout-program-detail")
     public ResponseEntity<WorkoutProgramDetailForAdminDto> getWorkoutProgramDetailForAdminById(@RequestParam int workoutProgramId) {

@@ -13,7 +13,6 @@ import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.*;
-import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgram;
 import com.bodyupbe.bodyupbe.model.workout_program.WorkoutProgramCategory;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
@@ -36,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -57,7 +57,7 @@ public class AdminService {
     DailyRecipeRepository dailyRecipeRepository;
     DailyVideoRepository dailyVideoRepository;
     WorkoutProgramRepository workoutProgramRepository;
-    WorkoutProgramCategoryRepository  workoutProgramCategoryRepository;
+    WorkoutProgramCategoryRepository workoutProgramCategoryRepository;
     WorkoutProgramMapper workoutProgramMapper;
     DailyExerciseRepository dailyExerciseRepository;
 
@@ -131,9 +131,10 @@ public class AdminService {
         recipeRepository.save(savedRecipe);
         return "Add New Recipe Successfully With Recipe ID: " + savedRecipe.getId();
     }
-    public ObjectSetResponse<RecipeCardResponseForAdminDto> getAllRecipeDetailForAdmin(int pageNo, int pageSize) {
+
+    public ObjectSetResponse<RecipeCardResponseForAdminDto> getAllRecipeDetailForAdmin(int pageNo, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        Page<RecipeCardResponseForAdminDto> pages = recipeRepository.findAllSlim(pageable);
+        Page<RecipeCardResponseForAdminDto> pages = recipeRepository.findAllSlim(pageable, name);
         List<RecipeCardResponseForAdminDto> content = pages.getContent();
         ObjectSetResponse<RecipeCardResponseForAdminDto> response = new ObjectSetResponse<>();
         response.setContent(recipeMapper.toRecipeCardResponseForAdminDto(content));
@@ -144,6 +145,7 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
+
     @Transactional
     public String updateRecipe(RecipeRequestDto request) {
         Recipe recipe = recipeRepository.findById(request.getId())
@@ -218,14 +220,16 @@ public class AdminService {
         response.setTotalRating(recipeRepository.countRatingRecipesByRecipeId(recipeId));
         return response;
     }
+
     public String deleteRecipe(int recipeId) {
 
         recipeRepository.deleteById(recipeId);
         return "Recipe with id" + recipeId + " deleted";
     }
-    public ObjectSetResponse<UserSlimResponseDto> getListUser(int pageNo, int pageSize){
+
+    public ObjectSetResponse<UserSlimResponseDto> getListUser(int pageNo, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        Page<UserSlimResponseDto> pages = userRepository.findAllUserSlim(pageable);
+        Page<UserSlimResponseDto> pages = userRepository.findAllUserSlim(pageable, name);
         Set<UserSlimResponseDto> users = new HashSet<>(pages.getContent());
         ObjectSetResponse<UserSlimResponseDto> response = new ObjectSetResponse<>();
         response.setContent(users);
@@ -236,9 +240,10 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
-    public ObjectSetResponse<VideoCardResponseForAdminDto> getListVideo(int pageNo, int pageSize){
+
+    public ObjectSetResponse<VideoCardResponseForAdminDto> getListVideo(int pageNo, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        Page<VideoCardResponseForAdminDto> pages = videoRepository.getListVideoForAdmin(pageable);
+        Page<VideoCardResponseForAdminDto> pages = videoRepository.getListVideoForAdmin(pageable, name);
         ObjectSetResponse<VideoCardResponseForAdminDto> response = new ObjectSetResponse<>();
         response.setContent(new HashSet<>(pages.getContent()));
         response.setTotalPages(pages.getTotalPages());
@@ -248,8 +253,9 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
+
     @Transactional
-    public String updateVideo (VideoRequestDto request){
+    public String updateVideo(VideoRequestDto request) {
         Video video = videoRepository.findById(request.getId()).orElseThrow(() ->
                 new RuntimeException("Video not found"));
         Set<VideoCategory> categories = request.getVideoCategories().stream()
@@ -268,13 +274,15 @@ public class AdminService {
         videoRepository.save(video);
         return "Update Video Successfully With Video ID: " + video.getId();
     }
+
     public String deleteVideo(int videoId) {
         videoRepository.deleteById(videoId);
         return "Video with id" + videoId + " deleted";
     }
-    public ObjectSetResponse<PostCardResponseForAdminDto> getListPost(int pageNo, int pageSize){
+
+    public ObjectSetResponse<PostCardResponseForAdminDto> getListPost(int pageNo, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        Page<PostCardResponseForAdminDto> pages = postRepository.findAllSlim(pageable);
+        Page<PostCardResponseForAdminDto> pages = postRepository.findAllSlim(pageable, name);
         Set<PostCardResponseForAdminDto> content = postMapper.toPostCardResponseForAdminDto(pages.getContent());
         content.stream().map(post -> {
             post.setBadge(postRepository.findBageByPostId(post.getId()));
@@ -289,20 +297,24 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
-    public PostResponseForAdminDto getPostDetailForAdminById(int postId){
+
+    public PostResponseForAdminDto getPostDetailForAdminById(int postId) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new RuntimeException("Post not found"));
         return postMapper.toPostResponseForAdminDto(post);
     }
+
     public String deletePost(int postId) {
         postRepository.deleteById(postId);
         return "Post with id" + postId + " deleted";
     }
-    public VideoResponseForAdminDto getVideoDetailForAdminById(int videoId){
+
+    public VideoResponseForAdminDto getVideoDetailForAdminById(int videoId) {
         Video video = videoRepository.findById(videoId).orElseThrow(() ->
                 new RuntimeException("Video not found"));
         return videoMapper.toVideoResponseForAdminDto(video);
     }
+
     public String addWorkoutProgram(WorkoutProgramRequestDto request) {
         WorkoutProgram workoutProgram = new WorkoutProgram();
         workoutProgram.setName(request.getName());
@@ -380,16 +392,19 @@ public class AdminService {
     public List<VideoSelectForAdminResponseDto> getAllVideoSelectForAdmin() {
         return videoRepository.getVideoSelectForAdmin();
     }
+
     public List<RecipeSelectForAdminResponseDto> getAllRecipeSelectForAdmin() {
         return recipeRepository.getRecipeSelectForAdmin();
     }
+
     public String deleteWorkoutProgram(int workoutProgramId) {
         workoutProgramRepository.deleteById(workoutProgramId);
         return "Workout Program with id" + workoutProgramId + " deleted";
     }
-    public ObjectSetResponse<WorkoutProgramCardResponseForAdminDto> getListWorkoutProgram(int pageNo, int pageSize){
+
+    public ObjectSetResponse<WorkoutProgramCardResponseForAdminDto> getListWorkoutProgram(int pageNo, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        Page<WorkoutProgramCardResponseForAdminDto> pages = workoutProgramRepository.findWorkoutProgramCardResponseForAdminDto(pageable);
+        Page<WorkoutProgramCardResponseForAdminDto> pages = workoutProgramRepository.findWorkoutProgramCardResponseForAdminDto(pageable, name);
         Set<WorkoutProgramCardResponseForAdminDto> content = new HashSet<>(pages.getContent());
         content.stream().map(workoutProgram -> {
             workoutProgram.setProgramTopics(new HashSet<>(topicRepository.findAllTopicsByWorkoutProgramId(workoutProgram.getId())));
@@ -405,11 +420,13 @@ public class AdminService {
         response.setLast(pages.isLast());
         return response;
     }
-    public WorkoutProgramDetailForAdminDto getWorkoutProgramDetailForAdminById(int workoutProgramId){
+
+    public WorkoutProgramDetailForAdminDto getWorkoutProgramDetailForAdminById(int workoutProgramId) {
         WorkoutProgram workoutProgram = workoutProgramRepository.findById(workoutProgramId).orElseThrow(() ->
                 new RuntimeException("Workout Program not found"));
         return workoutProgramMapper.toWorkoutProgramDetailForAdminDto(workoutProgram);
     }
+
     @Transactional
     public String updateWorkoutProgram(WorkoutProgramRequestDto request) {
         WorkoutProgram workoutProgram = workoutProgramRepository.findById(request.getId())
@@ -498,6 +515,7 @@ public class AdminService {
 
         return "Update Workout Program Successfully With Program ID: " + workoutProgram.getId();
     }
+
     public List<TopUserChallengeResponseDto> getTop3UsersWithMostCompletedChallenges() {
         return userRepository.findTop3UsersWithMostCompletedChallenges();
     }

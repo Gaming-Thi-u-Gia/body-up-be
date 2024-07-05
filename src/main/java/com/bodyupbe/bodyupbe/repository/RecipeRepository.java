@@ -52,10 +52,12 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
     @Query("SELECT r FROM Recipe r JOIN r.bookmarkUsers bu WHERE bu.id = :userId ORDER BY r.createAt DESC")
     Page<Recipe> findBookmarkedRecipesByUserId(int userId, Pageable pageable);
     @NonNull
-    @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto(r.id, r.name, r.detail, r.avgStar,r.img) FROM Recipe r ORDER BY r.createAt DESC")
-    Page<RecipeCardResponseForAdminDto> findAllSlim(Pageable pageable);
+    @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto(r.id, r.name, r.detail, r.avgStar, r.img) " +
+            "FROM Recipe r " +
+            "WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :name, '%')) " +
+            "ORDER BY r.createAt DESC")
+    Page<RecipeCardResponseForAdminDto> findAllSlim(Pageable pageable, @Param("name") String name);
     @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSelectForAdminResponseDto(r.id, r.name) FROM Recipe r ORDER BY r.id desc ")
     List<RecipeSelectForAdminResponseDto> getRecipeSelectForAdmin();
-
 }
 
