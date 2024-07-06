@@ -1,7 +1,9 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.dto.response.NotificationResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.TopUserChallengeResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
+import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +38,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "GROUP BY u.id, u.userName, u.firstName, u.lastName, u.email " +
             "ORDER BY COUNT(uc) DESC")
     List<TopUserChallengeResponseDto> findTop3UsersWithMostCompletedChallenges();
+    @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.NotificationResponseDto(uf.id,uf.message,uf.createdAt,null )  FROM User u JOIN u.notifications uf WHERE u.id = :id")
+    Page<NotificationResponseDto> findAllNotificationById(Pageable pageable, int id);
 }
