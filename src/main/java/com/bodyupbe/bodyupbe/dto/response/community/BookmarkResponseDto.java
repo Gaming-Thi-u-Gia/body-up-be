@@ -1,23 +1,20 @@
 package com.bodyupbe.bodyupbe.dto.response.community;
 
 import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
+import com.bodyupbe.bodyupbe.model.user.User;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-import java.util.Set;
-
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommentResponseDto {
-    Integer id;
-    String detail;
-    int upVote;
-    Date createAt;
+@AllArgsConstructor
+public class BookmarkResponseDto {
+
     UserSlimResponseDto user;
-    Set<CommentResponseDto> children;
-    Integer parentId;
+    Integer postId;
+    boolean isBookmarked;
 }

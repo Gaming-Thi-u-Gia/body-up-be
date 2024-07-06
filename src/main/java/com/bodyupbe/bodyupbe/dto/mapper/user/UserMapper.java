@@ -5,6 +5,8 @@ import com.bodyupbe.bodyupbe.dto.request.user.UserRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserBookmarkRecipeResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.*;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
@@ -41,4 +43,6 @@ public interface UserMapper {
     Set<WorkoutProgramSlimResponseDto> toListWorkoutProgramSlimResponseDto(Set<UserChallenge> userChallenges);
 
     UserDailyChallengeResponseDto toUserDailyChallengeResponseDto(UserDailyChallenge userDailyChallenge);
+
+    UserSlimResponseDto toUserSlimResponseDto(User user);
 }
