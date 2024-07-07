@@ -1,10 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.response.user;
 
 import com.bodyupbe.bodyupbe.model.user.Role;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
@@ -13,6 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @FieldDefaults(level= AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class UserSlimResponseDto {
     Integer id;
     String userName;
@@ -24,4 +22,16 @@ public class UserSlimResponseDto {
     String bio;
     Role role;
     Date createAt;
+
+    public UserSlimResponseDto(Integer id, String userName, String firstName, String lastName, String email, String avatar, String bio, Role role, Date createAt) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.avatar = avatar;
+        this.bio = bio;
+        this.role = role;
+        this.createAt = createAt;
+    }
 }

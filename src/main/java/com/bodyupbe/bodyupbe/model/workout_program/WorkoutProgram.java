@@ -74,7 +74,7 @@ public class WorkoutProgram {
     @JsonManagedReference
     Set<WorkoutProgramCategory> workoutProgramCategories;
 
-        @OneToOne(mappedBy = "workoutProgram", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToOne(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
     @JsonManagedReference
     Notification notification;
 }
