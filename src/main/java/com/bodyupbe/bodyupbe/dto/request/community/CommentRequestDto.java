@@ -13,7 +13,6 @@ public class CommentRequestDto {
     String detail;
     int upVote;
     Date createAt;
+    Integer parentId;
 //    User user
-
-    CommentRequestDto comment;
 }
