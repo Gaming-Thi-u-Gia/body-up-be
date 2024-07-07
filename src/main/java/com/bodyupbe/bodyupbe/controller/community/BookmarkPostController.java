@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,10 +28,6 @@ public class BookmarkPostController {
     UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<Optional<UserResponseDto>> bookmarkPost(@RequestParam int userId, @RequestParam int postId) {
-        return ResponseEntity.ok(bookmarkPostService.bookmarkPost(userId, postId));
-    }
-    @PostMapping
     public ResponseEntity<BookmarkResponseDto> bookmarkPost(@RequestParam int postId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
@@ -40,6 +37,8 @@ public class BookmarkPostController {
         }
         return ResponseEntity.ok(bookmarkPostService.bookmarkPost(optionalUser.get(), postId));
     }
+
+
     @GetMapping
     public ResponseEntity<Set<PostResponseDto>> getBookmarkPost(@RequestParam int userId) {
         return ResponseEntity.ok(bookmarkPostService.getBookmarkPost(userId));
