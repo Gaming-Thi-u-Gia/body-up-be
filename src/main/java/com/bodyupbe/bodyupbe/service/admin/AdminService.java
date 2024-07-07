@@ -413,7 +413,7 @@ public class AdminService {
     public List<RecipeSelectForAdminResponseDto> getAllRecipeSelectForAdmin() {
         return recipeRepository.getRecipeSelectForAdmin();
     }
-
+    @Transactional
     public String deleteWorkoutProgram(int workoutProgramId) {
         workoutProgramRepository.deleteById(workoutProgramId);
         return "Workout Program with id" + workoutProgramId + " deleted";

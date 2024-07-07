@@ -24,8 +24,10 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
     @Column(length = 2000)
     String message;
+
     @Column(name = "created_at")
     @CreationTimestamp
     Date createdAt;
@@ -34,7 +36,7 @@ public class Notification {
     @JsonBackReference
     Set<User> users;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "workout_program_id", referencedColumnName = "id")
     @JsonBackReference
     WorkoutProgram workoutProgram;

@@ -36,4 +36,6 @@ public interface WorkoutProgramRepository extends JpaRepository<WorkoutProgram,I
     Page<WorkoutProgramCardResponseForAdminDto> findWorkoutProgramCardResponseForAdminDto(Pageable pageable, @Param("name") String name);
     @Query("SELECT COUNT(w) FROM WorkoutProgram w")
     int countWorkoutProgram();
+    //delete workout program by id
+    void deleteById(int id);
 }

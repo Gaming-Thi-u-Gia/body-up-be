@@ -4,7 +4,6 @@ import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,41 +20,47 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "workout_progams")
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutProgram {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
     @Column(length = 2000)
     String name;
+
     @Column(length = 2000)
     String detail;
+
     String day;
     String equipment;
     String type;
     String time;
     String year;
+
     @Column(length = 2000)
     String img;
+
     @Column(length = 2000)
     String banner;
+
     @Column(name = "release_date")
     @CreationTimestamp
     Date releaseDate;
 
-    @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<DailyExercise> dailyExercises;
 
-    @OneToMany(mappedBy = "workoutProgram",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_collection",
-            joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "topic_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "workout_program_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id", referencedColumnName = "id")
     )
     @JsonManagedReference
     Set<Topic> programTopics;
@@ -63,13 +68,13 @@ public class WorkoutProgram {
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_filter",
-            joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "workout_program_category_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "workout_program_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_program_category_id", referencedColumnName = "id")
     )
     @JsonManagedReference
     Set<WorkoutProgramCategory> workoutProgramCategories;
 
-    @OneToOne(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
+        @OneToOne(mappedBy = "workoutProgram", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonManagedReference
     Notification notification;
 }
