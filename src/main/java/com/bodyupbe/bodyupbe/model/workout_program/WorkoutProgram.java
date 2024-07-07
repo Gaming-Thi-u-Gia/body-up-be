@@ -67,9 +67,9 @@ public class WorkoutProgram {
             inverseJoinColumns = @JoinColumn(name = "workout_program_category_id",referencedColumnName = "id")
     )
     @JsonManagedReference
-        Set<WorkoutProgramCategory> workoutProgramCategories;
+    Set<WorkoutProgramCategory> workoutProgramCategories;
 
     @OneToOne(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     Notification notification;
 }

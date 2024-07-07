@@ -21,13 +21,8 @@ public interface TopicRepository extends JpaRepository<Topic,Integer> {
     Page<TopicRecipeSlimAndSetRecipeCardResponseDto> findByTopic(@Param("topic") String topic, Pageable pageable);
     Page<Topic> findTopicsByTopic(String topic, Pageable pageable);
     Set<Topic> findTopicsByTopic(String topic);
-
-    Set<Topic> findTopicsById(int id);
     List<Topic> findByTopic(String topic);
-    Set<Topic> findTopicsByTopic(String topic);
-
     Set<Topic> findTopicsById(int id);
-
     @Query("SELECT new com.bodyupbe.bodyupbe.dto.request.TopicDto(t.id,t.name) FROM Topic t join t.workoutPrograms w where w.id = :id")
     List<TopicDto> findAllTopicsByWorkoutProgramId(@Param("id") int id);
     @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCardResponseDto(r.id, r.name, r.avgStar, r.img, r.createAt) FROM Topic t JOIN t.recipes r WHERE t.id = :topicId")

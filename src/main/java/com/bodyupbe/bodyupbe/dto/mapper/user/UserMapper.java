@@ -22,9 +22,6 @@ public interface UserMapper {
     User toUser(UserRequestDto userRequestDto);
     UserResponseDto toUserResponseDto(User user);
     UserBookmarkRecipeResponseDto toUserBookmarkRecipeDto(User user);
-    UserResponseDto toUserResponseDto(User user);
-
-
     UserProgressPhoto toUserProgressPhoto(UserProgressPhotoRequestDto userProgressPhotoRequestDto);
 
     UserProgressPhotoResponseDto toUserProgressPhotoResponseDto(UserProgressPhoto userProgressPhoto);

@@ -35,4 +35,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findPostByBookmarkUsers_Id(int userId, Pageable pageable);
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Post p JOIN p.bookmarkUsers bu WHERE bu.id = :userId AND p.id = :postId")
     boolean findBookmarkedByUserIdAndPostId(int userId, int postId);
+    @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.PostCardResponseForAdminDto(p.id, p.title, p.description, null) " +
+            "FROM Post p " +
+            "WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :name, '%')) " +
+            "ORDER BY p.createdAt DESC")
+    Page<PostCardResponseForAdminDto> findAllSlim(Pageable pageable, @Param("name") String name);
+    @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.admin.dashboard.BageSlimResponseDto(b.id,b.name) FROM Post p JOIN p.badge b WHERE p.id = :id")
+    BageSlimResponseDto findBageByPostId(int id);
 }

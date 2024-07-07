@@ -23,7 +23,6 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     List<Video> findByNameContainingIgnoreCase(String name);
     @Query("SELECT wp FROM Video wp ORDER BY wp.id DESC")
     List<Video> findTop4ByOrderByReleaseDateDesc(Pageable pageable);
-    List<Video> findByNameContainingIgnoreCase(String name);
     @Query(value = "SELECT COUNT(*) FROM Video v")
     int countVideo();
     @Query("SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM Video v join v.bookmarkUsers bu where bu.id = :userId and v.url = :url")

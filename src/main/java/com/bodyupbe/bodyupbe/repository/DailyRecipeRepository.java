@@ -15,7 +15,5 @@ public interface DailyRecipeRepository extends JpaRepository<DailyRecipe, Intege
         "JOIN de.workoutProgram wp " +
         "WHERE de.day = :day AND wp.id = :workoutProgramId")
     Set<DailyRecipe> findAllByDayAndWorkoutProgramId(@Param("day") String day, @Param("workoutProgramId") Integer workoutProgramId);
-public interface DailyRecipeRepository extends JpaRepository<DailyRecipe,Integer>{
     void deleteByDailyExerciseId(Integer dailyExerciseId);
-    }
 }

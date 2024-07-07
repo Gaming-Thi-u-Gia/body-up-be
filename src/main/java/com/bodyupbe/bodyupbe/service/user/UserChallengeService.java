@@ -87,7 +87,7 @@ public class UserChallengeService {
             Set<DailyVideo> dailyVideos = dailyExercise.getDailyVideos();
             for (DailyVideo dailyVideo : dailyVideos) {
                 DailyVideo newDailyVideo = new DailyVideo();
-                newDailyVideo.setStatus("uncomplete");
+//                newDailyVideo.setStatus("uncomplete");
                 newDailyVideo.setDailyExercise(dailyExercise);
                 newDailyVideo.setVideo(dailyVideo.getVideo());
                 dailyVideoRepository.save(newDailyVideo);
@@ -147,7 +147,7 @@ public class UserChallengeService {
         userDailyChallenge.setStatus("complete");
         //update all video daily status
         userDailyChallenge.getDailyExercise().getDailyVideos().forEach(dailyVideo -> {
-            dailyVideo.setStatus("complete");
+//            dailyVideo.setStatus("complete");
         });
         userDailyChallengeRepository.save(userDailyChallenge);
     }

@@ -50,7 +50,7 @@ public class DailyVideoService {
                 .anyMatch(udc -> udc.getDailyExercise().getDailyVideos().contains(dailyVideo));
 
         if (isUserRelated) {
-            dailyVideo.setStatus("complete");
+//            dailyVideo.setStatus("complete");
             dailyVideoRepository.save(dailyVideo);
         } else {
             throw new IllegalArgumentException("User is not related to the DailyVideo");
