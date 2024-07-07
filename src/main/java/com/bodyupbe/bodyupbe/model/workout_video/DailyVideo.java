@@ -17,9 +17,6 @@ public class DailyVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(length = 2000)
-    String status;
-
     @ManyToOne
     @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
     @JsonBackReference

@@ -356,7 +356,7 @@ public class AdminService {
                     Set<DailyVideo> dailyVideos = dailyExerciseRequest.getDailyVideos().stream()
                             .map(dailyVideoRequest -> {
                                 DailyVideo dailyVideo = new DailyVideo();
-                                dailyVideo.setStatus("uncomplete");
+
                                 dailyVideo.setDailyExercise(savedDailyExercise);
 
                                 Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
@@ -496,9 +496,7 @@ public class AdminService {
                     .flatMap(de -> de.getDailyVideos().stream())
                     .map(dailyVideoRequest -> {
                         DailyVideo dailyVideo = new DailyVideo();
-                        dailyVideo.setStatus("uncomplete");
                         dailyVideo.setDailyExercise(dailyExercise);
-
                         Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
                                 .orElseThrow(() -> new RuntimeException("Video not found: " + dailyVideoRequest.getVideo().getId()));
                         dailyVideo.setVideo(video);
