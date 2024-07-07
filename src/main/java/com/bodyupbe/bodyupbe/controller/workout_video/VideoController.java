@@ -50,10 +50,7 @@ public class VideoController {
     public ResponseEntity<VideoResponseDto> updateVideo(@RequestBody VideoRequestDto videoRequestDto) {
         return ResponseEntity.ok(videoService.updateVideo(videoRequestDto));
     }
-    @PostMapping("/createVideo")
-    public ResponseEntity<VideoResponseDto> createVideo(@RequestBody VideoRequestDto videoRequestDto) {
-        return ResponseEntity.ok(videoService.createVideo(videoRequestDto));
-    }
+
 
     @GetMapping("/getVideoByCategory")
     public ResponseEntity<Set<VideoResponseDto>> getVideoByCategory(@RequestParam int categoryId) {

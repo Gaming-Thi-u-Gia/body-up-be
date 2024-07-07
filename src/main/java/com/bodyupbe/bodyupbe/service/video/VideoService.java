@@ -5,6 +5,8 @@ import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
+import com.bodyupbe.bodyupbe.model.recipe.Recipe;
+import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
 import com.bodyupbe.bodyupbe.model.workout_video.VideoCategory;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,10 +38,7 @@ public class VideoService {
     TopicRepository topicRepository;
     UserRepository userRepository;
 
-    public VideoResponseDto createVideo(VideoRequestDto videoRequestDto) {
-        Video video = videoMapper.toVideo(videoRequestDto);
-        return videoMapper.toVideoResponseDto(videoRepository.save(video));
-    }
+
 
     public List<VideoResponseDto> getVideoAll() {
         List<Video> videos = videoRepository.findAll();

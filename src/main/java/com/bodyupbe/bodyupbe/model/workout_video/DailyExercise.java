@@ -24,19 +24,21 @@ public class DailyExercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String day;
+
     @ManyToOne
     @JoinColumn(name="workout_program_id",referencedColumnName = "id")
     @JsonBackReference
     WorkoutProgram workoutProgram;
 
-    @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dailyExercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<DailyVideo> dailyVideos;
 
-    @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dailyExercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<UserDailyChallenge> userDailyChallenges;
-    @OneToMany(mappedBy = "dailyExercise",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "dailyExercise", orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JsonManagedReference
     Set<DailyRecipe> dailyRecipes;
 }

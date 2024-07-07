@@ -17,15 +17,12 @@ public class DailyVideo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(length = 2000)
-    String status;
-
     @ManyToOne
     @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
     @JsonBackReference
     DailyExercise dailyExercise;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="video_id", referencedColumnName = "id")
     @JsonBackReference
     Video video;

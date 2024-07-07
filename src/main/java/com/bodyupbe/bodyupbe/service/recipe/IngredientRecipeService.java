@@ -2,7 +2,7 @@ package com.bodyupbe.bodyupbe.service.recipe;
 
 import com.bodyupbe.bodyupbe.dto.mapper.recipe.IngredientRecipeMapper;
 import com.bodyupbe.bodyupbe.dto.request.recipe.IngredientRecipeRequestDto;
-import com.bodyupbe.bodyupbe.dto.response.recipe.IngredientRecipeAndSetRecipeSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.IngredientRecipeSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.recipe.IngredientRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.repository.IngredientRecipeRepository;
@@ -23,7 +23,7 @@ public class IngredientRecipeService {
     IngredientRecipeRepository ingredientRecipeRepository;
     IngredientRecipeMapper ingredientRecipeMapper;
     RecipeRepository recipeRepository;
-    public IngredientRecipeAndSetRecipeSlimResponseDto addIngredientRecipe(int recipeId, IngredientRecipeRequestDto request) {
+    public IngredientRecipeSlimResponseDto addIngredientRecipe(int recipeId, IngredientRecipeRequestDto request) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RuntimeException("Recipe not found"));
         IngredientRecipe ingredientRecipe = IngredientRecipe.builder()
                 .amount(request.getAmount())
@@ -32,18 +32,18 @@ public class IngredientRecipeService {
                 .build();
         return ingredientRecipeMapper.toIngredientRecipeAndSetRecipeSlimResponseDto(ingredientRecipeRepository.save(ingredientRecipe));
     }
-    public IngredientRecipeAndSetRecipeSlimResponseDto getIngredientRecipeById (int ingredientRecipeId){
+    public IngredientRecipeSlimResponseDto getIngredientRecipeById (int ingredientRecipeId){
         return ingredientRecipeMapper.toIngredientRecipeAndSetRecipeSlimResponseDto(ingredientRecipeRepository.findById(ingredientRecipeId).orElseThrow(()->new RuntimeException("Ingredient Recipe not found")));
     }
-    public Set<IngredientRecipeAndSetRecipeSlimResponseDto> findIngredientRecipeByRecipeId(int recipeId) {
+    public Set<IngredientRecipeSlimResponseDto> findIngredientRecipeByRecipeId(int recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RuntimeException("Recipe not found"));
         return ingredientRecipeMapper.toSetIngredientRecipeAndSetRecipeSlimResponseDto(ingredientRecipeRepository.findIngredientRecipeByRecipe(recipe));
     }
-    public Set<IngredientRecipeAndSetRecipeSlimResponseDto> getAllIngredientRecipe() {
+    public Set<IngredientRecipeSlimResponseDto> getAllIngredientRecipe() {
         return ingredientRecipeMapper.toSetIngredientRecipeAndSetRecipeSlimResponseDto(ingredientRecipeRepository.findAll());
     }
 
-    public IngredientRecipeAndSetRecipeSlimResponseDto updateIngredientRecipe(int ingredientRecipeId, IngredientRecipeRequestDto request) {
+    public IngredientRecipeSlimResponseDto updateIngredientRecipe(int ingredientRecipeId, IngredientRecipeRequestDto request) {
         IngredientRecipe ingredientRecipe = ingredientRecipeRepository.findById(ingredientRecipeId).orElseThrow(()->new RuntimeException("Ingredient Recipe Not Found"));
         ingredientRecipe.setAmount(request.getAmount());
         ingredientRecipe.setName(request.getName());

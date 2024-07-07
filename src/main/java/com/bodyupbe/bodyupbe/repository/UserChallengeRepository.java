@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface UserChallengeRepository extends JpaRepository<UserChallenge,Integer> {
-    @Query("SELECT COUNT(u) FROM UserChallenge u WHERE u.status = 'uncompleted'")
+    @Query("SELECT COUNT(u) FROM UserChallenge u WHERE u.status = 'uncomplete'")
     int countUserChallengeUncompleted();
     @Query("SELECT COUNT(u) FROM UserChallenge u WHERE u.status = 'completed'")
     int countUserChallengeComplete();
@@ -24,5 +24,18 @@ public interface UserChallengeRepository extends JpaRepository<UserChallenge,Int
 //    List<Object[]> findUserChallengeUncompletedCountByMonthSince(Date startDate);
 
     UserChallenge findByWorkoutProgramIdAndUserId(Integer workoutProgramId, Integer userId);
+    @Query("SELECT TO_CHAR(uc.createAt, 'YYYY-MM') AS month, COUNT(uc) AS count " +
+            "FROM UserChallenge uc " +
+            "WHERE uc.createAt >= :startDate AND uc.status = 'completed' " +
+            "GROUP BY TO_CHAR(uc.createAt, 'YYYY-MM') " +
+            "ORDER BY TO_CHAR(uc.createAt, 'YYYY-MM')")
+    List<Object[]> findUserChallengeCompletedCountByMonthSince(Date startDate);
+
+    @Query("SELECT TO_CHAR(uc.createAt, 'YYYY-MM') AS month, COUNT(uc) AS count " +
+            "FROM UserChallenge uc " +
+            "WHERE uc.createAt >= :startDate AND uc.status = 'uncomplete' " +
+            "GROUP BY TO_CHAR(uc.createAt, 'YYYY-MM') " +
+            "ORDER BY TO_CHAR(uc.createAt, 'YYYY-MM')")
+    List<Object[]> findUserChallengeUncompletedCountByMonthSince(Date startDate);
 }
 

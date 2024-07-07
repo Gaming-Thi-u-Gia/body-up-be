@@ -26,7 +26,7 @@ public class RecipeCategory {
     @Column(length = 2000)
     String img;
 
-    @ManyToMany(mappedBy = "recipeCategories")
+    @ManyToMany(mappedBy = "recipeCategories", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Recipe> recipes;
 }

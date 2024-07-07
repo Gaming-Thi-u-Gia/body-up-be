@@ -1,5 +1,8 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.BageSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.PostCardResponseForAdminDto;
+import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto;
 import com.bodyupbe.bodyupbe.model.community.CategoryCommunity;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import org.springframework.data.domain.Page;
@@ -15,7 +18,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findPostByCategoryCommunity_IdOrderByCreatedAtDesc(int categoryId, Pageable pageable);
     Page<Post> findPostByUser_Id(int userId, Pageable pageable);
     List<Post> findPostByBadge_Id(int badgeId);
-
+    @Query(value = "SELECT COUNT(*) FROM Post p")
+    int countPost();
     Page<Post> findPostByBadge_NameAndCategoryCommunity_Id(String name, int categoryId, Pageable pageable);
 
     Page<Post> findPostByTitleContainingIgnoreCaseAndCategoryCommunity_Id(String title,int categoryId ,Pageable pageable);

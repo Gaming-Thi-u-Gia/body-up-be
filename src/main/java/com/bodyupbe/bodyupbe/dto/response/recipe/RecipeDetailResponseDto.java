@@ -25,6 +25,6 @@ public class RecipeDetailResponseDto {
     boolean bookmarked;
     Set<RecipeCategoryResponseSlimDto> recipeCategories;
     Set<NoteRecipeAndSetRecipeResponseDto> noteRecipes;
-    Set<IngredientRecipeAndSetRecipeSlimResponseDto> ingredientRecipes;
+    Set<IngredientRecipeSlimResponseDto> ingredientRecipes;
     Set<OtherImageRecipeAndRecipeSlimResponseDto> otherImageRecipes;
 }

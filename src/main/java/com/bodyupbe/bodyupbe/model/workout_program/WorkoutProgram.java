@@ -1,8 +1,10 @@
 package com.bodyupbe.bodyupbe.model.workout_program;
 
+import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,7 +51,7 @@ public class WorkoutProgram {
     @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_collection",
             joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
@@ -58,7 +60,7 @@ public class WorkoutProgram {
     @JsonManagedReference
     Set<Topic> programTopics;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_filter",
             joinColumns = @JoinColumn(name = "workout_program_id",referencedColumnName = "id"),
@@ -66,4 +68,8 @@ public class WorkoutProgram {
     )
     @JsonManagedReference
         Set<WorkoutProgramCategory> workoutProgramCategories;
+
+    @OneToOne(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
+    @JsonBackReference
+    Notification notification;
 }

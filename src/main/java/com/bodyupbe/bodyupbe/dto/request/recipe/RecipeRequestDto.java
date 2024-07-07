@@ -9,7 +9,9 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 public class RecipeRequestDto {
+    int id;
     String name;
     String detail;
     int prepTime;

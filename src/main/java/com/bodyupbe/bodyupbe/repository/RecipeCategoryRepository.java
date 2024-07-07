@@ -20,4 +20,5 @@ public interface RecipeCategoryRepository extends JpaRepository<RecipeCategory,I
     Set<RecipeCategory> getRecipeCategoriesByType(String type);
     @Query("SELECT COUNT(r) FROM RecipeCategory rc JOIN rc.recipes r WHERE rc.id = :categoryId")
     int countRecipeByCategory(int categoryId);
+    void deleteByRecipesId(int recipeId);
 }

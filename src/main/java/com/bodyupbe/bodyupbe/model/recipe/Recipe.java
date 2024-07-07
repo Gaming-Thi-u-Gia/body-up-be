@@ -26,60 +26,75 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
     @Column(length = 2000)
     String name;
+
     @Column(length = 2000)
     String detail;
+
     double avgStar;
-    @Column(name="prep_time")
+
+    @Column(name = "prep_time")
     int prepTime;
+
     @Column(name = "cook_time")
     int cookTime;
+
     @Column(length = 50000)
     String img;
-    @Column(name = "cook_instruction",length = 2000)
+
+    @Column(name = "cook_instruction", length = 2000)
     String cookingInstruction;
+
     @CreationTimestamp
     @Column(name = "create_at")
     Date createAt;
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<RatingRecipe> ratingRecipes;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<IngredientRecipe> ingredientRecipes;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<OtherImageRecipe> otherImageRecipes;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<NoteRecipe> noteRecipes;
 
-    @ManyToMany(mappedBy = "bookmarkRecipes")
-    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "bookmark_recipes",
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    @JsonManagedReference
     Set<User> bookmarkUsers;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "recipe_collection",
-            joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "topic_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id", referencedColumnName = "id")
     )
     @JsonManagedReference
     Set<Topic> recipeTopics;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "recipe_filter",
-            joinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_category_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_category_id", referencedColumnName = "id")
     )
-    @JsonManagedReference
+    @JsonManagedReference("recipe-category")
     Set<RecipeCategory> recipeCategories;
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "recipe")
     @JsonManagedReference
     Set<DailyRecipe> dailyRecipes;
 }

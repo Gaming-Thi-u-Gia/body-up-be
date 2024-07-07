@@ -1,14 +1,14 @@
 package com.bodyupbe.bodyupbe.dto.request.workout_video;
 
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-
 
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DailyExerciseDto {
+public class DailyVideoRequestDto {
     Integer id;
-    String day;
+    VideoRequestDto video;
 }

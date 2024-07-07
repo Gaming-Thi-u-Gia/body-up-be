@@ -54,23 +54,27 @@ public class Post {
     @JsonBackReference
     Badge badge;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<Comment> comments;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     Set<OtherImagePost> otherImagePosts;
 
-    @ManyToMany(mappedBy = "bookmarkPosts")
-    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "bookmark_posts",
+            inverseJoinColumns  = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            joinColumns   = @JoinColumn(name = "post_id",referencedColumnName = "id")
+    )
+    @JsonManagedReference
     Set<User> bookmarkUsers;
 
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "finish_program_tag",
-            joinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id"),
+            joinColumns = @JoinColumn   (name = "post_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_challenge_id",referencedColumnName = "id")
     )
     @JsonManagedReference

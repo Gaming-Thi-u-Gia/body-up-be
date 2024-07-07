@@ -19,6 +19,5 @@ public class VideoResponseDto {
     String name;
     String url;
     boolean isFeatured;
-
     Set<VideoCategoryRequestDto> videoCategories;
 }

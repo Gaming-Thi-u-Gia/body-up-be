@@ -18,16 +18,17 @@ public class UserDailyChallenge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
     @Column(length = 2000)
     String status;
 
-    @ManyToOne
-    @JoinColumn(name="user_id",referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonBackReference
     User user;
 
-    @ManyToOne
-    @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "daily_exercise_id", referencedColumnName = "id")
+    @JsonBackReference("dailyExercise-userDailyChallenges")
     DailyExercise dailyExercise;
 }

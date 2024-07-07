@@ -33,11 +33,16 @@ public class Video {
     @JsonManagedReference
     Set<DailyVideo> dailyVideos;
 
-    @ManyToMany(mappedBy = "bookmarkVideos")
-    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "bookmark_videos",
+            inverseJoinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            joinColumns  = @JoinColumn(name = "video_id",referencedColumnName = "id")
+    )
+    @JsonManagedReference
     Set<User> bookmarkUsers;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_video_collection",
             joinColumns = @JoinColumn(name = "video_id",referencedColumnName = "id"),
@@ -46,7 +51,7 @@ public class Video {
     @JsonManagedReference
     Set<Topic> videoTopics;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "video_filter",
             joinColumns = @JoinColumn(name = "video_id",referencedColumnName = "id"),

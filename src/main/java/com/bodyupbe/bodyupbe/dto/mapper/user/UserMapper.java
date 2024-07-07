@@ -7,6 +7,7 @@ import com.bodyupbe.bodyupbe.dto.response.user.*;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserSlimResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
 import com.bodyupbe.bodyupbe.model.user.User;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserRequestDto userRequestDto);
+    UserResponseDto toUserResponseDto(User user);
     UserBookmarkRecipeResponseDto toUserBookmarkRecipeDto(User user);
     UserResponseDto toUserResponseDto(User user);
 

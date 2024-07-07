@@ -1,10 +1,12 @@
 package com.bodyupbe.bodyupbe.model.user;
 
+import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.community.Comment;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.workout_video.Video;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -113,31 +115,16 @@ public class User implements UserDetails {
     @JsonManagedReference
     Set<Comment> comments;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "bookmark_posts",
-            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id")
-    )
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonBackReference
     Set<Post> bookmarkPosts;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "bookmark_videos",
-            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "video_id",referencedColumnName = "id")
-    )
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonBackReference
     Set<Video> bookmarkVideos;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "bookmark_recipes",
-            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_id",referencedColumnName = "id")
-    )
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonBackReference
     Set<Recipe> bookmarkRecipes;
 
     public User(String userName, String firstName, String lastName, String email, String password, String avatar, String bio, Role role, Date createAt) {
@@ -151,4 +138,12 @@ public class User implements UserDetails {
         this.role = role;
         this.createAt = createAt;
     }
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "user_notifications",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id")
+    )
+    @JsonManagedReference
+    Set<Notification> notifications;
 }

@@ -18,13 +18,16 @@ public class DailyRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
     @ManyToOne
-    @JoinColumn(name="recipe_id",referencedColumnName = "id")
+    @JoinColumn(name="recipe_id", referencedColumnName = "id")
     @JsonBackReference
     Recipe recipe;
+
     @ManyToOne
-    @JoinColumn(name="daily_exercise_id",referencedColumnName = "id")
+    @JoinColumn(name="daily_exercise_id", referencedColumnName = "id")
     @JsonBackReference
-    DailyExercise dailyExercise;
+    private DailyExercise dailyExercise;
+
     String part;
 }

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface NoteRecipeRepository extends JpaRepository<NoteRecipe,Integer> {
     List<NoteRecipe> findNoteRecipeByRecipe(Recipe recipe);
+    void deleteByRecipeId(int recipeId);
 }

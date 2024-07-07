@@ -3,8 +3,6 @@ package com.bodyupbe.bodyupbe.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -13,4 +11,9 @@ public class TopicDto {
     String topic;
     String name;
     String description;
+
+    public TopicDto(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
