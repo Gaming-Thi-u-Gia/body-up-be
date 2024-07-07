@@ -24,6 +24,7 @@ public class PostResponseDto {
     Date createdAt;
     boolean isBookmarked;
     UserResponseDto user;
+
     CategoryCommunityDto categoryCommunity;
     BadgeDto badge;
     Set<CommentResponseDto> comments;

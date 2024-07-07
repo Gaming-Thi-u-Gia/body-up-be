@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -78,12 +79,21 @@ public class RecipeTopicService {
         return response;
     }
 
-    //da xu ly phan trang
     public ObjectSetResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> getTopic4Recipe(Optional<Integer> userId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Topic> pages = topicRepository.findByTopic("recipe", pageable);
-        List<Topic> topics = pages.getContent();
-        Set<TopicRecipeSlimAndSetRecipeCardResponseDto> content = topicMapper.toSetTopicRecipeSlimAndSetRecipeCardResponseDto(topics);
+        Page<TopicRecipeSlimAndSetRecipeCardResponseDto> pages = topicRepository.findByTopic("recipe", pageable);
+        List<TopicRecipeSlimAndSetRecipeCardResponseDto> topics = pages.getContent();
+        Set<TopicRecipeSlimAndSetRecipeCardResponseDto> content = topics.stream().map(topic -> {
+            Pageable recipePageable = PageRequest.of(0, 4);
+            Set<RecipeCardResponseDto> recipes = new HashSet<>(topicRepository.findRecipeCardResponseDtoByTopicId(topic.getId(), recipePageable));
+            topic.setRecipes(recipes);
+            recipes.stream().map(recipe -> {
+                recipe.setRecipeCategories(new HashSet<>(recipeRepository.findRecipeCategoryCardResponseDtoByRecipeId(recipe.getId())));
+                return recipe;
+            }).collect(Collectors.toSet());
+            return topic;
+        }).collect(Collectors.toSet());
+
         if (userId.isPresent()) {
             for (TopicRecipeSlimAndSetRecipeCardResponseDto topicRecipeSlimAndSetRecipeCardResponseDto : content) {
                 for (RecipeCardResponseDto recipe : topicRecipeSlimAndSetRecipeCardResponseDto.getRecipes()) {
@@ -93,14 +103,17 @@ public class RecipeTopicService {
                 }
             }
         }
+
         ObjectSetResponse<TopicRecipeSlimAndSetRecipeCardResponseDto> response = new ObjectSetResponse<>();
         response.setContent(content);
         response.setTotalElements(pages.getTotalElements());
         response.setTotalPages(pages.getTotalPages());
         response.setPageNo(pages.getNumber());
         response.setPageSize(pages.getSize());
-        response.setTotalPages(pages.getTotalPages());
         response.setLast(pages.isLast());
         return response;
     }
+
+
+
 }

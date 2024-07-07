@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryCardResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
 import com.bodyupbe.bodyupbe.model.recipe.RatingRecipe;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import org.springframework.data.domain.Page;
@@ -45,6 +47,9 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
     //find bookmarked recipes by user id
     @Query("SELECT r FROM Recipe r JOIN r.bookmarkUsers bu WHERE bu.id = :userId")
     Page<Recipe> findBookmarkedRecipesByUserId(int userId, Pageable pageable);
+    //find recipe category slim dto by recipe id
+    @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryCardResponseDto(c.id, c.name) FROM Recipe r JOIN r.recipeCategories c WHERE r.id = :recipeId")
+    List<RecipeCategoryCardResponseDto> findRecipeCategoryCardResponseDtoByRecipeId(@Param("recipeId") int recipeId);
 
 }
 

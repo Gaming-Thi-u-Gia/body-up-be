@@ -13,16 +13,15 @@ import com.bodyupbe.bodyupbe.model.user.UserDailyChallenge;
 import com.bodyupbe.bodyupbe.model.user.UserProgressPhoto;
 import org.mapstruct.Mapper;
 
-import java.util.List;
+
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserRequestDto userRequestDto);
     UserBookmarkRecipeResponseDto toUserBookmarkRecipeDto(User user);
-
-
     UserResponseDto toUserResponseDto(User user);
+
 
     UserProgressPhoto toUserProgressPhoto(UserProgressPhotoRequestDto userProgressPhotoRequestDto);
 
