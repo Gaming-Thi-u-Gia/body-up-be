@@ -2,6 +2,7 @@ package com.bodyupbe.bodyupbe.model.recipe;
 
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.User;
+import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -34,7 +35,7 @@ public class Recipe {
     int prepTime;
     @Column(name = "cook_time")
     int cookTime;
-    @Column(length = 2000)
+    @Column(length = 50000)
     String img;
     @Column(name = "cook_instruction",length = 2000)
     String cookingInstruction;
@@ -78,4 +79,7 @@ public class Recipe {
     )
     @JsonManagedReference
     Set<RecipeCategory> recipeCategories;
+    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    Set<DailyRecipe> dailyRecipes;
 }

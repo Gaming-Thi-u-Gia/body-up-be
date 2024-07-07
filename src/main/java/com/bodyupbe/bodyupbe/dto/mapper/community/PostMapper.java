@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.mapper.community;
 
 import com.bodyupbe.bodyupbe.dto.request.community.PostRequestDto;
+import com.bodyupbe.bodyupbe.dto.response.community.PostCommentSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.community.PostSlimResponse;
 import com.bodyupbe.bodyupbe.model.community.Post;
@@ -19,4 +20,10 @@ public interface PostMapper {
     List<PostResponseDto> toListPostResponseDto(List<Post> posts);
 
     Set<PostResponseDto> toSetPostResponseDto(Set<Post> posts);
+
+    List<PostSlimResponse> toListPostSlimResponse(List<Post> posts);
+
+    List<PostCommentSlimDto> toListPostCommentSlimDto(List<Post> posts);
+
+    PostCommentSlimDto toPostCommentSlimDto(Post post);
 }

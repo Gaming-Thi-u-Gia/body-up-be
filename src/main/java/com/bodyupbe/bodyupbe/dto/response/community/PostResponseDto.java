@@ -2,7 +2,7 @@ package com.bodyupbe.bodyupbe.dto.response.community;
 import com.bodyupbe.bodyupbe.dto.request.community.BadgeDto;
 import com.bodyupbe.bodyupbe.dto.request.community.CategoryCommunityDto;
 import com.bodyupbe.bodyupbe.dto.request.community.OtherImagePostDto;
-import com.bodyupbe.bodyupbe.dto.request.user.UserChallengeDto;
+import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeSlimResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserResponseDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,10 +22,12 @@ public class PostResponseDto {
     Date dayBefore;
     Date dayAfter;
     Date createdAt;
+    boolean isBookmarked;
     UserResponseDto user;
+
     CategoryCommunityDto categoryCommunity;
     BadgeDto badge;
     Set<CommentResponseDto> comments;
     Set<OtherImagePostDto> otherImagePosts;
-    Set<UserChallengeDto> userChallenges;
+    Set<UserChallengeSlimResponseDto> userChallenges;
 }

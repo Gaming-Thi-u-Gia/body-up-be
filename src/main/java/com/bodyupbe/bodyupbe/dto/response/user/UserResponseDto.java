@@ -16,6 +16,7 @@ import java.util.Set;
 public class UserResponseDto {
     Integer id;
     String userName;
+    String userName2;
     String firstName;
     String lastName;
     String email;
@@ -23,6 +24,8 @@ public class UserResponseDto {
     String bio;
     Role role;
     Date createAt;
-    Set<PostSlimResponse> bookmarkPosts;
 
+    Set<PostSlimResponse> bookmarkPosts;
+    Set<UserChallengeSlimResponseDto> userChallenges;
+    Set<UserDailyChallengeSlimResponseDto> userDailyChallenges;
 }
