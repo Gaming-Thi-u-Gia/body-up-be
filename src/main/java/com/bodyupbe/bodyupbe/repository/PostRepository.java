@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.model.community.CategoryCommunity;
 import com.bodyupbe.bodyupbe.model.community.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,12 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    List<Post> findPostByCategoryCommunity_Id(int categoryId);
-    List<Post> findPostByUser_Id(int userId);
-
-    @Query(value = "SELECT COUNT(*) FROM Post p")
-    int countPost();
-
+    Page<Post> findPostByCategoryCommunity_IdOrderByCreatedAtDesc(int categoryId, Pageable pageable);
+    Page<Post> findPostByUser_Id(int userId, Pageable pageable);
     List<Post> findPostByBadge_Id(int badgeId);
 
     Page<Post> findPostByBadge_NameAndCategoryCommunity_Id(String name, int categoryId, Pageable pageable);
