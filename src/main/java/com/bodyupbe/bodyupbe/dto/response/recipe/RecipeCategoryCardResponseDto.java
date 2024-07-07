@@ -10,9 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class TopicRecipeResponseSlimDto {
-    Integer id;
+public class RecipeCategoryCardResponseDto {
+    int id;
     String name;
-    String description;
-    String topic;
 }
