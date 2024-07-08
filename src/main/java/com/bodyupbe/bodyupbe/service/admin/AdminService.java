@@ -225,7 +225,6 @@ public class AdminService {
     }
 
     public String deleteRecipe(int recipeId) {
-
         recipeRepository.deleteById(recipeId);
         return "Recipe with id" + recipeId + " deleted";
     }
@@ -319,7 +318,6 @@ public class AdminService {
     }
 
     public String addWorkoutProgram(WorkoutProgramRequestDto request) {
-        // Tạo và lưu chương trình tập luyện mới
         WorkoutProgram workoutProgram = new WorkoutProgram();
         workoutProgram.setName(request.getName());
         workoutProgram.setType(request.getType());
@@ -331,20 +329,24 @@ public class AdminService {
         workoutProgram.setImg(request.getImg());
         workoutProgram.setBanner(request.getBanner());
 
+        // Set Program Topics
         Set<Topic> topics = request.getProgramTopics().stream()
                 .map(topicRequest -> topicRepository.findById(topicRequest.getId())
                         .orElseThrow(() -> new RuntimeException("Topic not found: " + topicRequest.getId())))
                 .collect(Collectors.toSet());
         workoutProgram.setProgramTopics(topics);
 
+        // Set Workout Program Categories
         Set<WorkoutProgramCategory> categories = request.getWorkoutProgramCategories().stream()
                 .map(categoryRequest -> workoutProgramCategoryRepository.findById(categoryRequest.getId())
                         .orElseThrow(() -> new RuntimeException("Workout Program Category not found: " + categoryRequest.getId())))
                 .collect(Collectors.toSet());
         workoutProgram.setWorkoutProgramCategories(categories);
 
+        // Save Workout Program to generate ID
         WorkoutProgram savedWorkoutProgram = workoutProgramRepository.save(workoutProgram);
 
+        // Set Daily Exercises
         Set<DailyExercise> dailyExercises = request.getDailyExercises().stream()
                 .map(dailyExerciseRequest -> {
                     DailyExercise dailyExercise = new DailyExercise();
@@ -353,10 +355,10 @@ public class AdminService {
 
                     DailyExercise savedDailyExercise = dailyExerciseRepository.save(dailyExercise);
 
+                    // Set Daily Videos
                     Set<DailyVideo> dailyVideos = dailyExerciseRequest.getDailyVideos().stream()
                             .map(dailyVideoRequest -> {
                                 DailyVideo dailyVideo = new DailyVideo();
-
                                 dailyVideo.setDailyExercise(savedDailyExercise);
 
                                 Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
@@ -367,6 +369,7 @@ public class AdminService {
                             .collect(Collectors.toSet());
                     savedDailyExercise.setDailyVideos(dailyVideos);
 
+                    // Set Daily Recipes
                     Set<DailyRecipe> dailyRecipes = dailyExerciseRequest.getDailyRecipes().stream()
                             .map(dailyRecipeRequest -> {
                                 DailyRecipe dailyRecipe = new DailyRecipe();
@@ -381,6 +384,7 @@ public class AdminService {
                             .collect(Collectors.toSet());
                     savedDailyExercise.setDailyRecipes(dailyRecipes);
 
+                    // Save Daily Videos and Recipes
                     dailyVideoRepository.saveAll(dailyVideos);
                     dailyRecipeRepository.saveAll(dailyRecipes);
 
@@ -392,18 +396,32 @@ public class AdminService {
         workoutProgramRepository.save(savedWorkoutProgram);
 
         Notification notification = new Notification();
-        notification.setMessage("There is a new workout program added: " + savedWorkoutProgram.getName());
+        notification.setMessage("There is a new workout program added: " + savedWorkoutProgram.getId());
         notification.setWorkoutProgram(savedWorkoutProgram);
+
+        // Save the Notification first
         Notification savedNotification = notificationRepository.save(notification);
 
+        // Set the notification for the workout program
+        savedWorkoutProgram.setNotification(savedNotification);
+        workoutProgramRepository.save(savedWorkoutProgram);
+
+        // Notify all users
         List<User> allUsers = userRepository.findAll();
         allUsers.forEach(user -> {
             user.getNotifications().add(savedNotification);
+            savedNotification.getUsers().add(user);
             userRepository.save(user);
         });
 
+        // Save notification with updated users set
+        notificationRepository.save(savedNotification);
+
         return "Add New Workout Program Successfully With Program ID: " + savedWorkoutProgram.getId();
     }
+
+
+
 
 
     public List<VideoSelectForAdminResponseDto> getAllVideoSelectForAdmin() {
@@ -413,11 +431,12 @@ public class AdminService {
     public List<RecipeSelectForAdminResponseDto> getAllRecipeSelectForAdmin() {
         return recipeRepository.getRecipeSelectForAdmin();
     }
-
+    @Transactional
     public String deleteWorkoutProgram(int workoutProgramId) {
         workoutProgramRepository.deleteById(workoutProgramId);
-        return "Workout Program with id" + workoutProgramId + " deleted";
+        return "Workout Program with id " + workoutProgramId + " deleted";
     }
+
 
     public ObjectSetResponse<WorkoutProgramCardResponseForAdminDto> getListWorkoutProgram(int pageNo, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());

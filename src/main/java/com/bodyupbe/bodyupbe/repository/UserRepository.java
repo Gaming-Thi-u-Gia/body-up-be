@@ -40,4 +40,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<TopUserChallengeResponseDto> findTop3UsersWithMostCompletedChallenges();
     @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.NotificationResponseDto(uf.id,uf.message,uf.createdAt,null )  FROM User u JOIN u.notifications uf WHERE u.id = :id")
     Page<NotificationResponseDto> findAllNotificationById(Pageable pageable, int id);
+
 }

@@ -24,7 +24,7 @@ public class WorkoutProgramCategory {
     @Column(length = 2000)
     String type;
 
-    @ManyToMany(mappedBy = "workoutProgramCategories", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany
     @JsonBackReference
     Set<WorkoutProgram> workoutPrograms;
 }

@@ -94,7 +94,7 @@ public class Recipe {
     @JsonManagedReference("recipe-category")
     Set<RecipeCategory> recipeCategories;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<DailyRecipe> dailyRecipes;
 }
