@@ -4,6 +4,7 @@ import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
 import com.bodyupbe.bodyupbe.model.workout_video.DailyExercise;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,11 +49,11 @@ public class WorkoutProgram {
     @CreationTimestamp
     Date releaseDate;
 
-    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<DailyExercise> dailyExercises;
 
-    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
@@ -74,7 +75,8 @@ public class WorkoutProgram {
     @JsonManagedReference
     Set<WorkoutProgramCategory> workoutProgramCategories;
 
-    @OneToOne(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "workout_program_id", referencedColumnName = "id")
     @JsonManagedReference
     Notification notification;
 }

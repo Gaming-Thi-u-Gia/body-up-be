@@ -319,7 +319,6 @@ public class AdminService {
     }
 
     public String addWorkoutProgram(WorkoutProgramRequestDto request) {
-        // Tạo và lưu chương trình tập luyện mới
         WorkoutProgram workoutProgram = new WorkoutProgram();
         workoutProgram.setName(request.getName());
         workoutProgram.setType(request.getType());
@@ -356,7 +355,6 @@ public class AdminService {
                     Set<DailyVideo> dailyVideos = dailyExerciseRequest.getDailyVideos().stream()
                             .map(dailyVideoRequest -> {
                                 DailyVideo dailyVideo = new DailyVideo();
-
                                 dailyVideo.setDailyExercise(savedDailyExercise);
 
                                 Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
@@ -392,15 +390,22 @@ public class AdminService {
         workoutProgramRepository.save(savedWorkoutProgram);
 
         Notification notification = new Notification();
-        notification.setMessage("There is a new workout program added: " + savedWorkoutProgram.getName());
+        notification.setMessage("There is a new workout program added: " + savedWorkoutProgram.getId());
         notification.setWorkoutProgram(savedWorkoutProgram);
+
         Notification savedNotification = notificationRepository.save(notification);
+
+        savedWorkoutProgram.setNotification(savedNotification);
+        workoutProgramRepository.save(savedWorkoutProgram);
 
         List<User> allUsers = userRepository.findAll();
         allUsers.forEach(user -> {
             user.getNotifications().add(savedNotification);
+            savedNotification.getUsers().add(user);
             userRepository.save(user);
         });
+
+        notificationRepository.save(savedNotification);
 
         return "Add New Workout Program Successfully With Program ID: " + savedWorkoutProgram.getId();
     }

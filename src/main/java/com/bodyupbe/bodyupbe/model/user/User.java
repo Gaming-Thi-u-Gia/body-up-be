@@ -28,7 +28,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "users")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,27 +90,28 @@ public class User implements UserDetails {
         return true;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    //Noi bang
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<UserProgressPhoto> userProgressPhotos;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<Post> posts;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<UserDailyChallenge> userDailyChallenges;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<RatingRecipe> ratingRecipes;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<Comment> comments;
 
@@ -126,12 +127,18 @@ public class User implements UserDetails {
     @JsonBackReference
     Set<Recipe> bookmarkRecipes;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "user_notifications",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id")
-    )
-    @JsonManagedReference
+    public User(String userName, String firstName, String lastName, String email, String password, String avatar, String bio, Role role, Date createAt) {
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.bio = bio;
+        this.role = role;
+        this.createAt = createAt;
+    }
+    @ManyToMany(mappedBy = "users",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonBackReference
     Set<Notification> notifications;
 }
