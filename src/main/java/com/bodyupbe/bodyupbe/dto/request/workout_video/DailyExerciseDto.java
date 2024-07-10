@@ -1,4 +1,4 @@
-package com.bodyupbe.bodyupbe.dto.request.user;
+package com.bodyupbe.bodyupbe.dto.request.workout_video;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDailyChallengeDto {
-    int id;
-    String status;
+public class DailyExerciseDto {
+    Integer id;
+    String day;
 }

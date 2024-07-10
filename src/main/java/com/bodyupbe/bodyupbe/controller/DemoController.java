@@ -55,6 +55,7 @@ public class DemoController {
             User user = optionalUser.get();
             user.setFirstName(request.getFirstName());
             user.setLastName(request.getLastName());
+            user.setBio(request.getBio());
             userRepository.save(user);
             return ResponseEntity.ok(user);
         } else {

@@ -14,9 +14,6 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface TopicMapper {
-    Set<TopicRecipeResponseSlimDto> toSetTopicRecipeResponseSlimDto(List<Topic> topics);
-    Set<TopicRecipeSlimAndSetRecipeCardResponseDto> toSetTopicRecipeSlimAndSetRecipeCardResponseDto(List<Topic> topic);
-    TopicRecipeSlimAndSetRecipeCardResponseDto toTopicRecipeSlimAndSetRecipeCardResponseDto(Topic topic);
     TopicResponseDto toTopicResponseDto(Topic topic);
 
     Topic toTopic(TopicDto topicDto);
@@ -28,6 +25,10 @@ public interface TopicMapper {
     Set<TopicResponseDto> toTopic(Set<Topic> topics);
 
     Set<TopicWorkoutProgramResponseDto> toTopicWorkoutProgram(Set<Topic> topics);
+    Set<TopicWorkoutProgramResponseDto> toTopicWorkoutProgram(List<Topic> topics);
 
     Set<TopicVideoResponseDto> toTopicVideo(Set<Topic> topics);
+    Set<TopicRecipeResponseSlimDto> toSetTopicRecipeResponseSlimDto(List<Topic> topics);
+    Set<TopicRecipeSlimAndSetRecipeCardResponseDto> toSetTopicRecipeSlimAndSetRecipeCardResponseDto(List<Topic> topic);
+    TopicRecipeSlimAndSetRecipeCardResponseDto toTopicRecipeSlimAndSetRecipeCardResponseDto(Topic topic);
 }

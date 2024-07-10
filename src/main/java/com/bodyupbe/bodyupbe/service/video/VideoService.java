@@ -3,6 +3,7 @@ package com.bodyupbe.bodyupbe.service.video;
 import com.bodyupbe.bodyupbe.dto.mapper.video.VideoMapper;
 import com.bodyupbe.bodyupbe.dto.request.workout_video.VideoRequestDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.workout_video.VideoSlimResponseDto;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.recipe.Recipe;
 import com.bodyupbe.bodyupbe.model.recipe.RecipeCategory;
@@ -17,6 +18,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,4 +80,9 @@ public class VideoService {
         return videoMapper.toSetVideos(bookmarkedVideos);
     }
 
+    public List<VideoSlimResponseDto> getLatestVideoCategory() {
+        Pageable limit = PageRequest.of(0, 4);
+        List<Video> videos = videoRepository.findTop4ByOrderByReleaseDateDesc(limit);
+        return videoMapper.toListVideoSlimResponseDto(videos);
+    }
 }

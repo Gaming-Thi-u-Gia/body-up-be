@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,4 +18,6 @@ public class CommentResponseDto {
     int upVote;
     Date createAt;
     UserSlimResponseDto user;
+    Set<CommentResponseDto> children;
+    Integer parentId;
 }

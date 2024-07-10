@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -20,6 +19,12 @@ public interface WorkoutProgramRepository extends JpaRepository<WorkoutProgram,I
     int countWorkoutProgram();
 
     List<WorkoutProgram> findByNameContainingIgnoreCase(String name);
+
+    @Query(value = "SELECT wp FROM WorkoutProgram wp ORDER BY wp.id DESC LIMIT 10")
+    List<WorkoutProgram> findTop10WorkoutPrograms();
+
+    @Query("SELECT wp FROM WorkoutProgram wp ORDER BY wp.releaseDate DESC")
+    List<WorkoutProgram> findTop4ByOrderByReleaseDateDesc(Pageable pageable);
 
     @Query("SELECT w FROM WorkoutProgram w WHERE w.id IN (" +
             "SELECT w1.id FROM WorkoutProgram w1 JOIN w1.workoutProgramCategories c1 WHERE c1.id IN :categoryIds " +

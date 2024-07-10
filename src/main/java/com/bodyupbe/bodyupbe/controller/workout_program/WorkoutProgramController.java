@@ -64,4 +64,10 @@ public class WorkoutProgramController {
     public ResponseEntity<ObjectWorkoutProgramSetResponse<WorkoutProgramSlimResponse>> getWorkoutProgramCategory(@RequestParam Set<Integer> categoryIds, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "4") int pageSize) {
         return ResponseEntity.ok(workoutProgramService.getWorkoutProgramByCategory(categoryIds, pageNo, pageSize));
     }
+
+    @GetMapping("/getLatestWorkoutPrograms")
+    public ResponseEntity<List<WorkoutProgramResponseDto>> getLatestWorkoutPrograms() {
+        List<WorkoutProgramResponseDto> latestPrograms = workoutProgramService.getLatestWorkoutPrograms();
+        return ResponseEntity.ok(latestPrograms);
+    }
 }

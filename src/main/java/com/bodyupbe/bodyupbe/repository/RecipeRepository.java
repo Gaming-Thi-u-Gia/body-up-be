@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.repository;
 
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryCardResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryResponseSlimDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeCardResponseForAdminDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSelectForAdminResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSlimResponseForAdminDto;
@@ -34,13 +36,13 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
 
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Recipe r JOIN r.bookmarkUsers bu WHERE bu.id = :userId AND r.id = :recipeId")
     boolean findBookmarkedByUserIdAndRecipeId(int userId, int recipeId);
-
+    // find count rating star recipe by recipe id
     @Query("SELECT COUNT(r) FROM RatingRecipe r WHERE r.recipe.id = :recipeId")
     int countRatingRecipesByRecipeId(@Param("recipeId") int recipeId);
-
+    // find rating star recipe by user id
     @Query("SELECT rr FROM Recipe r JOIN r.ratingRecipes rr WHERE rr.user.id = :userId AND r.id = :recipeId")
     Optional<RatingRecipe> findRatingStarRecipeByUserId(@Param("userId") int userId , @Param("recipeId") int recipeId);
-
+    // find recipes by topic id
     @Query("SELECT r FROM Recipe r WHERE r.id IN (" +
                 "SELECT r1.id FROM Recipe r1 JOIN r1.recipeCategories c1 WHERE c1.id IN :categoryIds " +
                 "GROUP BY r1.id HAVING COUNT(c1.id) = :categorySize)" +
@@ -59,5 +61,9 @@ public interface RecipeRepository extends JpaRepository<Recipe,Integer> {
     Page<RecipeCardResponseForAdminDto> findAllSlim(Pageable pageable, @Param("name") String name);
     @Query("SELECT new com.bodyupbe.bodyupbe.dto.response.admin.dashboard.RecipeSelectForAdminResponseDto(r.id, r.name) FROM Recipe r ORDER BY r.id desc ")
     List<RecipeSelectForAdminResponseDto> getRecipeSelectForAdmin();
+    //find recipe category slim dto by recipe id
+    @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.recipe.RecipeCategoryCardResponseDto(c.id, c.name) FROM Recipe r JOIN r.recipeCategories c WHERE r.id = :recipeId")
+    List<RecipeCategoryCardResponseDto> findRecipeCategoryCardResponseDtoByRecipeId(@Param("recipeId") int recipeId);
+
 }
 

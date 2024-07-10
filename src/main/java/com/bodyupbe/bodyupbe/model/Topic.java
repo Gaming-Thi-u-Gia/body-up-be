@@ -40,4 +40,12 @@ public class Topic {
     @ManyToMany(mappedBy = "recipeTopics", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     Set<Recipe> recipes;
+
+    public Topic(Integer id, String name, String description, String topic, Set<Recipe> recipes) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.topic = topic;
+        this.recipes = recipes;
+    }
 }

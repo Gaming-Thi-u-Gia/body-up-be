@@ -25,5 +25,6 @@ public interface UserChallengeRepository extends JpaRepository<UserChallenge,Int
             "GROUP BY TO_CHAR(uc.createAt, 'YYYY-MM') " +
             "ORDER BY TO_CHAR(uc.createAt, 'YYYY-MM')")
     List<Object[]> findUserChallengeUncompletedCountByMonthSince(Date startDate);
+    UserChallenge findByWorkoutProgramIdAndUserId(Integer workoutProgramId, Integer userId);
 }
 

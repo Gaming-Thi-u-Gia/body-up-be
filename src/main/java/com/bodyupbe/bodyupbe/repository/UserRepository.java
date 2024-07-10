@@ -7,6 +7,7 @@ import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.bodyupbe.bodyupbe.model.user.UserProgressPhoto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -41,4 +42,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT NEW com.bodyupbe.bodyupbe.dto.response.NotificationResponseDto(uf.id,uf.message,uf.createdAt,null )  FROM User u JOIN u.notifications uf WHERE u.id = :id")
     Page<NotificationResponseDto> findAllNotificationById(Pageable pageable, int id);
 
+    User findByUserName2(String userName2);
 }

@@ -16,6 +16,7 @@ import java.util.Date;
 public class UserSlimResponseDto {
     Integer id;
     String userName;
+    String userName2;
     String firstName;
     String lastName;
     String email;
