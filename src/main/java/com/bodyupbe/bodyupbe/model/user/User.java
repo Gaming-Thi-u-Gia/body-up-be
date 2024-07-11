@@ -16,10 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -29,6 +26,7 @@ import java.util.Set;
 @Setter
 @Table(name = "users")
 @FieldDefaults(level= AccessLevel.PRIVATE)
+@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,15 +115,15 @@ public class User implements UserDetails {
 
     @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
-    Set<Post> bookmarkPosts;
+    Set<Post> bookmarkPosts  = new HashSet<>();;
 
     @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
-    Set<Video> bookmarkVideos;
+    Set<Video> bookmarkVideos  = new HashSet<>();;
 
     @ManyToMany(mappedBy = "bookmarkUsers", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
-    Set<Recipe> bookmarkRecipes;
+    Set<Recipe> bookmarkRecipes  = new HashSet<>();;
 
     public User(String userName, String firstName, String lastName, String email, String password, String avatar, String bio, Role role, Date createAt) {
         this.userName = userName;

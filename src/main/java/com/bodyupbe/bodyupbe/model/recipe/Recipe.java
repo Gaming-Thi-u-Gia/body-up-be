@@ -13,15 +13,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 import java.util.Set;
 
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "recipes")
-@ToString
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,7 +67,7 @@ public class Recipe {
     @JsonManagedReference
     Set<NoteRecipe> noteRecipes;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "bookmark_recipes",
             joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
@@ -76,7 +76,7 @@ public class Recipe {
     @JsonManagedReference
     Set<User> bookmarkUsers;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "recipe_collection",
             joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
@@ -85,7 +85,7 @@ public class Recipe {
     @JsonManagedReference
     Set<Topic> recipeTopics;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "recipe_filter",
             joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
@@ -94,7 +94,7 @@ public class Recipe {
     @JsonManagedReference("recipe-category")
     Set<RecipeCategory> recipeCategories;
 
-    @OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonManagedReference
     Set<DailyRecipe> dailyRecipes;
 }
