@@ -3,6 +3,7 @@ package com.bodyupbe.bodyupbe.service;
 import com.bodyupbe.bodyupbe.dto.mapper.TopicMapper;
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
 import com.bodyupbe.bodyupbe.dto.response.TopicResponseDto;
+import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.ObjectWorkoutProgram.ObjectWorkoutProgramSetResponse;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.TopicWorkoutProgramResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.workout_program.WorkoutProgramSlimResponse;
@@ -100,16 +101,30 @@ public class TopicService {
         return topicMapper.toTopicWorkoutProgram(topics);
     }
 
-    public Set<TopicVideoResponseDto> getTopicWithWorkoutVideo(Optional<User> user) {
-        Set<Topic> topics = topicRepository.findTopicsByTopic("workout-video");
-        Set<TopicVideoResponseDto> setTopicVideoResponseDto = topicMapper.toTopicVideo(topics);
+    public ObjectWorkoutProgramSetResponse<TopicVideoResponseDto> getTopicWithWorkoutVideo(Optional<User> user, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Topic> topics = topicRepository.findTopicsByTopic("workout-video", pageable);
+        Set<TopicVideoResponseDto> content = topicMapper.toTopicVideo(topics.getContent());
+        for(
+                TopicVideoResponseDto topicVideoResponseDto : content
+        ) {
+            topicVideoResponseDto.setVideos(topicVideoResponseDto.getVideos().stream().limit(5).collect(Collectors.toSet()));
+        }
+
         if (user.isPresent()) {
-            for (TopicVideoResponseDto topicVideoResponseDto : setTopicVideoResponseDto) {
+            for (TopicVideoResponseDto topicVideoResponseDto : content) {
                 for (VideoSlimResponseDto videoSlimResponseDto : topicVideoResponseDto.getVideos()) {
-                    videoSlimResponseDto.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(user.get().getId(), videoSlimResponseDto.getUrl()));
+                    videoSlimResponseDto.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(user.get().getId(), videoSlimResponseDto.getId()));
                 }
             }
         }
-        return setTopicVideoResponseDto;
+        ObjectWorkoutProgramSetResponse<TopicVideoResponseDto> response = new ObjectWorkoutProgramSetResponse<>();
+        response.setContent(content);
+        response.setTotalPages(topics.getTotalPages());
+        response.setTotalElements(topics.getTotalElements());
+        response.setPageNo(topics.getNumber());
+        response.setPageSize(topics.getSize());
+        response.setLast(topics.isLast());
+        return response;
     }
 }

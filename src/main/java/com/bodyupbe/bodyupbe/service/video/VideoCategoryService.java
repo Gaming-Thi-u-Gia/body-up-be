@@ -80,7 +80,7 @@ public class VideoCategoryService {
         Set<VideoSlimResponseDto> setVideoSlimResponseDto = videoMapper.toSetVideoSlim(videos);
         if (userId.isPresent()) {
             for (VideoSlimResponseDto video : setVideoSlimResponseDto) {
-                video.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(userId.get(), video.getUrl()));
+                video.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(userId.get(), video.getId()));
             }
         }
 
