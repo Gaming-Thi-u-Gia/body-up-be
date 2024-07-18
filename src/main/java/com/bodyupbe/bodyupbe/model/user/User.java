@@ -1,5 +1,6 @@
     package com.bodyupbe.bodyupbe.model.user;
 
+    import com.bodyupbe.bodyupbe.model.FeedbackWorkout;
     import com.bodyupbe.bodyupbe.model.Notification;
     import com.bodyupbe.bodyupbe.model.community.Comment;
     import com.bodyupbe.bodyupbe.model.community.Post;
@@ -16,10 +17,7 @@
     import org.springframework.security.core.authority.SimpleGrantedAuthority;
     import org.springframework.security.core.userdetails.UserDetails;
 
-    import java.util.Collection;
-    import java.util.Date;
-    import java.util.List;
-    import java.util.Set;
+    import java.util.*;
 
     @Entity
     @NoArgsConstructor
@@ -141,4 +139,7 @@
         @ManyToMany(mappedBy = "users",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
         @JsonBackReference
         Set<Notification> notifications;
+        @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+        @JsonManagedReference
+        Set<FeedbackWorkout> feedbackWorkouts= new HashSet<>();
     }

@@ -20,7 +20,10 @@ import java.util.List;
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
 @CrossOrigin
-public class DashboardController {
+public class
+
+
+DashboardController {
     DashboardService dashboardService;
     @GetMapping("/dashboard")
     public ResponseEntity<ProductStatisticResponseDto> getTotalElement(){
