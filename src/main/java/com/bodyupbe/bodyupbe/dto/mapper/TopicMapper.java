@@ -24,6 +24,7 @@ public interface TopicMapper {
     Set<TopicWorkoutProgramResponseDto> toTopicWorkoutProgram(List<Topic> topics);
 
     Set<TopicVideoResponseDto> toTopicVideo(Set<Topic> topics);
+    Set<TopicVideoResponseDto> toTopicVideo(List<Topic> topics);
     Set<TopicRecipeResponseSlimDto> toSetTopicRecipeResponseSlimDto(List<Topic> topics);
     Set<TopicRecipeSlimAndSetRecipeCardResponseDto> toSetTopicRecipeSlimAndSetRecipeCardResponseDto(List<Topic> topic);
     TopicRecipeSlimAndSetRecipeCardResponseDto toTopicRecipeSlimAndSetRecipeCardResponseDto(Topic topic);

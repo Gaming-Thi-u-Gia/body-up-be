@@ -73,6 +73,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/getPhotoByUserId")
                                 .permitAll()
+                                .requestMatchers("/api/v1/feedback")
+                                .permitAll()
                                 .requestMatchers("/api/v1/admin/**")
                                 .hasAnyAuthority("ADMIN")
                                 .anyRequest()

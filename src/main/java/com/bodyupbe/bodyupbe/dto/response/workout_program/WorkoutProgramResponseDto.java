@@ -1,6 +1,7 @@
 package com.bodyupbe.bodyupbe.dto.response.workout_program;
 
 import com.bodyupbe.bodyupbe.dto.request.TopicDto;
+import com.bodyupbe.bodyupbe.dto.response.FeedbackWorkoutResponseDto;
 import com.bodyupbe.bodyupbe.dto.response.user.UserChallengeSlimResponseDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,9 +27,11 @@ public class WorkoutProgramResponseDto {
     String year;
     String img;
     String banner;
+    Double averageStar;
     Date releaseDate;
     Set<TopicDto> programTopics;
     Set<UserChallengeSlimResponseDto> userChallenges;
     Set<DailyExerciseUserSlimResponseDto> dailyExercises;
     Set<WorkoutProgramCategorySlimResponseDto> workoutProgramCategories;
+    Set<FeedbackWorkoutResponseDto> feedbackWorkouts;
 }

@@ -12,7 +12,7 @@ import java.util.Set;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class VideoBookmarkResponseSlim {
     int userId;
-    String url;
+    int videoId;
     boolean isBookmarked;
 
 }

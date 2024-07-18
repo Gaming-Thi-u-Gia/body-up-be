@@ -25,8 +25,8 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     List<Video> findTop4ByOrderByReleaseDateDesc(Pageable pageable);
     @Query(value = "SELECT COUNT(*) FROM Video v")
     int countVideo();
-    @Query("SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM Video v join v.bookmarkUsers bu where bu.id = :userId and v.url = :url")
-    boolean findBookmarkByUserIdAndVideoId(int userId, String url);
+    @Query("SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM Video v join v.bookmarkUsers bu where bu.id = :userId and v.id = :id")
+    boolean findBookmarkByUserIdAndVideoId(int userId, int id);
 
     @Query("SELECT v FROM Video v WHERE v.id IN (" +
             "SELECT v1.id FROM Video v1 JOIN v1.videoCategories c1 WHERE c1.id IN :categoryIds " +

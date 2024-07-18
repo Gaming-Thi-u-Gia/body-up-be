@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.model.workout_program;
 
+import com.bodyupbe.bodyupbe.model.FeedbackWorkout;
 import com.bodyupbe.bodyupbe.model.Notification;
 import com.bodyupbe.bodyupbe.model.Topic;
 import com.bodyupbe.bodyupbe.model.user.UserChallenge;
@@ -12,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -57,6 +59,9 @@ public class WorkoutProgram {
     @JsonManagedReference
     Set<UserChallenge> userChallenges;
 
+    @Column(name = "average_star",nullable = true)
+    Double averageStar;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "workout_program_collection",
@@ -76,7 +81,11 @@ public class WorkoutProgram {
     Set<WorkoutProgramCategory> workoutProgramCategories;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "workout_program_id", referencedColumnName = "id")
+    @JoinColumn(name = "notification_id", referencedColumnName = "id")
     @JsonManagedReference
     Notification notification;
+
+    @OneToMany(mappedBy = "workoutProgram", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    Set<FeedbackWorkout> feedbackWorkouts = new HashSet<>();
 }

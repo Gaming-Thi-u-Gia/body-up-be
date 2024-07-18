@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import com.bodyupbe.bodyupbe.dto.response.recipe.object_return.ObjectSetResponse;
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -76,6 +76,33 @@ public class TopicService {
         return topicMapper.toSetTopicResponseDto(topics);
     }
 
+    public ObjectWorkoutProgramSetResponse<TopicVideoResponseDto> getTopicWithWorkoutVideo(Optional<User> user, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Topic> topics = topicRepository.findTopicsByTopic("workout-video", pageable);
+        Set<TopicVideoResponseDto> content = topicMapper.toTopicVideo(topics.getContent());
+        for(
+                TopicVideoResponseDto topicVideoResponseDto : content
+        ) {
+            topicVideoResponseDto.setVideos(topicVideoResponseDto.getVideos().stream().limit(5).collect(Collectors.toSet()));
+        }
+        if (user.isPresent()) {
+            for (TopicVideoResponseDto topicVideoResponseDto : content) {
+                for (VideoSlimResponseDto videoSlimResponseDto : topicVideoResponseDto.getVideos()) {
+                    videoSlimResponseDto.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(user.get().getId(), videoSlimResponseDto.getId()));
+                }
+            }
+        }
+        ObjectWorkoutProgramSetResponse<TopicVideoResponseDto> response = new ObjectWorkoutProgramSetResponse<>();
+        response.setContent(content);
+        response.setTotalPages(topics.getTotalPages());
+        response.setTotalElements(topics.getTotalElements());
+        response.setPageNo(topics.getNumber());
+        response.setPageSize(topics.getSize());
+        response.setLast(topics.isLast());
+        return response;
+    }
+
+
     public ObjectWorkoutProgramSetResponse<TopicWorkoutProgramResponseDto> getTopicWithWorkoutProgram(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Topic> topics = topicRepository.findTopicsByTopic("workout-program", pageable);
@@ -106,7 +133,7 @@ public class TopicService {
         if (user.isPresent()) {
             for (TopicVideoResponseDto topicVideoResponseDto : setTopicVideoResponseDto) {
                 for (VideoSlimResponseDto videoSlimResponseDto : topicVideoResponseDto.getVideos()) {
-                    videoSlimResponseDto.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(user.get().getId(), videoSlimResponseDto.getUrl()));
+                    videoSlimResponseDto.setBookmarked(videoRepository.findBookmarkByUserIdAndVideoId(user.get().getId(), videoSlimResponseDto.getId()));
                 }
             }
         }

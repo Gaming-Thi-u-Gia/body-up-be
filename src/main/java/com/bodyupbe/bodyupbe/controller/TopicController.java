@@ -70,7 +70,7 @@ public class TopicController {
 
     @GetMapping("/getTopicForWorkout")
     public ResponseEntity<Set<TopicResponseDto>> getTopicForWorkout() {
-        return ResponseEntity.ok(topicService.  getTopicForWourkoutProgram());
+        return ResponseEntity.ok(topicService.getTopicForWourkoutProgram());
     }
 
     @GetMapping("/getTopicWithWorkoutProgram")
@@ -79,14 +79,14 @@ public class TopicController {
     }
 
     @GetMapping("/getTopicWithWorkoutVideo")
-    public ResponseEntity<Set<TopicVideoResponseDto>> getTopicWithWorkoutVideo() {
+    public ResponseEntity<ObjectWorkoutProgramSetResponse<TopicVideoResponseDto>> getTopicWithWorkoutVideo(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "1") int pageSize) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipal = authentication.getName();
         Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
         if(optionalUser.isPresent()) {
-            return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo(optionalUser));
+            return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo(optionalUser, pageNo, pageSize));
         }
-        return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo(Optional.empty()));
+        return ResponseEntity.ok(topicService.getTopicWithWorkoutVideo(Optional.empty(), pageNo, pageSize));
     }
     @GetMapping("/getTopicWithWorkoutProgramById")
     public ResponseEntity<Set<TopicWorkoutProgramResponseDto>> getTopicWithWorkoutProgramById(@RequestParam int topicId) {

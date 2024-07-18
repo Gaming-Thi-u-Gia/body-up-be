@@ -70,8 +70,15 @@ public class VideoController {
     }
 
     @PostMapping("/getBookmark")
-    public ResponseEntity<VideoBookmarkResponseSlim> getBookmark(@RequestParam int userId, @RequestParam String url) {
-        return ResponseEntity.ok(bookmarkService.getBookmarkVideo(userId, url));
+    public ResponseEntity<VideoBookmarkResponseSlim> getBookmark(@RequestParam int id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipal = authentication.getName();
+
+        Optional<User> optionalUser = userRepository.findByEmail(currentPrincipal);
+        if(optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return ResponseEntity.ok(bookmarkService.getBookmarkVideo(optionalUser.get().getId(), id));
     }
 
     @GetMapping("/getWorkoutVideoWithBookmark")
