@@ -1,5 +1,6 @@
 package com.bodyupbe.bodyupbe.controller.community;
 
+import com.bodyupbe.bodyupbe.dto.request.community.BadgeDto;
 import com.bodyupbe.bodyupbe.model.community.Badge;
 import com.bodyupbe.bodyupbe.service.community.BadgeService;
 import lombok.AccessLevel;
@@ -19,7 +20,7 @@ public class BadgeController {
     BadgeService badgeService;
 
     @GetMapping
-    public ResponseEntity<List<Badge>> getAllBadge(){
+    public ResponseEntity<List<BadgeDto>> getAllBadge(){
         return ResponseEntity.ok(badgeService.getBadgeAll());
     }
 
