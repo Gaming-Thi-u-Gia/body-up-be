@@ -1,5 +1,7 @@
 package com.bodyupbe.bodyupbe.service.community;
 
+import com.bodyupbe.bodyupbe.dto.mapper.community.BadgeMapper;
+import com.bodyupbe.bodyupbe.dto.request.community.BadgeDto;
 import com.bodyupbe.bodyupbe.model.community.Badge;
 import com.bodyupbe.bodyupbe.repository.BadgeRepository;
 import lombok.AccessLevel;
@@ -17,8 +19,11 @@ import java.util.List;
 public class BadgeService {
     BadgeRepository badgeRepository;
 
-    public List<Badge> getBadgeAll() {
-        return badgeRepository.findAll();
+    BadgeMapper badgeMapper;
+    public List<BadgeDto> getBadgeAll() {
+        List<Badge> badges = badgeRepository.findAll();
+        List<BadgeDto> badgesDto = badgeMapper.toListBadgeDto(badges);
+        return badgesDto;
     }
 
 

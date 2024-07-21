@@ -16,7 +16,7 @@ spring:
   session:
     store-type: redis
   datasource:
-    url: jdbc:postgresql://ep-weathered-rain-a1wh6rnh.ap-southeast-1.aws.neon.tech/neondb?user=neondb_owner&password=D0pJt2hMKUYC&sslmode=require
+    url: jdbc:postgresql://ep-patient-voice-a1cftgwm.ap-southeast-1.aws.neon.tech/DB?user=DB_owner&password=8Wk4XUOoaSib&sslmode=require
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
