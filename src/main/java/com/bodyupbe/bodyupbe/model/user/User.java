@@ -141,7 +141,7 @@ public class User implements UserDetails {
     @JsonBackReference
     Set<Notification> notifications;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    Set<FeedbackWorkout> feedbackWorkouts= new HashSet<>();
+    @OneToOne
+    @JsonBackReference
+    FeedbackWorkout feedbackWorkout;
 }

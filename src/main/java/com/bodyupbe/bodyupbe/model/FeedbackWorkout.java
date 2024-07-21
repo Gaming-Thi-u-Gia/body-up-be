@@ -39,9 +39,9 @@ public class FeedbackWorkout {
     @JsonManagedReference
     RatingWorkout ratingWorkout = new RatingWorkout();
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "feedbackWorkout")
     @JoinColumn(name="user_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonManagedReference
     User user;
 
     @ManyToOne
