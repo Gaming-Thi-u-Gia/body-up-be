@@ -453,7 +453,9 @@ public class AdminService {
     public String updateWorkoutProgram(WorkoutProgramRequestDto request) {
         WorkoutProgram workoutProgram = workoutProgramRepository.findById(request.getId())
                 .orElseThrow(() -> new RuntimeException("Workout Program not found: " + request.getId()));
+
         dailyExerciseRepository.deleteByWorkoutProgramId(workoutProgram.getId());
+
         workoutProgram.setName(request.getName());
         workoutProgram.setType(request.getType());
         workoutProgram.setEquipment(request.getEquipment());
@@ -477,63 +479,53 @@ public class AdminService {
         workoutProgram.setWorkoutProgramCategories(categories);
 
         workoutProgramRepository.save(workoutProgram);
+
         dailyExerciseRepository.deleteByWorkoutProgramId(workoutProgram.getId());
-        Set<DailyExercise> existingDailyExercises = new HashSet<>(dailyExerciseRepository.findByWorkoutProgramId(workoutProgram.getId()));
         Set<DailyExercise> newDailyExercises = request.getDailyExercises().stream()
                 .map(dailyExerciseRequest -> {
-                    DailyExercise dailyExercise = existingDailyExercises.stream()
-                            .filter(existingExercise -> existingExercise.getDay() == dailyExerciseRequest.getDay())
-                            .findFirst()
-                            .orElseGet(DailyExercise::new);
-
+                    DailyExercise dailyExercise = new DailyExercise();
                     dailyExercise.setDay(dailyExerciseRequest.getDay());
                     dailyExercise.setWorkoutProgram(workoutProgram);
+
+                    Set<DailyVideo> dailyVideos = dailyExerciseRequest.getDailyVideos().stream()
+                            .map(dailyVideoRequest -> {
+                                DailyVideo dailyVideo = new DailyVideo();
+                                dailyVideo.setDailyExercise(dailyExercise);
+                                Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
+                                        .orElseThrow(() -> new RuntimeException("Video not found: " + dailyVideoRequest.getVideo().getId()));
+                                dailyVideo.setVideo(video);
+                                return dailyVideo;
+                            })
+                            .collect(Collectors.toSet());
+                    dailyExercise.setDailyVideos(dailyVideos);
+
+                    Set<DailyRecipe> dailyRecipes = dailyExerciseRequest.getDailyRecipes().stream()
+                            .map(dailyRecipeRequest -> {
+                                DailyRecipe dailyRecipe = new DailyRecipe();
+                                dailyRecipe.setDailyExercise(dailyExercise);
+                                dailyRecipe.setPart(dailyRecipeRequest.getPart());
+                                Recipe recipe = recipeRepository.findById(dailyRecipeRequest.getRecipe().getId())
+                                        .orElseThrow(() -> new RuntimeException("Recipe not found: " + dailyRecipeRequest.getRecipe().getId()));
+                                dailyRecipe.setRecipe(recipe);
+                                return dailyRecipe;
+                            })
+                            .collect(Collectors.toSet());
+                    dailyExercise.setDailyRecipes(dailyRecipes);
+
+                    dailyVideoRepository.saveAll(dailyVideos);
+                    dailyRecipeRepository.saveAll(dailyRecipes);
 
                     return dailyExercise;
                 })
                 .collect(Collectors.toSet());
 
         dailyExerciseRepository.saveAll(newDailyExercises);
-
-        for (DailyExercise dailyExercise : newDailyExercises) {
-            Set<DailyVideo> dailyVideos = request.getDailyExercises().stream()
-                    .filter(de -> de.getDay() == dailyExercise.getDay())
-                    .flatMap(de -> de.getDailyVideos().stream())
-                    .map(dailyVideoRequest -> {
-                        DailyVideo dailyVideo = new DailyVideo();
-                        dailyVideo.setDailyExercise(dailyExercise);
-                        Video video = videoRepository.findById(dailyVideoRequest.getVideo().getId())
-                                .orElseThrow(() -> new RuntimeException("Video not found: " + dailyVideoRequest.getVideo().getId()));
-                        dailyVideo.setVideo(video);
-                        return dailyVideo;
-                    })
-                    .collect(Collectors.toSet());
-            dailyExercise.setDailyVideos(dailyVideos);
-
-            Set<DailyRecipe> dailyRecipes = request.getDailyExercises().stream()
-                    .filter(de -> de.getDay() == dailyExercise.getDay())
-                    .flatMap(de -> de.getDailyRecipes().stream())
-                    .map(dailyRecipeRequest -> {
-                        DailyRecipe dailyRecipe = new DailyRecipe();
-                        dailyRecipe.setDailyExercise(dailyExercise);
-                        dailyRecipe.setPart(dailyRecipeRequest.getPart());
-                        Recipe recipe = recipeRepository.findById(dailyRecipeRequest.getRecipe().getId())
-                                .orElseThrow(() -> new RuntimeException("Recipe not found: " + dailyRecipeRequest.getRecipe().getId()));
-                        dailyRecipe.setRecipe(recipe);
-                        return dailyRecipe;
-                    })
-                    .collect(Collectors.toSet());
-            dailyExercise.setDailyRecipes(dailyRecipes);
-
-            dailyVideoRepository.saveAll(dailyVideos);
-            dailyRecipeRepository.saveAll(dailyRecipes);
-        }
-
         workoutProgram.setDailyExercises(newDailyExercises);
         workoutProgramRepository.save(workoutProgram);
 
         return "Update Workout Program Successfully With Program ID: " + workoutProgram.getId();
     }
+
 
     public List<TopUserChallengeResponseDto> getTop3UsersWithMostCompletedChallenges() {
         return userRepository.findTop3UsersWithMostCompletedChallenges();
